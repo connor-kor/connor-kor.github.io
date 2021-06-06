@@ -24,7 +24,7 @@ Jekyll 테마제공 사이트
 
 본인은 Clone 했으므로 이 방법대로 설명합니다.
 
-<img src="/assets/images/howToMakeGitHubBlog1.png" width="600px">
+![howToMakeGitHubBlog2](\assets\images\howToMakeGitHubBlog1.png)
 
 1) 테마 GitHub 사이트에서 Code 를 눌러 오른쪽 버튼을 눌러 URL 을 복사합니다.
 
