@@ -67,7 +67,6 @@ algolia:
   index_name             : # YOUR_INDEX_NAME
   search_only_api_key    : # YOUR_SEARCH_ONLY_API_KEY
   powered_by             : # true (default), false
-# 구글서치엔진 등록
 google:
   search_engine_id       : # YOUR_SEARCH_ENGINE_ID
   instant_search         : # false (default), true
@@ -101,11 +100,15 @@ analytics:
 
 
 # Site Author
+# 개인정보 수정
 author:
-  name             : "Your Name"
+  name             : "Connor"
   avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "I am an **amazing** person."
-  location         : "Somewhere"
+  bio              : "I have Bachelor of Science in Electrical Engineering (EE).<br/>
+  I used to work at a company in US for an year.<br/>
+  I'm very interested in algorithm and data structure.<br/>
+  I'm preparing Developer."
+  location         : "South Korea"
   email            :
   links:
     - label: "Email"
@@ -128,6 +131,7 @@ author:
       # url: "https://instagram.com/"
 
 # Site Footer
+# 사이트 하단수정
 footer:
   links:
     - label: "Twitter"
@@ -216,9 +220,10 @@ sass:
 
 # Outputting
 permalink: /:categories/:title/
+# 한 화면에 표시할 페이지 수
 paginate: 5 # amount of posts to show
 paginate_path: /page:num/
-timezone: # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+timezone: Asia/Seoul # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 
 
 # Plugins (previously gems:)
