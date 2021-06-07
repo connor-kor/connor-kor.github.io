@@ -1,3 +1,5 @@
+
+
 {% if page.author_profile or layout.author_profile or page.sidebar %}
   <div class="sidebar sticky">
   {% if page.author_profile or layout.author_profile %}{% include author-profile.html %}{% endif %}
@@ -14,6 +16,11 @@
     {% if page.sidebar.nav %}
       {% include nav_list nav=page.sidebar.nav %}
     {% endif %}
+  {% endif %}
+
+    <!-- 카테고리 추가 -->
+  {% if page.sidebar_main %}
+    {% include nav_list_main %}
   {% endif %}
   </div>
 {% endif %}

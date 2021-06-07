@@ -288,6 +288,7 @@ defaults:
       type: posts
     values:
       layout: single
+      # 사이드바 추가
       author_profile: true
       # 읽었던 시간표시
       read_time: true
@@ -297,7 +298,9 @@ defaults:
       related: true
       # 날짜표시
       show_date: true
-      # 사이드바 추가
-      sidebar_main: true
+      # 커스텀 사이드바 추가
+      sidebar_main: false
       # toc: true
-      # toc_sticky: true 
+      # toc_sticky: true
+      sidebar: 
+      nav: "main"
