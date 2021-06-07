@@ -1,3 +1,10 @@
+---
+title: GitHub 블로그 만들기
+categories: blog
+---
+
+
+
 ## 테마정하기
 
 Jekyll 테마제공 사이트

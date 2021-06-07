@@ -299,3 +299,5 @@ defaults:
       show_date: true
       # 사이드바 추가
       sidebar_main: true
+      # toc: true
+      # toc_sticky: true 
