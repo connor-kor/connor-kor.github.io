@@ -12,39 +12,88 @@
       </li>
       <li>
         <!--span 태그로 카테고리들을 크게 분류 ex) C/C++/C#-->
-        <span class="nav__sub-title">C/C++/C#</span>
+
+        <!-- 카테고리 1 -->
+        <span class="nav__sub-title"> Full stack </span>
             <!--ul 태그로 같은 카테고리들 모아둔 페이지들 나열-->
             <ul>
                 <!--Cpp 카테고리 글들을 모아둔 페이지인 /categories/cpp 주소의 글로 링크 연결-->
                 <!--category[1].size 로 해당 카테고리를 가진 글의 개수 표시--> 
                 {% for category in site.categories %}
-                    {% if category[0] == "Cpp" %}
-                        <li><a href="/categories/cpp" class="">C ++ ({{category[1].size}})</a></li>
+                    {% if category[0] == "stylef" %}
+                        <!-- 사이드바 출력 -->
+                        <li><a href="/categories/stylef" class=""> 스타일가이드 ({{category[1].size}})</a></li>
                     {% endif %}
                 {% endfor %}
             </ul>
             <ul>
                 {% for category in site.categories %}
-                    {% if category[0] == "STL" %}
-                        <li><a href="/categories/stl" class="">C++ STL & 표준 ({{category[1].size}})</a></li>
+                    {% if category[0] == "hotkeyf" %}
+                        <!-- 사이드바 출력 -->
+                        <li><a href="/categories/hotkeyf" class=""> 단축키 ({{category[1].size}})</a></li>
                     {% endif %}
                 {% endfor %}
             </ul>
-        <span class="nav__sub-title">Coding Test</span>
+
+        <!-- 카테고리 2 -->
+        <span class="nav__sub-title"> IOS </span>
             <ul>
                 {% for category in site.categories %}
-                    {% if category[0] == "Algorithm" %}
-                        <li><a href="/categories/algorithm" class="">알고리즘 구현 (with C++) ({{category[1].size}})</a></li>
+                    {% if category[0] == "stylei" %}
+                        <!-- 사이드바 출력 -->
+                        <li><a href="/categories/stylei" class=""> 스타일가이드 ({{category[1].size}})</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            <ul>
+                {% for category in site.categories %}
+                    {% if category[0] == "hotkeyi" %}
+                        <!-- 사이드바 출력 -->
+                        <li><a href="/categories/hotkeyi" class=""> 단축키 ({{category[1].size}})</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+
+        <!-- 카테고리 3 -->
+        <span class="nav__sub-title"> Lecture </span>
+            <ul>
+                {% for category in site.categories %}
+                    {% if category[0] == "fa" %}
+                        <!-- 사이드바 출력 -->
+                        <li><a href="/categories/fa" class=""> Full-stack 아카데미 ({{category[1].size}})</a></li>
                     {% endif %}
                 {% endfor %}
             </ul>
             <ul>
                 {% for category in site.categories %}
                     {% if category[0] == "Programmers" %}
+                        <!-- 사이드바 출력 -->
                         <li><a href="/categories/programmers" class="">프로그래머스 ({{category[1].size}})</a></li>
                     {% endif %}
                 {% endfor %}
             </ul>
+
+        <!-- 카테고리 4 -->
+        <span class="nav__sub-title"> etc </span>
+            <ul>
+                {% for category in site.categories %}
+                    <!-- 카테고리 명 -->
+                    {% if category[0] == "blog" %}
+                        <!-- 사이드바 출력 -->
+                        <li><a href="/categories/blog" class=""> 블로그 ({{category[1].size}})</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            <ul>
+                {% for category in site.categories %}
+                    <!-- 카테고리 명 -->
+                    {% if category[0] == "daily" %}
+                        <!-- 사이드바 출력 -->
+                        <li><a href="/categories/daily" class=""> 일기 ({{category[1].size}})</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+
       </li>
   </ul>
 </nav>

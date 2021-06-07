@@ -1,9 +1,9 @@
 ---
-title: "C++ 프로그래밍"
+title: "일기"
 layout: archive
-permalink: /categories/cpp
+permalink: /categories/daily
 author_profile: true
 ---
 
-{% assign posts = site.categories.Cpp %}
+{% assign posts = site.categories.daily %}
 {% for post in posts %} {% include archive-single.html type=page.entries_layout %} {% endfor %}

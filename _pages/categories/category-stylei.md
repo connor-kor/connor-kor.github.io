@@ -1,9 +1,10 @@
 ---
-title: "C++ 프로그래밍"
+title: "IOS 스타일가이드"
 layout: archive
-permalink: /categories/cpp
+permalink: /categories/stylei
 author_profile: true
 ---
 
-{% assign posts = site.categories.Cpp %}
+{% assign posts = site.categories.stylei %}
 {% for post in posts %} {% include archive-single.html type=page.entries_layout %} {% endfor %}
+

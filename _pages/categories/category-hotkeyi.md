@@ -1,9 +1,10 @@
 ---
-title: "C++ 프로그래밍"
+title: "IOS 단축키"
 layout: archive
-permalink: /categories/cpp
+permalink: /categories/hotkeyi
 author_profile: true
 ---
 
-{% assign posts = site.categories.Cpp %}
+{% assign posts = site.categories.hotkeyi %}
 {% for post in posts %} {% include archive-single.html type=page.entries_layout %} {% endfor %}
+
