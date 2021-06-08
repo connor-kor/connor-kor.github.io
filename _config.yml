@@ -104,10 +104,18 @@ analytics:
 author:
   name             : "Connor"
   avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "I have Bachelor of Science in Electrical Engineering (EE).<br/>
-  I used to work at a company in US for an year.<br/>
-  I'm very interested in algorithm and data structure.<br/>
-  I'm preparing Developer."
+  bio              : 
+    "L is for the way you look at me <br/>
+    O is for the only one I see <br/>
+    V is very, very, extraordinary <br/>
+    E is even more than anyone that you adore can <br/><br/>
+    L-O-V-E lyrics"
+
+
+  # "I have Bachelor of Science in Electrical Engineering (EE).<br/>
+  # I used to work at a company in US for an year.<br/>
+  # I'm very interested in algorithm and data structure.<br/>
+  # I'm preparing Developer."
   location         : "South Korea"
   email            :
   links:
