@@ -43,7 +43,7 @@ Minimal Mistakes 테마 가이드 <[Quick-Start Guide - Minimal Mistakes (mmista
 
 > Firebase, Maven 웹 프로젝트 구조, 안드로이드 화면구현, 블로그 구축 및 사이트 검색연동, 마크다운
 
-## 관심있는 것
+## 더 해보고싶은 것
 
 > IOS 앱 개발
 
