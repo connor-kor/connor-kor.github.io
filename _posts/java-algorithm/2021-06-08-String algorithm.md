@@ -43,7 +43,7 @@ public class Main {
 }
 ```
 
-## 단어 뒤집기
+## 단어 뒤집기 : 내가 구현한 코드
 
 ```java
 import java.util.Scanner;
@@ -79,3 +79,17 @@ public class Main {
 }
 ```
 
+## 단어 뒤집기 : 인프런
+
+`String tmp = new StringBuilder(x)` Stiring 의 객체이다.
+
+`StringBuilder(String)`
+
+- `.reverse()`
+- `.toString()` 
+
+`ArrayList`
+
+- `add(Object)` 뒤집은 char 를 한개씩 추가한다.
+
+1. 단어를 Array 화 한 후 앞뒤를 변수선언, 앞뒤를 서로 바꾸기.

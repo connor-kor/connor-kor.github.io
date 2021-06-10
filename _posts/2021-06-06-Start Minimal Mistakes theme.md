@@ -45,12 +45,16 @@ tags: tag
 
 
 1. Print Screen 버튼을 누른 후 붙여넣기
-2. 한글파일에서 저장 후 붙여넣기
+2. 컴퓨터에 있는 파일 드래그 & 드랍
 3. 인터넷에서 복사 후 붙여넣기
 
 모두 정상 작동하는 것을 볼 수 있다.
 
 > 단 삭제는 수동으로 해야한다. 붙여넣기 후 안쓰는 이미지라면 삭제할 것!!
+
+### 출처
+
+<[Images in Typora](https://support.typora.io/Images/#when-insert-images)>
 
 ## 카테고리 및 태그 페이지 연결하기
 

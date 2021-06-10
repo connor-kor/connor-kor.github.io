@@ -15,8 +15,3 @@ title: 다크모드 설정방법
 ![image-20210609224338729](../../assets/images/image-20210609224338729.png)
 
 다크테마가 적용된 것을 확인할 수 있다.
-
-
-## 출처
-
-<[Images in Typora](https://support.typora.io/Images/#when-insert-images)>
