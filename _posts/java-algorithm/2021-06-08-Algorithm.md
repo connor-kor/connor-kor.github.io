@@ -1,5 +1,5 @@
 ---
-title: 알고리즘 정리
+title: 자료형 함수 정리
 ---
 
 # 출력
@@ -46,7 +46,9 @@ public static void main(String[] args) throws IOException {
 
 ## 공백
 
-StringTokenizer
+`StringTokenizer`
+
+`str.split(' ')`
 
 # String
 
@@ -60,11 +62,15 @@ StringTokenizer
 
 - `.toCharArray()` 문자열을 배열에 넣음 : for-each 구문을 위해
 
+`String`
+
+- `.valueOf(Object)`
+
 ```java
-for (char c : str.toCharArray()) {
-			System.out.print(c);
-		}
+String.valueOf(charArray)  // 문자열 출력
 ```
+
+
 
 # Character
 
@@ -73,8 +79,8 @@ for (char c : str.toCharArray()) {
 `Character`
 
 - `.toUpperCase(char)` 대문자 변환
-
 - `.isLowerCase(char)` 소문자이면 true 반환
+- `.isAlphabetic(char)` 알파벳이면 true
 
 # 숫자
 
