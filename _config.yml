@@ -25,6 +25,8 @@ subtitle                 : "Version 1.0.1" # site tagline that appears below sit
 name                     : "Connor"
 description              : "stories for developers"
 url                      : "https://connor-kor.github.io/" # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
+url                      : "http://127.0.0.1:4000"
+url                      : "//connor-kor.github.io/"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 # 레포지토리
 repository               : "connor-kor/connor-kor.github.io" # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
