@@ -3,6 +3,10 @@ title: 사이트맵에 대해서
 categories: blog
 ---
 
+> 사이트맵을 등록하기 전에 소유권을 확인해야 합니다.
+
+<https://devconnor.tistory.com/19?category=952269>
+
 ## 사이트맵이란?
 
 **사이트맵이란 무엇인가요? 이 보고서가 꼭 필요한가요?**
