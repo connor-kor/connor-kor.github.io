@@ -236,6 +236,7 @@ timezone: # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 
 
 # Plugins (previously gems:)
+# 플러그인 설정
 plugins:
   - jekyll-paginate
   - jekyll-sitemap
