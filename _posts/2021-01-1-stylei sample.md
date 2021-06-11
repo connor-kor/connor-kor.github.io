@@ -1,6 +1,6 @@
 ---
 title: 샘플
-categories: stylei
+categories: ios-style
 ---
 
 샘플

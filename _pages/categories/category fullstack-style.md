@@ -1,10 +1,10 @@
 ---
-title: "Full-stack 아카데미"
+title: "Full-stack 스타일가이드"
 layout: archive
-permalink: /categories/fa
+permalink: /categories/fullstack-style
 author_profile: true
 ---
 
-{% assign posts = site.categories.fa %}
+{% assign posts = site.categories.fullstack-style %}
 {% for post in posts %} {% include archive-single.html type=page.entries_layout %} {% endfor %}
 

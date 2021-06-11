@@ -1,5 +1,6 @@
 ---
 title: 자료형 함수 정리
+categories: algorithm
 ---
 
 # 출력

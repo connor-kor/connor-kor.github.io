@@ -1,5 +1,6 @@
 ---
 title: 문자열 for-each 및 대소문자 변환
+categories: algorithm
 ---
 
 ## 문자 카운트

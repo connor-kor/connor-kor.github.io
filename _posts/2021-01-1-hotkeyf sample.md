@@ -1,6 +1,6 @@
 ---
 title: 샘플
-categories: hotkeyf
+categories: fullstack-hotkey
 ---
 
 샘플

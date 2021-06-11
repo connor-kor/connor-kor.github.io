@@ -1,6 +1,6 @@
 ---
 title: 샘플
-categories: fa
+categories: fullstack-lecture
 ---
 
 샘플

@@ -1,5 +1,6 @@
 ---
 title: 문자열 알고리즘1 - 긴 단어, 단어 뒤집기
+categories: algorithm
 ---
 
 ## `String`

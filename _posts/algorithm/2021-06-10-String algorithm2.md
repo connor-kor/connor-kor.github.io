@@ -1,5 +1,6 @@
 ---
 title: 문자열 알고리즘2 - 알파벳만 단어 뒤집기
+categories: algorithm
 ---
 
 ### 문자열을 문자들의 배열로

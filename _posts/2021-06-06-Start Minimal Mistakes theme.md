@@ -12,6 +12,7 @@ categories: blog
    ex) 2021-06-06-Start Minimal Mistakes theme
 
 > title 은 영어로 작성할 것!! (혹은 본문에 한글 작성), title 에 " : " 넣지 않을 것!!
+> categories 는 영어로 작성, 띄어쓰기하면 분리되므로 " - " 로 연결할 것!!
 
 \-\-\-
 

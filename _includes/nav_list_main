@@ -20,17 +20,17 @@
                 <!--Cpp 카테고리 글들을 모아둔 페이지인 /categories/cpp 주소의 글로 링크 연결-->
                 <!--category[1].size 로 해당 카테고리를 가진 글의 개수 표시--> 
                 {% for category in site.categories %}
-                    {% if category[0] == "stylef" %}
+                    {% if category[0] == "fullstack-style" %}
                         <!-- 사이드바 출력 -->
-                        <li><a href="/categories/stylef" class=""> 스타일가이드 ({{category[1].size}})</a></li>
+                        <li><a href="/categories/fullstack-style" class=""> 스타일가이드 ({{category[1].size}})</a></li>
                     {% endif %}
                 {% endfor %}
             </ul>
             <ul>
                 {% for category in site.categories %}
-                    {% if category[0] == "hotkeyf" %}
+                    {% if category[0] == "fullstack-hotkey" %}
                         <!-- 사이드바 출력 -->
-                        <li><a href="/categories/hotkeyf" class=""> 단축키 ({{category[1].size}})</a></li>
+                        <li><a href="/categories/fullstack-hotkey" class=""> 단축키 ({{category[1].size}})</a></li>
                     {% endif %}
                 {% endfor %}
             </ul>
@@ -39,17 +39,17 @@
         <span class="nav__sub-title"> IOS </span>
             <ul>
                 {% for category in site.categories %}
-                    {% if category[0] == "stylei" %}
+                    {% if category[0] == "ios-style" %}
                         <!-- 사이드바 출력 -->
-                        <li><a href="/categories/stylei" class=""> 스타일가이드 ({{category[1].size}})</a></li>
+                        <li><a href="/categories/ios-style" class=""> 스타일가이드 ({{category[1].size}})</a></li>
                     {% endif %}
                 {% endfor %}
             </ul>
             <ul>
                 {% for category in site.categories %}
-                    {% if category[0] == "hotkeyi" %}
+                    {% if category[0] == "ios-hotkey" %}
                         <!-- 사이드바 출력 -->
-                        <li><a href="/categories/hotkeyi" class=""> 단축키 ({{category[1].size}})</a></li>
+                        <li><a href="/categories/ios-hotkey" class=""> 단축키 ({{category[1].size}})</a></li>
                     {% endif %}
                 {% endfor %}
             </ul>
@@ -58,17 +58,25 @@
         <span class="nav__sub-title"> Lecture </span>
             <ul>
                 {% for category in site.categories %}
-                    {% if category[0] == "fa" %}
+                    {% if category[0] == "fullstack-lecture" %}
                         <!-- 사이드바 출력 -->
-                        <li><a href="/categories/fa" class=""> Full-stack 아카데미 ({{category[1].size}})</a></li>
+                        <li><a href="/categories/fullstack-lecture" class=""> Full-stack 강의 ({{category[1].size}})</a></li>
                     {% endif %}
                 {% endfor %}
             </ul>
             <ul>
                 {% for category in site.categories %}
-                    {% if category[0] == "Programmers" %}
+                    {% if category[0] == "design-pattern" %}
                         <!-- 사이드바 출력 -->
-                        <li><a href="/categories/programmers" class="">프로그래머스 ({{category[1].size}})</a></li>
+                        <li><a href="/categories/design-pattern" class=""> 디자인패턴 ({{category[1].size}})</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            <ul>
+                {% for category in site.categories %}
+                    {% if category[0] == "algorithm" %}
+                        <!-- 사이드바 출력 -->
+                        <li><a href="/categories/algorithm" class=""> 알고리즘 ({{category[1].size}})</a></li>
                     {% endif %}
                 {% endfor %}
             </ul>
@@ -90,6 +98,15 @@
                     {% if category[0] == "daily" %}
                         <!-- 사이드바 출력 -->
                         <li><a href="/categories/daily" class=""> 일기 ({{category[1].size}})</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            <ul>
+                {% for category in site.categories %}
+                    <!-- 카테고리 명 -->
+                    {% if category[0] == "etc" %}
+                        <!-- 사이드바 출력 -->
+                        <li><a href="/categories/etc" class=""> 기타 ({{category[1].size}})</a></li>
                     {% endif %}
                 {% endfor %}
             </ul>

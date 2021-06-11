@@ -1,10 +1,10 @@
 ---
-title: "Full-stack 단축키"
+title: "IOS 스타일가이드"
 layout: archive
-permalink: /categories/hotkeyf
+permalink: /categories/ios-style
 author_profile: true
 ---
 
-{% assign posts = site.categories.hotkeyf %}
+{% assign posts = site.categories.ios-style %}
 {% for post in posts %} {% include archive-single.html type=page.entries_layout %} {% endfor %}
 

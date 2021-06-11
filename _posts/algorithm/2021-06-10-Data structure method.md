@@ -1,5 +1,6 @@
 ---
 title: 자료구조 함수
+categories: algorithm
 ---
 
 ## Array

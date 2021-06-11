@@ -1,10 +1,9 @@
 ---
-title: "IOS 단축키"
+title: "알고리즘"
 layout: archive
-permalink: /categories/hotkeyi
+permalink: /categories/algorithm
 author_profile: true
 ---
 
-{% assign posts = site.categories.hotkeyi %}
+{% assign posts = site.categories.algorithm %}
 {% for post in posts %} {% include archive-single.html type=page.entries_layout %} {% endfor %}
-

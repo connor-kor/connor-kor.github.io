@@ -1,5 +1,6 @@
 ---
 title: 다크모드 설정방법
+categories: etc
 ---
 
 ## Window 10

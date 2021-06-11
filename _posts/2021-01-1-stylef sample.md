@@ -1,6 +1,6 @@
 ---
 title: 샘플
-categories: stylef
+categories: fullstack-style
 ---
 
 샘플

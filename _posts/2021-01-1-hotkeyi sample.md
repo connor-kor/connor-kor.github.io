@@ -1,6 +1,6 @@
 ---
 title: 샘플
-categories: hotkeyi
+categories: ios-hotkey
 ---
 
 샘플

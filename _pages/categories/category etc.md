@@ -1,10 +1,9 @@
 ---
-title: "IOS 스타일가이드"
+title: "기타"
 layout: archive
-permalink: /categories/stylei
+permalink: /categories/etc
 author_profile: true
 ---
 
-{% assign posts = site.categories.stylei %}
+{% assign posts = site.categories.etc %}
 {% for post in posts %} {% include archive-single.html type=page.entries_layout %} {% endfor %}
-
