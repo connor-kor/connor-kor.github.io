@@ -1,15 +1,15 @@
 ---
 title: 깃허브블로그 만들기 (GitHub blog)
 category: blog
-tags: GitHub blog pages minimal-mistakes 테마 댓글 disqus jekyll git
+tags: GitHub blog page minimal-mistakes theme comment disqus jekyll git post image category tag typora markdown 테마 댓글 디스커스 지킬 포스팅 카테고리 타이포라
 ---
 
 이 문서는 깃허브블로그 만드는 법을 minimal-mistakes 테마를 사용하여 설명합니다.
 공통되는부분도 있고 다른부분도 있으니 유의해서 봐주세요.
 
-# 블로그만들기
+# 블로그구축
 
-## 테마정하기
+## 블로그테마 정하기
 
 Jekyll 테마제공 사이트
 
@@ -28,7 +28,7 @@ Jekyll 테마제공 사이트
 3. 검색, 태그, 댓글, Syntax Highlighting, 수식입력 등 기능 지원
 4. 가격 등
 
-## 테마 가져오기
+## GitHub 페이지 만들기
 
 > 선행학습 : GitHub 계정이 있나요? Git 이 깔려있나요? 
 
@@ -86,9 +86,114 @@ git clone "URL 붙여넣기" "폴더이름" # 붙여넣기는 Shift + Insert
 
 도움이 되었다면 댓글을 달아주세요!!
 
+# 블로그사용
+
+## 글쓰기 : 포스팅하기
+
+1. root directory 에 '_posts' 폴더를 만들고 
+
+2. .md 확장자로 저장. 파일이름은 'YEAR_MONTH_DAY-title.md' 로 저장한다.
+
+   ex) 2021-06-06-Start Minimal Mistakes theme
+
+> title 은 영어로 작성할 것!! (혹은 본문에 한글 작성), title 에 " : " 넣지 않을 것!!
+> categories 는 영어로 작성, 띄어쓰기하면 분리되므로 " - " 로 연결할 것!!
+
+\-\-\-
+
+title: 제목
+
+categories: category
+
+tags: tag
+
+\-\-\-
+
+## (옵션) 이미지 자동으로 추가하기
+
+이미지를 포스팅하기 위해서는 직접 assets/images 폴더에 이미지파일을 저장하고 상대경로로 연결해야 한다. 
+
+하지만 이 작업을 Typora 프로그램에서 해주기 때문에 이미지를 직접 저장하는 과정이 필요없다.
+
+> Typora 란? Markdown editor 중의 하나입니다. 꼭 이 에디터를 사용할 필요는 없습니다.
+
+![image-20210609230029207](/assets/images/image-20210609230029207.png)
+
+1) 파일 - 환경설정
+
+![image-20210609230302150](/assets/images/image-20210609230302150.png)
+
+2) 이미지탭에서 When Insert - 특별한 동작없음 을 클릭하고 Copy image to custom folder 로 변경한 후 
+
+- "로컬 이미지에 위 규칙을 적용"
+- "온라인 이미지에 위 규칙을 적용"
+- "가능하다면 상대적 위치 사용" 을 체크한다.
+
+> 만약 Typora 에서는 보이는데 서버에서는 보이지 않는다면 Ctrl + / 를 눌러 assets 앞에 ".." 을 없애고 저장 후 다시 확인해본다.
+
+
+2. 컴퓨터에 있는 사진 드래그 & 드랍
+3. 인터넷에서 복사 후 붙여넣기
+3. Print Screen 버튼을 누른 후 붙여넣기
+
+모두 정상 작동하는 것을 볼 수 있다.
+
+> 단 삭제는 수동으로 해야한다. 붙여넣기 후 안쓰는 이미지라면 삭제할 것!!
+
+도움이 되었다면 댓글을 달아주세요!!
+
+**출처**
+
+<[Images in Typora](https://support.typora.io/Images/#when-insert-images)>
+
+## 카테고리 및 태그 페이지 연결하기
+
+root directory 에 "_pages" 폴더를 만들고
+
+category-archive.md 와 tag-archive.md 파일을 만듭니다.
+
+```html
+title: "Posts by Category"
+layout: categories
+permalink: /categories/
+author_profile: true
+```
+
+```html
+title: "Posts by Tag"
+permalink: /tags/
+layout: tags
+author_profile: true
+```
+
 # 기능추가
 
-## 댓글기능
+## 헤드에 메뉴버튼 만들기
+
+```yaml
+# main links
+main:
+  - title: 카테고리
+    url: /categories/
+  - title: 태그
+    url: /tags/
+  - title: 아카이브
+    url: /year-archive/
+  - title: "Sample Collections"
+    url: /collection-archive/
+  - title: "Quick-Start Guide"
+    url: https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/
+  - title: "Sitemap"
+    url: /sitemap/
+  # - title: "About"
+  #   url: https://mmistakes.github.io/minimal-mistakes/about/
+```
+
+_data/navigation.yml 파일에 title 과 url 을 추가한다.
+
+이 url 은 root directory 에 _pages 폴더 내에 적절한 파일이 있어야 한다.
+
+## 댓글기능 넣기
 
 > Disqus is an American blog comment hosting service for web sites and online communities that use a networked platform.
 
@@ -160,7 +265,7 @@ Settings - General - Shortname 을 확인합니다.
 
 완성! 도움이 되었다면 댓글을 달아주세요!!
 
-## 목차기능
+## 목차기능 넣기
 
 minimal-mistakes 테마기준으로 목차는 이미 구현되있습니다.
 
