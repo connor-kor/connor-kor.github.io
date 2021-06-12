@@ -104,11 +104,11 @@ analytics:
 author:
   name             : "Connor"
   avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "L is for the way you look at me <br/>
-    O is for the only one I see <br/>
-    V is very, very, extraordinary <br/>
-    E is even more than anyone that you adore can <br/><br/>
-    L-O-V-E lyrics"
+  bio              : <br> # "L is for the way you look at me <br/>
+    # O is for the only one I see <br/>
+    # V is very, very, extraordinary <br/>
+    # E is even more than anyone that you adore can <br/><br/>
+    # L-O-V-E lyrics"
 
 
   # "I have Bachelor of Science in Electrical Engineering (EE).<br/>
@@ -309,7 +309,7 @@ defaults:
       # 커스텀 사이드바 추가
       sidebar_main: true
       toc: true
-      # 목차이름 : 한글가능
+      # 목차이름: 한글가능
       toc_label: Contents
       # true 일 때 화면이동과 같이 움직입니다.
       toc_sticky: true
