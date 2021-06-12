@@ -20,7 +20,7 @@ locale                   : "ko-KR"
 # 사이트 제목
 title                    : "코너의 개발이야기"
 title_separator          : "|"
-subtitle                 : "Version 1.0.1" # site tagline that appears below site title in masthead
+subtitle                 : "Version 1.1" # site tagline that appears below site title in masthead
 # 닉네임
 name                     : "Connor"
 description              : "stories for developers"
@@ -309,7 +309,7 @@ defaults:
       # 커스텀 사이드바 추가
       sidebar_main: true
       toc: true
-      # 목차 : 한글가능
+      # 목차이름 : 한글가능
       toc_label: Contents
       # true 일 때 화면이동과 같이 움직입니다.
       toc_sticky: true
