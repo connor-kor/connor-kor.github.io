@@ -1,7 +1,7 @@
 ---
 title: 깃허브블로그 만들기 (GitHub blog)
 category: blog
-tags: GitHub blog page minimal-mistakes theme comment disqus jekyll git post image category tag typora markdown 테마 댓글 디스커스 지킬 포스팅 카테고리 타이포라
+tags: 테마 댓글 디스커스 지킬 포스팅 카테고리 타이포라 GitHub blog page minimal-mistakes theme comment disqus jekyll git post image category tag typora markdown
 ---
 
 이 문서는 깃허브블로그 만드는 법을 minimal-mistakes 테마를 사용하여 설명합니다.
