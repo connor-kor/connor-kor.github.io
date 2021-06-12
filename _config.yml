@@ -25,7 +25,7 @@ subtitle                 : "Version 1.0.2" # site tagline that appears below sit
 name                     : "Connor"
 description              : "stories for developers"
 url                      : "https://connor-kor.github.io" # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
-baseurl                  : "https://connor-kor.github.io" # the subpath of your site, e.g. "/blog"
+baseurl                  : # the subpath of your site, e.g. "/blog"
 # 레포지토리
 repository               : "connor-kor/connor-kor.github.io" # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
 teaser                   : # path of fallback teaser image, e.g. "/assets/images/500x300.png"
