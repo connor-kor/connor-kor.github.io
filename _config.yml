@@ -20,7 +20,7 @@ locale                   : "ko-KR"
 # 사이트 제목
 title                    : "코너의 개발이야기"
 title_separator          : "|"
-subtitle                 : "Version 1.0.2" # site tagline that appears below site title in masthead
+subtitle                 : "Version 1.0.1" # site tagline that appears below site title in masthead
 # 닉네임
 name                     : "Connor"
 description              : "stories for developers"
