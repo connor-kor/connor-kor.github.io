@@ -1,14 +1,14 @@
 # main links
 main:
   # title: 헤드메뉴에 표시되는 글
-  - title: 카테고리
-    url: /categories/
-  - title: 태그
+  #- title: 카테고리
+  #  url: /categories/
+  - title: Tags
     url: /tags/
-  - title: 아카이브
+  - title: Year-Archive
     url: /year-archive/
-  - title: Sample Collections
-    url: /collection-archive/
+  #- title: Sample Collections
+  #  url: /collection-archive/
   - title: Sitemap
     url: /sitemap/
   - title: Quick-Start Guide
