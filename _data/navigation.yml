@@ -1,7 +1,7 @@
 # main links
 main:
   # title: 헤드메뉴에 표시되는 글
-  #- title: 카테고리
+  #- title: Categories
   #  url: /categories/
   - title: Tags
     url: /tags/
@@ -9,9 +9,11 @@ main:
     url: /year-archive/
   #- title: Sample Collections
   #  url: /collection-archive/
+  #- title: Splash
+  #  url: /splash-page/
   - title: Sitemap
     url: /sitemap/
-  - title: Quick-Start Guide
-    url: https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/
+  #- title: Quick-Start Guide
+  #  url: https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/
   # - title: "About"
   #   url: https://mmistakes.github.io/minimal-mistakes/about/
