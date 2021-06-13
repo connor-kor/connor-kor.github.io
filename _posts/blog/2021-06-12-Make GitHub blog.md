@@ -146,7 +146,7 @@ tags: tag
 
 <[Images in Typora](https://support.typora.io/Images/#when-insert-images)>
 
-## 카테고리 및 태그 페이지 연결하기
+## 페이지 연결하기 : 카테고리 및 태그 
 
 root directory 에 "_pages" 폴더를 만들고
 
