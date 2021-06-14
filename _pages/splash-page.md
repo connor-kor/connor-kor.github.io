@@ -41,7 +41,7 @@ feature_row:
 
     # 제목 및 설명
     title: "Git"
-    excerpt: "Git으로 버전 관리하는 블로그를 운영하고 싶은가요?"
+    excerpt: "Git으로 버전 관리하는 블로그를 운영하고 싶으신가요?"
 
     # 두 번째 이미지
   - image_path: /assets/images/main-GitHub blog.jpg
@@ -54,11 +54,6 @@ feature_row:
     title: "GitHub blog"
     excerpt: "GitHub 블로그라고 들어보셨나요?"
 
-    # 링크
-    url: "/blog/Make-GitHub-blog/"
-    btn_label: "Read More"
-    btn_class: "btn--primary"
-
     # 세 번째 이미지
   - image_path: /assets/images/main-love girl.jpg
 
@@ -68,6 +63,11 @@ feature_row:
     # 제목 및 설명
     title: "Start"
     excerpt: "지금 바로 시작해 보세요!!"
+
+    # 버튼
+    url: "/blog/Make-GitHub-blog/"
+    btn_label: "Read More"
+    btn_class: "btn--primary"
 
 # feature_row2:
 #   - image_path: /assets/images/unsplash-gallery-image-2-th.jpg
