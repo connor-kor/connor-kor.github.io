@@ -1,5 +1,5 @@
 ---
-title: "기타"
+title: "환경설정"
 layout: archive
 permalink: /categories/etc
 author_profile: true

@@ -106,7 +106,7 @@
                     <!-- 카테고리 명 -->
                     {% if category[0] == "etc" %}
                         <!-- 사이드바 출력 -->
-                        <li><a href="/categories/etc" class=""> 기타 ({{category[1].size}})</a></li>
+                        <li><a href="/categories/etc" class=""> 환경설정 ({{category[1].size}})</a></li>
                     {% endif %}
                 {% endfor %}
             </ul>
