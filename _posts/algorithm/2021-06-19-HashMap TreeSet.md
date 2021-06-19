@@ -1,4 +1,5 @@
 ---
+title: HashMap TreeSet 강의
 category: algorithm
 ---
 
@@ -157,6 +158,115 @@ public class Main {
 			}
 		}
 		
+		System.out.println(count);
+	}
+}
+```
+
+### Sliding window algorithm
+
+```java
+import java.util.HashMap;
+import java.util.Scanner;
+
+public class Main {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		String s = sc.nextLine();
+		String t = sc.nextLine();
+		int count = 0;
+		HashMap<Character, Integer> map2 = new HashMap<Character, Integer>();
+		HashMap<Character, Integer> map1 = new HashMap<Character, Integer>();
+
+		// 두번 째 문자열 HashMap 에 담기
+		for (char key : t.toCharArray()) {
+			int value = map2.getOrDefault(key, 0);
+			map2.put(key, value + 1);
+		}
+
+		// 첫번 째 문자열의 일부분 HashMap 에 담기
+		for (int i = 0; i < t.length(); i++) {
+			int value = map1.getOrDefault(s.charAt(i), 0);
+			map1.put(s.charAt(i), value + 1);
+		}
+
+        // 중복되는 코드
+		if (map1.equals(map2)) {
+			count++;
+		}
+
+		// Sliding window algorithm 을 이용해 HashMap 에 한개씩 추가하고 제거하기
+		for (int i = 0; i < s.length() - t.length(); i++) {
+			int left = i;
+			int right = i + t.length();
+			int valueRight = map1.getOrDefault(s.charAt(right), 0);
+			map1.put(s.charAt(right), valueRight + 1);
+			int valueLeft = map1.get(s.charAt(left));
+			map1.put(s.charAt(left), valueLeft - 1);
+			if (map1.get(s.charAt(left)) == 0) {
+				map1.remove(s.charAt(left));
+			}
+
+			// 문자열1과 문자열2가 아나그램이라면 count 를 1 증가시킨다.
+			if (map1.equals(map2)) {
+				count++;
+			}
+		}
+
+		System.out.println(count);
+	}
+}
+```
+
+### Sliding window algorithm 개선
+
+- 위 코드는 `count++` 가 중복되므로 문자열을 한 개 덜 담으므로써 중복코드를 없앱니다.
+
+```java
+import java.util.HashMap;
+import java.util.Scanner;
+
+public class Main {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		String s = sc.nextLine();
+		String t = sc.nextLine();
+		int count = 0;
+		HashMap<Character, Integer> map1 = new HashMap<Character, Integer>();
+		HashMap<Character, Integer> map2 = new HashMap<Character, Integer>();
+
+		// 두 번째 문자열 HashMap 에 담기
+		for (char key : t.toCharArray()) {
+			int value = map2.getOrDefault(key, 0);
+			map2.put(key, value + 1);
+		}
+
+		// 첫 번째 문자열의 일부분 HashMap 에 담기 : 문자열을 한 개 덜 담습니다.
+		for (int i = 0; i < t.length() - 1; i++) {
+			int value = map1.getOrDefault(s.charAt(i), 0);
+			map1.put(s.charAt(i), value + 1);
+		}
+
+		// Sliding window algorithm 을 이용해 HashMap 에 한 개씩 추가
+		for (int i = 0; i < s.length() - t.length() + 1; i++) {
+			int left = i;
+			int right = i + t.length() - 1;
+			int valueRight = map1.getOrDefault(s.charAt(right), 0);
+			map1.put(s.charAt(right), valueRight + 1);
+
+			// 문자열1과 문자열2가 아나그램이라면 count 를 1 증가시킨다.
+			if (map1.equals(map2)) {
+				count++;
+			}
+            
+			// 한 개씩 제거
+			int valueLeft = map1.get(s.charAt(left));
+			map1.put(s.charAt(left), valueLeft - 1);
+			if (map1.get(s.charAt(left)) == 0) {
+				map1.remove(s.charAt(left));
+			}
+		}
+
 		System.out.println(count);
 	}
 }
