@@ -73,6 +73,7 @@ public class Main {
 		HashMap<Character, Integer> map1 = new HashMap<Character, Integer>();
 		HashMap<Character, Integer> map2 = new HashMap<Character, Integer>();
 
+        // 문자열을 HashMap 으로
 		for (char key : str1.toCharArray()) {
 			int value = map1.getOrDefault(key, 0);
 			map1.put(key, value + 1);
@@ -93,4 +94,71 @@ public class Main {
 ```
 
 ## 매출액의 종류
+
+```java
+import java.util.HashMap;
+import java.util.Scanner;
+
+public class Main {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int n = sc.nextInt();
+		int k = sc.nextInt();
+		int[] arr = new int[n];
+		String answer = "";
+
+        // 숫자들을 배열에
+		for (int i = 0; i < arr.length; i++) {
+			arr[i] = sc.nextInt();
+		}
+
+		for (int i = 0; i < n - k + 1; i++) {
+			HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+			for (int j = 0; j < k; j++) {
+                 // 숫자들의 배열을 HashMap 으로
+				int value = map.getOrDefault(arr[i + j], 0);
+				map.put(arr[i + j], value + 1);
+			}
+			answer += map.size() + " ";
+		}
+		System.out.println(answer);
+	}
+}
+```
+
+## 모든 아나그램 찾기
+
+```java
+import java.util.HashMap;
+import java.util.Scanner;
+
+public class Main {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		String s = sc.nextLine();
+		String t = sc.nextLine();
+		int count = 0;
+		char[] arr = s.toCharArray();
+		HashMap<Character, Integer> map2 = new HashMap<Character, Integer>();
+		
+		for (char key : t.toCharArray()) {
+			int value = map2.getOrDefault(key, 0);
+			map2.put(key, value + 1);
+		}
+		
+		for (int i = 0; i < s.length() - t.length() + 1; i++) {
+			HashMap<Character, Integer> map = new HashMap<Character, Integer>();
+			for (int j = 0; j < t.length(); j++) {
+				int value = map.getOrDefault(arr[i + j], 0);
+				map.put(arr[i + j], value + 1);
+				if (map.equals(map2)) {
+					count++;
+				}
+			}
+		}
+		
+		System.out.println(count);
+	}
+}
+```
 

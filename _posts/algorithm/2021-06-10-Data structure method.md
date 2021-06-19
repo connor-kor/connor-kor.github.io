@@ -239,25 +239,25 @@ Array List 에 있는 `ensureCapacity` 와 `trimToSize` 가 없다.
 
 ## Hash Map
 
-`HashMap<Object, Object> hash = new HashMap<>()` 선언
+`HashMap<Object, Object> hashMap = new HashMap<>()` 선언
 
 `HashMap` 
 
 - `.clear()`
 - `.clone()`
-- `.equals()`
+- `.equals()` HashMap 값 비교
 - `.forEach()`
-- `.get()`
+- `.get()` value 값 반환
 - `.getClass()`
-- `.getOrDefault()`
+- `.getOrDefault(Key, default)` value 값 반환 및 값 없는 경우 default 값 반환
 - `.hashCode()`
 - `.isEmpty()`
 - `.notify()`
 - `.notifyAll()`
-- `.remove()`
+- `.remove()` 제거
 - `.replace()`
 - `.replaceAll()`
-- `.size()`
+- `.size()` Key 갯수 반환
 - `.toString()`
 - `.values()`
 - `.wait()`
@@ -267,9 +267,9 @@ Array List 에 있는 `ensureCapacity` 와 `trimToSize` 가 없다.
 - `.containsKey()`
 - `.containsValue()`
 - `.entrySet()`
-- `.KeySet()`
+- `.KeySet()` for-each 구문 사용
 - `.merge()`
-- `.put()`
+- `.put()` add 기능으로 사용
 - `.putAll()`
 - `.putIfAbsent()`
 
