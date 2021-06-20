@@ -3,8 +3,6 @@ title: 문자열 강의
 category: algorithm
 ---
 
-# String
-
 ## 문자 카운트
 
 date: 06.03
@@ -250,4 +248,76 @@ public class Main {
 	}
 }
 ```
+
+## 중복문자제거
+
+date: 06.20
+
+```java
+import java.util.Scanner;
+
+public class Main {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		String str = sc.next();
+		String answer = "";
+
+		for (int index = 0; index < str.length(); index++) {
+			char c = str.charAt(index);
+            
+             // 처음나오는 문자만 answer 에 추가한다.
+			if (str.indexOf(c) == index) {
+				answer += c;
+			}
+		}
+
+		System.out.println(answer);
+	}
+}
+```
+
+입력 : ksekkset
+
+출력 : kset
+
+Q. 어떻게 중복되는 문자가 제거됐을까?
+
+A. `indexOf(char)` 에 답이 있다. indexOf 는 문자가 나오는 첫 번째 인덱스 값을 반환하기 때문에 변수 index 와 같아졌을때만 answer 에 문자를 더하기 때문에 그렇다.
+
+## 회문문자열 : palindrome
+
+```java
+import java.util.Scanner;
+
+public class Main {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		String str = sc.next();
+		int back = str.length() - 1;
+		String answer = "YES";
+		
+		// 대문자 변환
+		str = str.toUpperCase();
+		
+        // 하나라도 다르면 NO 를 반환합니다.
+		for (int front = 0; front < str.length() / 2; front++) {
+			if (str.charAt(front) != str.charAt(back)) {
+				answer = "NO";
+				break;
+			} 
+			back--;
+		}
+		
+		System.out.println(answer);
+	}
+}
+```
+
+### StringBuilder 사용
+
+`String reverse = new StringBuilder(str).reverse().toString()` 
+
+`builder` 
+
+- `.equalsIgnoreCase(String)` 
 

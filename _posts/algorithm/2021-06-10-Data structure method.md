@@ -58,10 +58,9 @@ public static void main(String[] args) throws IOException {
 `str`
 
 - `.toUpperCase()` 대문자 변환
-
 - `.toLowerCase()` 소문자 변환
-
 - `.toCharArray()` 문자열을 배열에 넣음 : for-each 구문을 위해
+- `.indexOf(String)` 가장 앞에있는 문자의 인덱스를 반환한다. : 중복제거에 활용가능
 
 `String`
 
@@ -204,7 +203,7 @@ public class Class {
 - `.removeAll()`
 - `.removeIf()`
 - `.replaceAll()`
-- `.sort()`
+  - `.sort(null)`  오름차순 정렬 ex) `arr.sort(null)` `Collections.sort(arr)`
 - `.spliterator()`
 - `.stream()`
 - `.subList()`

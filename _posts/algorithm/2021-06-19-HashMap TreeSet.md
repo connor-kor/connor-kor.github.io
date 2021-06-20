@@ -5,7 +5,7 @@ category: algorithm
 
 ## 학급 회장
 
-- HashMap 의 초기값 설정 및 카운팅 방법
+- 문자열의 HashMap 초기값 설정 및 카운팅
 
 ```java
 for (char key : str.toCharArray()) {
@@ -14,6 +14,16 @@ for (char key : str.toCharArray()) {
 }
     
 ```
+- 숫자의 HashMap 초기값 설정 및 카운팅
+
+```java
+for (int i = 0; i < n; i++) {
+	int key = sc.nextInt();
+	int value = map.getOrDefault(key, 0);
+	map.put(key, value + 1);
+}
+```
+
 
 ```java
 import java.util.HashMap;
@@ -178,13 +188,13 @@ public class Main {
 		HashMap<Character, Integer> map2 = new HashMap<Character, Integer>();
 		HashMap<Character, Integer> map1 = new HashMap<Character, Integer>();
 
-		// 두번 째 문자열 HashMap 에 담기
+		// 두 번째 문자열 HashMap 에 담기
 		for (char key : t.toCharArray()) {
 			int value = map2.getOrDefault(key, 0);
 			map2.put(key, value + 1);
 		}
 
-		// 첫번 째 문자열의 일부분 HashMap 에 담기
+		// 첫 번째 문자열의 일부분 HashMap 에 담기
 		for (int i = 0; i < t.length(); i++) {
 			int value = map1.getOrDefault(s.charAt(i), 0);
 			map1.put(s.charAt(i), value + 1);
@@ -195,7 +205,7 @@ public class Main {
 			count++;
 		}
 
-		// Sliding window algorithm 을 이용해 HashMap 에 한개씩 추가하고 제거하기
+		// Sliding window algorithm 을 이용해 HashMap 에 한 개씩 추가하고 제거하기
 		for (int i = 0; i < s.length() - t.length(); i++) {
 			int left = i;
 			int right = i + t.length();
@@ -268,6 +278,107 @@ public class Main {
 		}
 
 		System.out.println(count);
+	}
+}
+```
+
+## k번째 큰 수
+
+date: 06.20
+
+```java
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Scanner;
+
+public class Main {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int N = sc.nextInt();
+		int K = sc.nextInt();
+		int[] arr = new int[N];
+		HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+		ArrayList<Integer> arrList = new ArrayList<Integer>();
+		
+		for (int i = 0; i < arr.length; i++) {
+			arr[i] = sc.nextInt();
+		}
+		
+        // 세 수의 합을 HashMap 에 저장
+		for (int i = 0; i < arr.length; i++) {
+			for (int j = i + 1; j < arr.length; j++) {
+				for (int k = j + 1; k < arr.length; k++) {
+					int key = arr[i] + arr[j] + arr[k];
+					int value = map.getOrDefault(key, 0);
+					map.put(key, value + 1);
+				}
+			}
+		}
+		
+        // 정렬하기 위해 arrayList 에 저장
+		for (int key : map.keySet()) {
+			arrList.add(key);
+		}
+		
+        // 정렬 후 세 번째로 큰 수 출력
+		arrList.sort(null);
+		System.out.println(arrList.get(arrList.size() - 3));
+	}
+}
+```
+
+### TreeSet 
+
+중복도 제거하며 정렬도 된다.
+
+`TreeSet<Integer> tree = new TreeSet<Integer>(Collections.reverseOrder())` 기본은 오름차순, reverseOrder 시 내림차순
+
+`tree`
+
+- `add(value)`
+- `remove(value)` 
+- `first()`
+- `last()`
+
+### TreeSet 으로 풀기
+
+```java
+import java.util.Collections;
+import java.util.Scanner;
+import java.util.TreeSet;
+
+public class Main {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int N = sc.nextInt();
+		int K = sc.nextInt();
+		int[] arr = new int[N];
+		TreeSet<Integer> tree = new TreeSet<Integer>(Collections.reverseOrder());
+
+        // 숫자 입력받아 배열에 저장
+		for (int i = 0; i < arr.length; i++) {
+			arr[i] = sc.nextInt();
+		}
+
+        // 세 수의 합을 TreeSet 에 저장
+		for (int i = 0; i < arr.length; i++) {
+			for (int j = i + 1; j < arr.length; j++) {
+				for (int k = j + 1; k < arr.length; k++) {
+					int key = arr[i] + arr[j] + arr[k];
+					tree.add(key);
+				}
+			}
+		}
+
+        // 세 번째로 큰 수 출력
+		int num = 0;
+		for (Integer key : tree) {
+			num++;
+			if (num == 3) {
+				System.out.println(key);
+                  break;
+			}
+		}
 	}
 }
 ```
