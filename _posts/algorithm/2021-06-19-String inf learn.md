@@ -3,7 +3,7 @@ title: 문자열 강의
 category: algorithm
 ---
 
-## 문자 카운트
+## 1. 문자 찾기
 
 date: 06.03
 
@@ -56,7 +56,7 @@ public class Main {
 }
 ```
 
-## 대소문자 변환
+## 2. 대소문자 변환
 
 ```
 Character
@@ -113,9 +113,11 @@ String[] arr = str.split(" ");
 
 
 
-## 줄에서 가장 긴 단어 출력
+## 3. 문장 속 단어
 
 date: 06.08
+
+- 문장에서 가장 긴 단어를 출력합니다.
 
 ```java
 public class Main {
@@ -137,7 +139,7 @@ public class Main {
 }
 ```
 
-## 단어 뒤집기 : 내가 구현한 코드
+## 4. 단어 뒤집기 
 
 ```java
 import java.util.Scanner;
@@ -173,7 +175,7 @@ public class Main {
 }
 ```
 
-## 단어 뒤집기 : 인프런
+### 인프런
 
 `String tmp = new StringBuilder(x)` Stiring 의 객체이다.
 
@@ -188,7 +190,7 @@ public class Main {
 
 1. 단어를 Array 화 한 후 앞뒤를 변수선언, 앞뒤를 서로 바꾸기.
 
-## 문자열을 문자들의 배열로
+## 5. 문자열 배열변환
 
 date: 06.10
 
@@ -211,16 +213,13 @@ for (int i = 0; i < len; i++) {
 char[] arr = str.toCharArray();
 ```
 
-### 문자들의 배열을 문자열로
-
----
+### 문자배열 문자열변환
 
 ```java
 String str = String.valueOf(arr);
-System.out.println(str);
 ```
 
-## 알파벳만 단어 뒤집기
+## 6. 알파벳 단어 뒤집기
 
 ```java
 import java.util.Scanner;
@@ -249,7 +248,7 @@ public class Main {
 }
 ```
 
-## 중복문자제거
+## 7. 중복문자제거
 
 date: 06.20
 
@@ -284,7 +283,7 @@ Q. 어떻게 중복되는 문자가 제거됐을까?
 
 A. `indexOf(char)` 에 답이 있다. indexOf 는 문자가 나오는 첫 번째 인덱스 값을 반환하기 때문에 변수 index 와 같아졌을때만 answer 에 문자를 더하기 때문에 그렇다.
 
-## 회문문자열 : palindrome
+## 8. 회문문자열 : palindrome
 
 ```java
 import java.util.Scanner;
@@ -321,7 +320,7 @@ public class Main {
 
 - `.equalsIgnoreCase(String)` 
 
-## 유효한 팰린드롬
+## 9. 유효한 팰린드롬
 
 ```java
 import java.util.Scanner;
@@ -356,7 +355,7 @@ public class Main {
 }
 ```
 
-## 숫자만 추출
+## 10. 숫자만 추출
 
 - 직접 작성한 코드
 
@@ -441,7 +440,7 @@ public class Main {
 }
 ```
 
-## 가장 짧은 문자거리
+## 11. 가장 짧은 문자거리
 
 `Math`
 
@@ -588,7 +587,7 @@ public class Main {
 }
 ```
 
-## 문자열 압축
+## 12. 문자열 압축
 
 ```java
 import java.util.Scanner;
@@ -662,4 +661,6 @@ public class Main {
 	}
 }
 ```
+
+## 13. 암호
 
