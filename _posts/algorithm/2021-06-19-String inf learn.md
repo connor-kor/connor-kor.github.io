@@ -56,7 +56,7 @@ public class Main {
 }
 ```
 
-### 대소문자 변환
+## 대소문자 변환
 
 ```
 Character
@@ -137,7 +137,7 @@ public class Main {
 }
 ```
 
-### 단어 뒤집기 : 내가 구현한 코드
+## 단어 뒤집기 : 내가 구현한 코드
 
 ```java
 import java.util.Scanner;
@@ -173,7 +173,7 @@ public class Main {
 }
 ```
 
-### 단어 뒤집기 : 인프런
+## 단어 뒤집기 : 인프런
 
 `String tmp = new StringBuilder(x)` Stiring 의 객체이다.
 
@@ -220,7 +220,7 @@ String str = String.valueOf(arr);
 System.out.println(str);
 ```
 
-### 알파벳만 단어 뒤집기
+## 알파벳만 단어 뒤집기
 
 ```java
 import java.util.Scanner;
@@ -320,4 +320,352 @@ public class Main {
 `builder` 
 
 - `.equalsIgnoreCase(String)` 
+
+## 유효한 팰린드롬
+
+```java
+import java.util.Scanner;
+
+public class Main {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		String input = sc.nextLine();
+		String str = "";
+		String answer = "YES";
+
+        // 알파벳만 반환
+		for (char c : input.toCharArray()) {
+			if (Character.isAlphabetic(c)) {
+				str += c;
+			}
+		}
+
+        // 대문자 변환
+		str = str.toUpperCase();
+
+		for (int front = 0; front < str.length() / 2; front++) {
+			int back = str.length() - 1 - front;
+			if (str.charAt(front) != str.charAt(back)) {
+				answer = "NO";
+				break;
+			}
+		}
+
+		System.out.println(answer);
+	}
+}
+```
+
+## 숫자만 추출
+
+- 직접 작성한 코드
+
+```java
+import java.util.Scanner;
+
+public class Main {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		String input = sc.next();
+		String str = "";
+
+		for (char c : input.toCharArray()) {
+			if (Character.isDigit(c)) {
+				str += c;
+			}
+		}
+
+		// 첫 번째 수가 0이면 제거
+		while (str.charAt(0) == '0') {
+			str = str.substring(1);
+		}
+
+		System.out.println(str);
+	}
+}
+```
+
+- 인프런 강의
+
+숫자 0~9 는 아스키코드로 48~57
+
+조건이 48~57 일 때
+
+answer = answer * 10 + (x - 48)
+
+- 이상적인 코드
+
+```java
+import java.util.Scanner;
+
+public class Main {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		String input = sc.next();
+		String str = "";
+		int number;
+		
+		for (char c : input.toCharArray()) {
+			if (Character.isDigit(c)) {
+				str += c;
+			}
+		}
+
+        // 앞에 0 을 없애줍니다.
+		number = Integer.parseInt(str);
+
+		System.out.println(number);
+	}
+}
+```
+
+- 아스키코드 활용
+
+```java
+import java.util.Scanner;
+
+public class Main {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		String input = sc.next();
+		int number = 0;
+
+		for (char c : input.toCharArray()) {
+			if (c >= 48 & c <= 57) {
+				number = (number*10) + (c-48);
+			}
+		}
+
+		System.out.println(number);
+	}
+}
+```
+
+## 가장 짧은 문자거리
+
+`Math`
+
+- `.min()` 
+
+```java
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Main {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		String s = sc.next();
+		char t = sc.next().charAt(0);
+		ArrayList<Integer> arr = new ArrayList<Integer>();
+		int order = 0;
+		int distance = 0;
+		int first;
+		int second;
+
+		// t 의 인덱스 값을 arr 에 저장
+		for (int i = 0; i < s.length(); i++) {
+			if (s.charAt(i) == t) {
+				arr.add(i); // 1, 5, 10
+			}
+		}
+
+		// 첫 번째 인덱스까지
+		for (int i = 0; i < arr.get(0) + 1; i++) {
+			distance = arr.get(order) - i;
+			System.out.print(distance + " ");
+		}
+
+		// 두 인덱스 사이
+		while (arr.size() - 1 > order) {
+			first = arr.get(order);
+			second = arr.get(order + 1);
+
+			for (int i = 0; i < (second - first) / 2; i++) {
+				distance++;
+				System.out.print(distance + " ");
+
+			}
+
+			for (int i = 0; i < (second - first) / 2; i++) {
+				distance = second - i;
+				System.out.print(distance + " ");
+			}
+
+			System.out.println("\nfirst: " + first + ", second: " + second);
+			order++;
+		}
+
+	}
+}
+```
+
+### 문자열이 무한대
+
+```java
+import java.util.Scanner;
+
+public class Main {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		String s = sc.next();
+		char t = sc.next().charAt(0);
+		int len = s.length();
+		int[] disArr = new int[len];
+		int distance = -1;
+
+		for (int i = 0; i < len; i++) {
+			if (s.charAt(i) == t) {
+				distance = 0;
+				disArr[i] = distance;
+			} else if (distance != -1) {
+				distance++;
+				disArr[i] = distance;
+
+				// 정의되지 않은 곳에 -1 저장
+			} else {
+				disArr[i] = distance;
+			}
+		}
+
+		for (int i = len - 1; i >= 0; i--) {
+			if (s.charAt(i) == t) {
+				distance = 0;
+			} else {
+				distance++;
+			}
+			if (disArr[i] == -1) {
+				disArr[i] = distance;
+			}
+			if (disArr[i] > distance) {
+				disArr[i] = distance;
+			}
+		}
+
+		for (int i : disArr) {
+			System.out.print(i + " ");
+		}
+	}
+}
+```
+
+### 문자열의 길이가 100 미만
+
+```java
+import java.util.Scanner;
+
+public class Main {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		String s = sc.next();
+		char t = sc.next().charAt(0);
+		int len = s.length();
+		int[] disArr = new int[len];
+		int distance = 1000;
+
+		for (int i = 0; i < len; i++) {
+			if (s.charAt(i) == t) {
+				distance = 0;
+				disArr[i] = distance;
+			} else {
+				distance++;
+				disArr[i] = distance;
+			}
+		}
+
+		for (int i = len - 1; i >= 0; i--) {
+			if (s.charAt(i) == t) {
+				distance = 0;
+			} else if (disArr[i] > distance) {
+				distance++;
+				disArr[i] = distance;
+			}
+		}
+
+		for (int i : disArr) {
+			System.out.print(i + " ");
+		}
+	}
+}
+```
+
+## 문자열 압축
+
+```java
+import java.util.Scanner;
+
+public class Main {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		String str = sc.next();
+		int count = 1;
+
+		for (int i = 0; i < str.length(); i++) {
+			if (i < str.length() - 1) {
+				boolean compress = (str.charAt(i) == str.charAt(i + 1));
+
+				if (!compress) {
+					System.out.print(str.charAt(i));
+					if (count != 1) {
+						System.out.print(count);
+					}
+
+					// 출력 후 count 초기화
+					count = 1;
+				} else {
+					count++;
+				}
+                
+			  // 마지막 문자 비교 : 빈 문자를 추가하면 필요없는 코드이다.
+			} else {
+				System.out.print(str.charAt(i));
+				if (count != 1) {
+					System.out.print(count);
+				}
+			}
+		}
+	}
+}
+```
+
+### 이상적인 코드
+
+- 마지막문자를 비교할 필요없이 간단히 빈 문자 " " 를 추가합니다.
+
+```java
+import java.util.Scanner;
+
+public class Main {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		String str = sc.next();
+		str += " ";
+		int count = 1;
+
+		for (int i = 0; i < str.length(); i++) {
+			if (i < str.length() - 1) {
+				boolean compress = (str.charAt(i) == str.charAt(i + 1));
+
+				if (!compress) {
+					System.out.print(str.charAt(i));
+					if (count != 1) {
+						System.out.print(count);
+					}
+
+					// 출력 후 count 초기화
+					count = 1;
+				} else {
+					count++;
+				}
+			} 
+		}
+		
+	}
+}
+```
+
+
+
+
+
+
 

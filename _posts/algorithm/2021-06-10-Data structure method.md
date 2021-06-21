@@ -55,12 +55,16 @@ public static void main(String[] args) throws IOException {
 
 ---
 
-`str`
+`str` 
 
 - `.toUpperCase()` 대문자 변환
 - `.toLowerCase()` 소문자 변환
 - `.toCharArray()` 문자열을 배열에 넣음 : for-each 구문을 위해
 - `.indexOf(String)` 가장 앞에있는 문자의 인덱스를 반환한다. : 중복제거에 활용가능
+- `.substring(index)` `.substring(startIndex, endIndex)` 슬라이스
+- `.replace()` 
+
+> 메서드는 일시적이므로 꼭 대입할 것!! ex) `str = str.substring(1)` 
 
 `String`
 
@@ -79,6 +83,7 @@ String.valueOf(charArray)  // 문자열 출력
 - `.toUpperCase(char)` 대문자 변환
 - `.isLowerCase(char)` 소문자이면 true 반환
 - `.isAlphabetic(char)` 알파벳이면 true
+- `.isDigit(char)` 숫자면 true
 
 # 숫자
 
