@@ -61,8 +61,12 @@ public static void main(String[] args) throws IOException {
 - `.toLowerCase()` 소문자 변환
 - `.toCharArray()` 문자열을 배열에 넣음 : for-each 구문을 위해
 - `.indexOf(String)` 가장 앞에있는 문자의 인덱스를 반환한다. : 중복제거에 활용가능
-- `.substring(index)` `.substring(startIndex, endIndex)` 슬라이스
+- `.substring(index)` `.substring(startIndex, endIndex)` startIndex 부터 갯수 (endIndex - startIndex) 만큼 슬라이스
+
+> endIndex 는 포함하지 않는다.
+
 - `.replace()` 
+- `.equals()` 문자열끼리 비교에 사용
 
 > 메서드는 일시적이므로 꼭 대입할 것!! ex) `str = str.substring(1)` 
 
