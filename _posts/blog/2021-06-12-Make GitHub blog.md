@@ -280,3 +280,35 @@ minimal-mistakes 테마기준으로 목차는 이미 구현되있습니다.
 ![image-20210612222936797](../../assets/images/image-20210612222936797.png)
 
 오른쪽에 목차가 성공적으로 표시됩니다. :)
+
+# 폴더구조
+
+_data/navigation.yml : 상단버튼 추가/제거
+
+_pages 폴더 : 페이지 저장위치 ex) 카테고리 페이지, 태그 페이지
+
+_posts 폴더 : 글 저장위치
+
+_sass/minimal-mistakes/_reset.scss : 폰트수정
+
+_sass/minimal-mistakes/_variables.scss : 사이드바 너비조정
+
+_site 폴더 : 자동으로 내부에 파일이 생성됩니다.
+
+assets/images 폴더 : 이미지 저장위치
+
+docs 폴더 : 예시폴더
+
+test 폴더 : 테스트폴더
+
+_config.yml : 기본설정파일
+
+feed.xml : 최근 글 검색에 쓰이는 피드파일
+
+minimal-mistakes-jekyll.gemspec : 서버실행파일
+
+README.md : GitHub 에 레포지토리 설명 글
+
+robots.txt : 검색도우미
+
+sitemap.xml : 검색에 필수적인 사이트맵
