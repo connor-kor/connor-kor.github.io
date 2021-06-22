@@ -289,9 +289,11 @@ _pages 폴더 : 페이지 저장위치 ex) 카테고리 페이지, 태그 페이
 
 _posts 폴더 : 글 저장위치
 
-_sass/minimal-mistakes/_reset.scss : 폰트수정
+_sass/minimal-mistakes/\_reset.scss : 폰트수정
 
-_sass/minimal-mistakes/_variables.scss : 사이드바 너비조정
+_sass/minimal-mistakes/\_variables.scss : 사이드바 너비조정
+
+_sass/minimal-mistakes/\_base.scss : 링크 밑줄제거
 
 _site 폴더 : 자동으로 내부에 파일이 생성됩니다.
 
