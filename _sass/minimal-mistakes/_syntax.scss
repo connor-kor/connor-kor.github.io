@@ -64,8 +64,8 @@ figure.highlight {
 }
 .highlight {
   .c {
-    /* Comment */
-    color: $base04;
+    /* 주석: Comment */
+    color: $base00;
   }
   .err {
     /* Error */
@@ -80,8 +80,8 @@ figure.highlight {
     color: $base09;
   }
   .n {
-    /* Name */
-    color: $base05;
+    /* 인스턴스 이름: Name */
+    color: $base09;
   }
   .o {
     /* Operator */
@@ -92,20 +92,20 @@ figure.highlight {
     color: $base05;
   }
   .cm {
-    /* Comment.Multiline */
-    color: $base04;
+    /* 주석: Comment.Multiline */
+    color: $base00;
   }
   .cp {
-    /* Comment.Preproc */
-    color: $base04;
+    /* 주석: Comment.Preproc */
+    color: $base00;
   }
   .c1 {
-    /* Comment.Single */
-    color: $base04;
+    /* 주석: Comment.Single */
+    color: $base00;
   }
   .cs {
-    /* Comment.Special */
-    color: $base04;
+    /* 주석: Comment.Special */
+    color: $base00;
   }
   .gd {
     /* Generic.Deleted */
