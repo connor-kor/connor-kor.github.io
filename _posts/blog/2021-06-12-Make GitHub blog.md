@@ -282,6 +282,21 @@ minimal-mistakes 테마기준으로 목차는 이미 구현되있습니다.
 
 오른쪽에 목차가 성공적으로 표시됩니다. :)
 
+## 코드블럭번호: line numbers 
+
+라인넘버를 추가하는 방법
+
+```yaml
+kramdown:
+  syntax_highlighter_opts:
+    block:
+      line_numbers: true
+```
+
+_config.yml 파일 가장 하단부분 (defaults: 아래) 에 다음의 코드를 추가합니다.
+
+> `block:` 을 추가하지 않으면 코드블럭 뿐만 아니라 /` /` 로 감싼 코드에도 번호가 붙어 문제가 생깁니다.
+
 # 꾸미기
 
 ## 코드문법강조: Syntax highlight

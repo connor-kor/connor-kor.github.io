@@ -318,4 +318,5 @@ defaults:
       # nav: "main"
 kramdown:
   syntax_highlighter_opts:
-    line_numbers: true
+    block:
+      line_numbers: true
