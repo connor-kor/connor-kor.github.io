@@ -1,9 +1,9 @@
 ---
-title: "환경설정"
+title: "git&GitHub"
 layout: archive
-permalink: /categories/etc
+permalink: /categories/git
 author_profile: true
 ---
 
-{% assign posts = site.categories.etc %}
+{% assign posts = site.categories.git %}
 {% for post in posts %} {% include archive-single.html type=page.entries_layout %} {% endfor %}

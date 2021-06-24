@@ -1,6 +1,6 @@
 ---
 title: 컴퓨팅사고
-category: CS50
+category: cs50
 ---
 
 **CS50이란?**
