@@ -282,6 +282,46 @@ minimal-mistakes 테마기준으로 목차는 이미 구현되있습니다.
 
 오른쪽에 목차가 성공적으로 표시됩니다. :)
 
+# 꾸미기
+
+## 코드문법강조: Syntax highlight
+
+_sass/minimal-mistakes/\_syntax.scss 를 실행합니다.
+
+색은 16진수로 16가지 색이 있습니다.
+
+$base00 ~ $base0f
+
+| No.   | Color         |
+| ----- | ------------- |
+| 00~03 | 흰색~연한회색 |
+| 04    | 검정          |
+| 05~07 | 진한회색~회색 |
+| 08    | 분홍          |
+| 09    | 주황          |
+| 0a    | 노랑          |
+| 0b    | 연두          |
+| 0c    | 하늘          |
+| 0d    | 파랑          |
+| 0e    | 보라          |
+| 0f    | 주황          |
+
+**코드블럭 배경색** 
+
+![image-20210624144314537](../../assets/images/image-20210624144314537.png)
+
+기본색 (bash: git 명령어 등) : 배경색 `background` 바로 아래줄에 있습니다.
+
+라인넘버 (Line number) : `line numbers` 의 color (숫자) 와 border-right (구분선) 의 색을 바꿔줍니다.
+
+주석 : `comment` 라고 검색하고 다섯 개를 바꿔줍니다. ex) comment.multiline, preproc, single, special 등
+
+인스턴스 & 변수 이름 : `name` 을 검색해 찾아 바꿉니다.
+
+괄호 : `operator` 를 검색해 찾아 바꿉니다.
+
+터미널 명령어 (bash: cd, ls 등) : `name.builtin` 를 검색해 찾아 바꿉니다.
+
 # 폴더구조
 
 _data/navigation.yml : 상단버튼 추가/제거

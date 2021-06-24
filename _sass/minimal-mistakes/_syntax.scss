@@ -40,8 +40,8 @@ figure.highlight {
     &.rouge-gutter {
       padding-right: 1em;
       width: 1em;
-      color: $base04;
-      border-right: 1px solid $base04;
+      color: $base03;
+      border-right: 1px solid $base03;
       text-align: right;
     }
 
@@ -82,7 +82,7 @@ figure.highlight {
     color: $base09;
   }
   .n {
-    /* 인스턴스 이름: Name */
+    /* 인스턴스 & 변수 이름: Name */
     color: $base09;
   }
   .o {
