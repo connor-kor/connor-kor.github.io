@@ -7,10 +7,12 @@ figure.highlight {
   position: relative;
   margin-bottom: 1em;
 
-  /* 0: 흰색, 3: 진한흰색, 4: 검정,  5: 회색, 7: 연한회색, 8: 분홍, 9: 주황*/
+  /* 0: 흰색, 3: 진한흰색, 4: 검정,  5: 회색, 7: 연한회색, 8: 분홍, 9: 주황, a: 노랑, b: 연두, c: 하늘, d: 파랑, e: 보라, f: 주황 */
   /* 네온기준 background: 0, (가독성x: 4(주석), 5, 6) color: 5 */
   background: $base07;
-  color: $base04;
+
+  /* 기본글자 색 */
+  color: $base00;
   font-family: $monospace;
   font-size: $type-size-6;
   line-height: 1.8;
@@ -65,7 +67,7 @@ figure.highlight {
 .highlight {
   .c {
     /* 주석: Comment */
-    color: $base00;
+    color: $base03;
   }
   .err {
     /* Error */
@@ -84,8 +86,8 @@ figure.highlight {
     color: $base09;
   }
   .o {
-    /* Operator */
-    color: $base0c;
+    /* 괄호: Operator */
+    color: $base00;
   }
   .p {
     /* Punctuation */
@@ -93,19 +95,19 @@ figure.highlight {
   }
   .cm {
     /* 주석: Comment.Multiline */
-    color: $base00;
+    color: $base03;
   }
   .cp {
     /* 주석: Comment.Preproc */
-    color: $base00;
+    color: $base03;
   }
   .c1 {
     /* 주석: Comment.Single */
-    color: $base00;
+    color: $base03;
   }
   .cs {
     /* 주석: Comment.Special */
-    color: $base00;
+    color: $base03;
   }
   .gd {
     /* Generic.Deleted */
@@ -179,8 +181,8 @@ figure.highlight {
     color: $base0d;
   }
   .nb {
-    /* Name.Builtin */
-    color: $base05;
+    /* terminal 명령어: Name.Builtin */
+    color: $base00;
   }
   .nc {
     /* Name.Class */
