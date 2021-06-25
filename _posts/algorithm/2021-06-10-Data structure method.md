@@ -1,5 +1,5 @@
 ---
-title: 함수 정리
+title: 기타 알고리즘함수
 categories: algorithm
 ---
 
@@ -51,44 +51,6 @@ public static void main(String[] args) throws IOException {
 
 `str.split(' ')`
 
-# String
-
----
-
-`str` 
-
-- `.toUpperCase()` 대문자 변환
-- `.toLowerCase()` 소문자 변환
-- `.toCharArray()` 문자열을 배열에 넣음 : for-each 구문을 위해
-- `.indexOf(String)` 가장 앞에있는 문자의 인덱스를 반환한다. : 중복제거에 활용가능
-- `.substring(index)` `.substring(startIndex, endIndex)` startIndex 부터 갯수 (endIndex - startIndex) 만큼 슬라이스
-
-> endIndex 는 포함하지 않는다.
-
-- `.replace()` 
-- `.equals()` 문자열끼리 비교에 사용
-
-> 메서드는 일시적이므로 꼭 대입할 것!! ex) `str = str.substring(1)` 
-
-`String`
-
-- `.valueOf(Object)`
-
-```java
-String.valueOf(charArray)  // 문자열 출력
-```
-
-# Character
-
----
-
-`Character`
-
-- `.toUpperCase(char)` 대문자 변환
-- `.isLowerCase(char)` 소문자이면 true 반환
-- `.isAlphabetic(char)` 알파벳이면 true
-- `.isDigit(char)` 숫자면 true
-
 # 숫자
 
 ---
@@ -104,12 +66,6 @@ int n = 123456789;
 System.out.println(n / 1000000);  // 123
 System.out.println(n % 1000);	 // 789
 ```
-
-## Integer
-
-`Integer`
-
-- `parseInt(String)` 정수형으로 변환
 
 # if
 

@@ -1,5 +1,5 @@
 ---
-title: 문자열 알고리즘 강의
+title: 1. 문자열 알고리즘 강의
 category: algorithm
 ---
 
@@ -663,4 +663,12 @@ public class Main {
 ```
 
 ## 13. 암호
+
+`str`
+
+- `.replace(oldChar, newChar)` 
+
+`Integer`
+
+- `.parseInt(String, int)` int 가 2이면 2진수를 10진수로
 
