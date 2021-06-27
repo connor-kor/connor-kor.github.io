@@ -54,7 +54,7 @@
                 {% endfor %}
             </ul>
 
-        <!-- 카테고리 3 -->
+        <!-- 3. 강의 -->
         <span class="nav__sub-title"> Lecture </span>
             <ul>
                 {% for category in site.categories %}
@@ -85,6 +85,14 @@
                     {% if category[0] == "cs50" %}
                         <!-- 사이드바 출력 -->
                         <li><a href="/categories/cs50" class=""> CS50 ({{category[1].size}})</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            <ul>
+                {% for category in site.categories %}
+                    {% if category[0] == "javascript" %}
+                        <!-- 사이드바 출력 -->
+                        <li><a href="/categories/javascript" class=""> 자바스크립트 ({{category[1].size}})</a></li>
                     {% endif %}
                 {% endfor %}
             </ul>
