@@ -13,11 +13,10 @@
       <li>
         <!--span 태그로 카테고리들을 크게 분류 ex) C/C++/C#-->
 
-        <!-- 카테고리 1 -->
+        <!-- 1. 풀스택 -->
         <span class="nav__sub-title"> Full stack </span>
             <!--ul 태그로 같은 카테고리들 모아둔 페이지들 나열-->
             <ul>
-                <!--Cpp 카테고리 글들을 모아둔 페이지인 /categories/cpp 주소의 글로 링크 연결-->
                 <!--category[1].size 로 해당 카테고리를 가진 글의 개수 표시--> 
                 {% for category in site.categories %}
                     {% if category[0] == "fullstack-style" %}
@@ -35,7 +34,7 @@
                 {% endfor %}
             </ul>
 
-        <!-- 카테고리 2 -->
+        <!-- 2. IOS -->
         <span class="nav__sub-title"> IOS </span>
             <ul>
                 {% for category in site.categories %}
@@ -60,7 +59,7 @@
                 {% for category in site.categories %}
                     {% if category[0] == "fullstack-lecture" %}
                         <!-- 사이드바 출력 -->
-                        <li><a href="/categories/fullstack-lecture" class=""> Full-stack 강의 ({{category[1].size}})</a></li>
+                        <li><a href="/categories/fullstack-lecture" class=""> 풀스택 ({{category[1].size}})</a></li>
                     {% endif %}
                 {% endfor %}
             </ul>
@@ -97,7 +96,7 @@
                 {% endfor %}
             </ul>
 
-        <!-- 카테고리 4 -->
+        <!-- 4. 기타 -->
         <span class="nav__sub-title"> etc </span>
             <ul>
                 {% for category in site.categories %}
@@ -131,7 +130,7 @@
                     <!-- 카테고리 명 -->
                     {% if category[0] == "git" %}
                         <!-- 사이드바 출력 -->
-                        <li><a href="/categories/git" class=""> git&GitHub ({{category[1].size}})</a></li>
+                        <li><a href="/categories/git" class=""> 깃&깃허브 ({{category[1].size}})</a></li>
                     {% endif %}
                 {% endfor %}
             </ul>

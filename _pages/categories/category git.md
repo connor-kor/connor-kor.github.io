@@ -1,5 +1,5 @@
 ---
-title: "git&GitHub"
+title: "깃&깃허브"
 layout: archive
 permalink: /categories/git
 author_profile: true

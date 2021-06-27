@@ -1,5 +1,5 @@
 ---
-title: "Full-stack 스타일가이드"
+title: "풀스택 스타일가이드"
 layout: archive
 permalink: /categories/fullstack-style
 author_profile: true

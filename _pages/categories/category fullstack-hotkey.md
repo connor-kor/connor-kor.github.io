@@ -1,5 +1,5 @@
 ---
-title: "Full-stack 단축키"
+title: "풀스택 단축키"
 layout: archive
 permalink: /categories/fullstack-hotkey
 author_profile: true

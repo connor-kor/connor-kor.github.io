@@ -1,5 +1,5 @@
 ---
-title: "Full-stack 강의"
+title: "풀스택 강의"
 layout: archive
 permalink: /categories/fullstack-lecture
 author_profile: true
