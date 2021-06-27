@@ -90,8 +90,8 @@ figure.highlight {
     color: $base00;
   }
   .p {
-    /* Punctuation */
-    color: $base05;
+    /* HTML 괄호, 콜론: Punctuation */
+    color: $base00;
   }
   .cm {
     /* 주석: Comment.Multiline */
@@ -209,8 +209,8 @@ figure.highlight {
     color: $base0d;
   }
   .nl {
-    /* Name.Label */
-    color: $base05;
+    /* CSS 스타일속성: Name.Label */
+    color: $base00;
   }
   .nn {
     /* Name.Namespace */
