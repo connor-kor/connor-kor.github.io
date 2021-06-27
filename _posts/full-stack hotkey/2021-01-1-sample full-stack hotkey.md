@@ -5,10 +5,10 @@ categories: fullstack-hotkey
 
 제가 쓰는 단축키 위주로 정리했습니다.
 
-도움이 되었거나 추천하는 개인 단축키가 있다면 댓글을 달아주세요!! :smile: 
+도움이 되었거나 추천하는 개인 단축키가 있다면 댓글을 달아주세요!!
 
 
-| :key:Hotkey                  | Java: eclipse                          | JavaScript: VScode |
+| Hotkey                       | Java: eclipse                          | JavaScript: VScode |
 | ---------------------------- | -------------------------------------- | ------------------ |
 | 아랫줄 생성                  | shift + enter                          |                    |
 | 윗줄 생성                    | ctrl + shift + enter                   |                    |
@@ -36,7 +36,7 @@ categories: fullstack-hotkey
 
 **개인지정 단축키** 
 
-| :key:Hotkey         | Java: eclipse | JavaScript: VScode |
+| Hotkey              | Java: eclipse | JavaScript: VScode |
 | ------------------- | ------------- | ------------------ |
 | 새 클래스 생성      | alt + C       |                    |
 | 콘솔창으로 커서이동 | F10           |                    |
