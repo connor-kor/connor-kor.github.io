@@ -12,18 +12,18 @@ categories: fullstack-hotkey
 
 | Hotkey                       | Java: eclipse                          | JavaScript: VScode           |
 | ---------------------------- | -------------------------------------- | ---------------------------- |
-| 아랫줄 생성                  | shift + enter                          | **ctrl + enter**             |
+| 아랫줄 생성                  | shift + enter                          | ctrl + enter (*)             |
 | 윗줄 생성                    | ctrl + shift + enter                   | ctrl + shift + enter         |
 | 줄 이동                      | alt + ↑↓                               | alt + ↑↓                     |
-| 줄 복사                      | ctrl + alt + ↑↓                        | **shift + alt + ↑↓**         |
-| 줄 삭제                      | ctrl + D                               | ctrl + shift + K             |
+| 줄 복사                      | ctrl + alt + ↑↓                        | shift + alt + ↑↓ (*)         |
+| 줄 삭제                      | ctrl + D                               | ctrl + shift + K (*)         |
 | 한 줄 정렬                   | ctrl + I                               |                              |
-| 모든 줄 정렬 (format)        | ctrl + shift + F                       | **alt + shift + F**          |
+| 모든 줄 정렬 (format)        | ctrl + shift + F                       | alt + shift + F (*)          |
 | 같은글자 수정                | alt + shift + R                        | **ctrl + F2**                |
 | 자동완성                     | ctrl + space                           |                              |
 | 창 닫기                      | ctrl + W                               | ctrl + W                     |
-| 모든 창 닫기                 | ctrl + shift + W                       | **ctrl + K, W**              |
-| 실행                         |                                        | ctrl + F5                    |
+| 모든 창 닫기                 | ctrl + shift + W                       | ctrl + K, W (*)              |
+| 실행                         | ctrl + F11                             | **ctrl + F5**                |
 | 에디터창으로 커서이동        | F12                                    |                              |
 | 해당 객체 혹은 메서드로 이동 | ctrl + 객체, 메서드                    |                              |
 | 오류처리                     | F2                                     |                              |
@@ -45,12 +45,16 @@ categories: fullstack-hotkey
 
 **개인지정 단축키** 
 
-| Hotkey              | Java: eclipse | JavaScript: VScode |
-| ------------------- | ------------- | ------------------ |
-| 새 클래스 생성      | alt + C       |                    |
-| 콘솔창으로 커서이동 | F10           |                    |
-| 실행                | F11           |                    |
-| 줄 삭제             |               | ctrl + D           |
+| Hotkey                | Java: eclipse | JavaScript: VScode |
+| --------------------- | ------------- | ------------------ |
+| 새 클래스 생성        | alt + C       |                    |
+| 콘솔창으로 커서이동   | F10           |                    |
+| 실행                  | F11           |                    |
+| 줄 삭제               |               | 동기화             |
+| 아랫줄 생성           |               | 동기화             |
+| 줄 복사               |               | 동기화             |
+| 모든 줄 정렬 (format) |               | 동기화             |
+| 모든 창 닫기          |               | 동기화             |
 
 **자동완성** 
 
