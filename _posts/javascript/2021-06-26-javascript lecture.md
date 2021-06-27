@@ -47,7 +47,14 @@ script 태그에 사이에 자바스크립트 코드를 넣는다.
 
 `var` variable
 
-## CSS 기초
+---
+
+**참고**
+
+<https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String>
+
+
+## CSS 기초와 선택자
 
 css 의 속성: property
 
@@ -60,25 +67,57 @@ css 의 속성: property
 `<span` 의미없는 태그: 자동 줄바꿈이 없다.
 
 - `style="font-weight:bold;"` 
-- `class="js"`
+- `class="js"` . 으로 호출: 여러대상을 그루핑합니다.
+  `.js` 를 클래스선택자 (class selector) 라고합니다.
+- `id="first"`  # 으로 호출: 한가지 대상을 식별합니다. id 를 우선시합니다.
+  `#first` 를 id 선택자 (id selector) 라고 합니다.
 
 **클래스명이 js 인  태그들의 스타일 변경**
 
 ```html
 <style>
-.js{
+    .js{
 	font-weight: bold;
 	color: red;
-}
+    }
+    #first{
+        color: green;
+    }
+    span{
+        color: blue;
+    }
 </style>
 ```
 
+> 우선순위: id > class > span
 
+`query` 질의하다.
 
+```html
+<input type="button" value="night" onclick="
+    document.querySelector(selectors)
+">
+```
 
+`document.querySelector(selectors);` 
+
+**버튼클릭으로 배경바꾸기**
+
+```html
+<input type="button" value="검정배경" onclick="
+    document.body.style.backgroundColor='black';
+">
+```
+
+`document.querySelector('body').style.backgroundColor='black';` 같은 구문이다.
+
+> 이벤트에서 `document` 를 사용해 자바스크립트를 작성할 수 있다.
+>
+> 스타일에서 css 선택자를 사용한다.
 
 ---
 
-참고
+**참고**
 
-<https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String>
+<https://developer.mozilla.org/ko/docs/Web/API/Document/querySelector>
+
