@@ -121,3 +121,113 @@ css 의 속성: property
 
 <https://developer.mozilla.org/ko/docs/Web/API/Document/querySelector>
 
+# 제어문
+
+date: 06.28
+
+---
+
+JavaScript 는 컴퓨터언어이며 프로그래밍 언어이다.
+
+HTML 은 컴퓨터언어이지만 프로그래밍 언어가 아니다.
+
+program: 순서를 만드는 것
+
+programer: 순서를 만드는 사람
+
+## 조건문
+
+conditional statements
+
+**JavaScript**
+
+`===` 비교연산자 (Comparison operator)
+
+- java: `==` 
+
+`<br>` 줄바꿈
+
+- Java: `\n` 
+
+> Java 와 동일한 것들: 부등호, if문
+
+```html
+<script>
+document.write(1===1);
+</script>
+```
+
+**HTML**
+
+`&lt;` < : 왼쪽으로 꺽쇠
+
+`&gt;` > : 오른쪽으로 꺽쇠
+
+> Java 와 동일한 것들: if문
+
+> QuerySelector 에는 작은 따옴표 ( ' ' )
+> 모든 곳에 큰 따옴표가 아닌 작은 따옴표를 사용할 것!!
+> Java 는 문자에 작은따옴표 문자열에 큰따옴표를 사용하는 것과 다르다.
+
+**토글연습 예제**
+
+```html
+<body>
+  <h1>토글연습</h1>
+  <input id="toggle" type="button" value="Black theme" onclick="
+  if(document.querySelector('#toggle').value === 'Black theme'){
+    body.style.backgroundColor = 'black';
+    // document.querySelector('body').style.backgroundColor = 'black'; 같은코드입니다.
+    body.style.color = 'white';
+    document.querySelector('#toggle').value = 'White theme';
+  }else{
+    body.style.backgroundColor = 'white';
+    body.style.color = 'black';
+    document.querySelector('#toggle').value = 'Black theme';
+  }
+  ">
+  <br>
+  <br>
+  hello world!!
+</body>
+```
+
+# 코드사전
+
+**HTML**
+
+| <input    | properties                    |
+| --------- | ----------------------------- |
+| type      | button, text                  |
+| value     | 글                            |
+| onclick   | 자바스크립트 코드             |
+| onchange  | 값 변경 이벤트                |
+| onkeydown | 버튼입력 (혹은 지우기) 이벤트 |
+
+`<div>`
+
+`<span>` 
+
+**CSS**
+
+| style       | properties |
+| ----------- | ---------- |
+| color       |            |
+| class       |            |
+| id          |            |
+| font-weight |            |
+
+**JavaScript**
+
+| document                          | properties                                              |
+| --------------------------------- | ------------------------------------------------------- |
+| write                             | 글                                                      |
+| body.style.backgroundColor        | 스타일변경                                              |
+| querySelector(selectors)          | ex) '#night_day': id 가 night_day 인 쿼리를 반환합니다. |
+| querySelector(selectors).value    | value 값 반환                                           |
+| querySelector('body').style.color |                                                         |
+
+| event     | properties  |
+| --------- | ----------- |
+| alert('') | 경고창 출력 |
+

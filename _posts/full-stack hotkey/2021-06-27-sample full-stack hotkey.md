@@ -26,6 +26,7 @@ categories: fullstack-hotkey
 | **텍스트블록**               | ctrl + shift + '                       |                              |
 | **대문자 변환**              | ctrl + shift + X                       |                              |
 | **소문자 변환**              | ctrl + shift + Y                       |                              |
+| **화면나누기**               | ctrl + shift + [ 혹은 _                | ctrl + alt + ←→              |
 | 아랫줄 생성                  | shift + enter                          | ctrl + enter (*)             |
 | 윗줄 생성                    | ctrl + shift + enter                   | ctrl + shift + enter         |
 | 줄의 가장 앞으로 커서이동    | home                                   |                              |
@@ -37,7 +38,6 @@ categories: fullstack-hotkey
 | 오류처리                     | F2                                     |                              |
 | 에디터창으로 커서이동        | F12                                    |                              |
 | 커서에 주석추가              |                                        | alt + shift + A              |
-| 화면나누기                   | ctrl + shift + [ 혹은 _                | ctrl + alt + ←→              |
 | 화면 한칸이동                | ctrl + ↑↓                              |                              |
 | 화면 페이지이동              |                                        | shift + page up, down        |
 | 특정 줄로 이동               |                                        | ctrl + G                     |
