@@ -3,6 +3,63 @@ title: 자바스크립트 강의
 category: javascript
 ---
 
+본 문서는 생활코딩 강의를 듣고 작성한 것입니다.
+
+# 코드사전
+
+**HTML**
+
+| <input    | properties                    |
+| --------- | ----------------------------- |
+| type      | button, text                  |
+| value     | 글                            |
+| onclick   | 자바스크립트 코드             |
+| onchange  | 값 변경 이벤트                |
+| onkeydown | 버튼입력 (혹은 지우기) 이벤트 |
+
+`<div>`
+
+`<span>` 
+
+**CSS**
+
+| style       | properties |
+| ----------- | ---------- |
+| color       |            |
+| class       |            |
+| id          |            |
+| font-weight |            |
+
+**JavaScript**
+
+| document                | properties                                              |
+| ----------------------- | ------------------------------------------------------- |
+| write                   | 글                                                      |
+| querySelector('tag')    | ex) '#night_day': id 가 night_day 인 쿼리를 반환합니다. |
+| querySelectorAll('tag') |                                                         |
+
+| event     | properties  |
+| --------- | ----------- |
+| alert('') | 경고창 출력 |
+
+**연산자**
+
+> 공통점: 부등호, 줄바꿈
+>
+> 차이점: 비교연산자, 부등호(html)
+
+**반복문**
+
+> 공통점: if문, while문
+
+**배열**
+
+> 차이점: 대괄호, for-each
+
+**함수**
+
+> 차이점: 매개변수의 타입이 필요없다.
+
 # 웹과 자바스크립트
 
 우클릭 - 검사
@@ -133,7 +190,7 @@ HTML 은 컴퓨터언어이지만 프로그래밍 언어가 아니다.
 
 program: 순서를 만드는 것
 
-programer: 순서를 만드는 사람
+programmer: 순서를 만드는 사람
 
 ## 조건문
 
@@ -148,8 +205,6 @@ conditional statements
 `<br>` 줄바꿈
 
 - Java: `\n` 
-
-> Java 와 동일한 것들: 부등호, if문
 
 ```html
 <script>
@@ -177,7 +232,7 @@ document.write(1===1);
   <input id="toggle" type="button" value="Black theme" onclick="
   if(document.querySelector('#toggle').value === 'Black theme'){
     body.style.backgroundColor = 'black';
-    // document.querySelector('body').style.backgroundColor = 'black'; 같은코드입니다.
+    // document.querySelector('body') 와 body 는 같은 코드입니다.
     body.style.color = 'white';
     document.querySelector('#toggle').value = 'White theme';
   }else{
@@ -192,42 +247,117 @@ document.write(1===1);
 </body>
 ```
 
-# 코드사전
+## 리팩토링
 
-**HTML**
+date: 06.29
 
-| <input    | properties                    |
-| --------- | ----------------------------- |
-| type      | button, text                  |
-| value     | 글                            |
-| onclick   | 자바스크립트 코드             |
-| onchange  | 값 변경 이벤트                |
-| onkeydown | 버튼입력 (혹은 지우기) 이벤트 |
+Q. 리팩토링이란?
 
-`<div>`
+A. 사용자가 편리하게 사용할 수 있도록 기능을 개선하는 것.
 
-`<span>` 
+`this` 자신의 태그를 가리킨다. 더 이상 id 를 쓸 필요가 없어진다.
 
-**CSS**
+`var` 바디태그와 같은 것들을 변수로 지정해도 된다.
 
-| style       | properties |
-| ----------- | ---------- |
-| color       |            |
-| class       |            |
-| id          |            |
-| font-weight |            |
+**this 예제**
 
-**JavaScript**
+더 간결해진 코드를 다음과 같이 볼 수 있다.
 
-| document                          | properties                                              |
-| --------------------------------- | ------------------------------------------------------- |
-| write                             | 글                                                      |
-| body.style.backgroundColor        | 스타일변경                                              |
-| querySelector(selectors)          | ex) '#night_day': id 가 night_day 인 쿼리를 반환합니다. |
-| querySelector(selectors).value    | value 값 반환                                           |
-| querySelector('body').style.color |                                                         |
+```html
+<body>
+  <h1>토글연습</h1>
+  <input type="button" value="Black theme" onclick="
+  if(this.value === 'Black theme'){
+    body.style.backgroundColor = 'black';
+    body.style.color = 'white';
+    this.value = 'White theme';
+  }else{
+    body.style.backgroundColor = 'white';
+    body.style.color = 'black';
+    this.value = 'Black theme';
+  }
+  ">
+  <br>
+  <br>
+  hello world!!
+</body>
+```
 
-| event     | properties  |
-| --------- | ----------- |
-| alert('') | 경고창 출력 |
+# 함수
+
+`function` 스크립트 태그 내에 넣는다.
+
+Q. ul 이란?
+
+A. \<ol> : ordered list 의 약자로 숫자나 알파벳 등 순서가 있는 목록을 만드는데 사용됩니다.
+
+\<ul> : unordered list 의 약자로 순서가 필요없는 목록을 만듭니다.
+
+\<dl> : definition list 의 약자로 사전처럼 용어를 설명하는 목록을 만듭니다.
+
+Q. li 이란?
+
+A. \<li> : list item 의 약자로 각 항목들을 나열할 때 사용합니다.
+
+**예시**
+
+```html
+<ul>
+    <li>영어</li>
+    <li>수학</li>
+    <li>과학</li>
+</ul>
+```
+
+parameter (매개변수) : function sum(left, right)
+
+argument (인자) : sum(3, 4)
+
+# 객체
+
+배열은 대괄호, 객체는 중괄호로 선언
+
+```javascript
+var coworkers = {
+    "programmer": "egoing",
+    "designer": "leezche"
+}
+```
+
+**for-each 구문** 
+
+```javascript
+for(var key in coworkers) {
+    document.write(key + ': ' + coworkers[key] + '<br>');
+}
+```
+
+**메서드 정의** 
+
+```javascript
+coworkers.showAll = function(){
+    for(var key in this) {
+    	document.write(key + ': ' + this[key] + '<br>');
+	}
+}
+
+var showAll = function(){
+}
+```
+
+`this` 를 위와 같이 사용가능합니다.
+
+property: 객체에 소속된 변수를 말합니다.
+
+```javascript
+var Body = {
+    setColor: function (color){
+        body.style.color = color;
+    	},
+    setBackgroundColor: function (color){
+        body.style.backgroundColor = color;
+	    }
+    }
+}
+```
 
