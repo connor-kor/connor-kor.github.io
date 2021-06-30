@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	  xmlns:xhtml="http://www.w3.org/1999/xhtml"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">	  	  
+<!-- www.check-domains.com sitemap generator -->
+
+<url>
+   <loc>https://dev-connor.github.io/</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>1.0000</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/feed.xml</loc>
+   <lastmod>2021-06-30T13:28:50+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.8000</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/tags/</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.8000</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/year-archive/</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.8000</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/sitemap/</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.8000</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/blog/Make-GitHub-blog/</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.8000</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/categories/fullstack-style</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.6400</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/categories/fullstack-hotkey</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.6400</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/categories/ios-style</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.6400</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/categories/ios-hotkey</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.6400</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/categories/fullstack-lecture</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.6400</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/categories/design-pattern</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.6400</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/categories/algorithm</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.6400</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/categories/cs50</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.6400</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/categories/javascript</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.6400</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/categories/blog</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.6400</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/categories/daily</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.6400</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/categories/configure</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.6400</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/categories/git</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.6400</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/fullstack-hotkey/sample-full-stack-hotkey/</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.6400</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/javascript/javascript-lecture/</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.6400</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/algorithm/algorithm-method-dictionary/</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.6400</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/design-pattern/class-diagram/</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.6400</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/daily/difference-between-overriding-and-overloading/</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.6400</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/design-pattern/infLearn/</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.6400</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/algorithm/baekjoon/</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.6400</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/algorithm/array-inflearn/</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.6400</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/algorithm/String-inf-learn/</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.6400</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/algorithm/HashMap-TreeSet/</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.6400</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/cs50/Computational-thinking/</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.6400</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/git/Error/</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.6400</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/blog/About-sitemap/</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.6400</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/algorithm/Data-structure-method/</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.6400</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/daily/What-I-learned/</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.6400</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/configure/Dark-theme/</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.6400</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/daily/daily/</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.6400</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/blog/How-to-make-Categories-at-sidebar/</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.6400</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/blog/Add-categories-at-sidebar/</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.6400</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/blog/Markdown/</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.6400</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/ios-style/sample-ios-style/</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.6400</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/ios-hotkey/sample-ios-hotkey/</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.6400</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/fullstack-style/sample-full-stack-style/</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.6400</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/fullstack-lecture/sample-full-stack-academy/</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.6400</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/sitemap_index.xml</loc>
+   <lastmod>2021-06-30T13:28:50+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.6400</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/categories/</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.6400</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/collection-archive/</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.6400</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/page2/</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.6400</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/page3/</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.6400</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/page4/</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.6400</priority>
+</url>
+<url>
+   <loc>https://dev-connor.github.io/page5/</loc>
+   <lastmod>2021-06-30T13:31:10+00:00</lastmod>
+   <changefreq>always</changefreq>
+   <priority>0.6400</priority>
+</url>
+</urlset>
