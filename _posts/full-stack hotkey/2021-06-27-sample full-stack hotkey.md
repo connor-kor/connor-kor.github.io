@@ -26,7 +26,7 @@ categories: fullstack-hotkey
 | **텍스트블록**               | ctrl + shift + '                       |                              |
 | **대문자 변환**              | ctrl + shift + X                       |                              |
 | **소문자 변환**              | ctrl + shift + Y                       |                              |
-| **화면나누기**               | ctrl + shift + [ 혹은 _                | ctrl + alt + ←→              |
+| **화면나누기**               | ctrl + shift + [ 혹은 _                | **ctrl + alt + ←→**          |
 | 아랫줄 생성                  | shift + enter                          | ctrl + enter (*)             |
 | 윗줄 생성                    | ctrl + shift + enter                   | ctrl + shift + enter         |
 | 줄의 가장 앞으로 커서이동    | home                                   |                              |
@@ -40,7 +40,7 @@ categories: fullstack-hotkey
 | 커서에 주석추가              |                                        | alt + shift + A              |
 | 화면 한칸이동                | ctrl + ↑↓                              |                              |
 | 화면 페이지이동              |                                        | shift + page up, down        |
-| 특정 줄로 이동               |                                        | ctrl + G                     |
+| 특정 줄로 이동               | ctrl + L                               | **ctrl + G**                 |
 | 다른파일 열기                |                                        | ctrl + shift + page up, down |
 | 수정본 비교하며 작성         |                                        | ctrl + K, D (Draw)           |
 
@@ -59,11 +59,11 @@ categories: fullstack-hotkey
 
 **자동완성** 
 
-| Abbreviation | Java: eclipse                             |
-| ------------ | ----------------------------------------- |
-| sysou        | System.out.println();                     |
-| ma           | public static void main(String[] args) {} |
-| fore         | for (String string : args) {}             |
+| Abbreviation | Java: eclipse                             | Abbreviation | VScode        |
+| ------------ | ----------------------------------------- | ------------ | ------------- |
+| sysou        | System.out.println();                     | !            | html 기본구조 |
+| ma           | public static void main(String[] args) {} |              |               |
+| fore         | for (String string : args) {}             |              |               |
 
 ## 주석
 

@@ -361,3 +361,114 @@ var Body = {
 }
 ```
 
+# 활용
+
+## 자바스크립트 파일분리
+
+date: 06.30
+
+이때까지는 html 파일 내에 \<script> 태그를 추가하여 JavaScript 를 구현하였다.
+
+하지만 \<script> 태그는 그 html 파일 내에서만 작동하므로 모든 html 에 \<script> 태그를 붙여줘야만 했다.
+
+자바스크립트 파일을 분리하여 저장함으로써 코드반복을 줄일 수 있다.
+
+> body 객체는 html 에서는 사용 가능하지만 JavaScript 에서는 사용할 수 없으므로 document.querySelector('body') 를 사용한다.
+
+```html
+<input type="button" value="Black theme" onclick="
+blackTheme();
+  ">
+```
+**객체와 함수구현** 
+
+```javascript
+var Body = {
+  setColor: function (color) {
+    document.querySelector('body').style.color = color;
+  },
+  setBackgroundColor: function (color) {
+    document.querySelector('body').style.backgroundColor = color;
+  }
+}
+
+function blackTheme() {
+  if (this.value === 'Black theme') {
+    Body.setBackgroundColor('black');
+    Body.setColor('white');
+    this.value = 'White theme';
+  } else {
+    Body.setBackgroundColor('white');
+    Body.setColor('black');
+    this.value = 'Black theme';
+  }
+}
+```
+
+## jQuery
+
+오랜기간 모두가 써온 라이브러리
+
+Q. 라이브러리란? (library) 
+
+필요한 것을 가져올 수 있는 도서관
+
+Q. 프레임워크란? (framework)
+
+공통적인 것을 만드는 틀
+
+**jQuery 다운로드방법**
+
+<https://jquery.com/>
+
+1. Download 탭 클릭
+2. Download the compressed, production jQuery 버전 을 클릭
+
+혹은 CDN 이용방법
+
+1. 아래에 Google CDN 링크클릭
+2. jQuery 에 3.x snippet 이 최신버전이므로 (21.06.30 기준) \<script 태그를 복사
+3. html 에 추가
+
+Q. CDN 이란?
+
+콘텐츠 전송 네트워크 (Content Delivery Network) 의 약자
+
+원본을 jQuery 서버에 보관하고 우리는 \<script src 를 통해서 불러오는 것
+
+---
+
+**반복문을 이용해 링크 색 바꾸기**
+
+
+```javascript
+var Links = {
+  setColor: function (color) {
+    var alist = document.querySelectorAll('a');
+    var i = 0;
+    while (i < alist.length){
+      alist[i].style.color = color;
+      i = i + 1;
+    }
+  }
+}
+```
+
+jQuery 는 $ 를 사용한다.
+
+**jQuery 를 사용해 링크 색 바꾸기** 
+
+```javascript
+var Links = {
+  setColor: function (color) {
+    $('a').css('color', color);
+  }
+}
+```
+
+위와 같은 코드입니다.
+
+Q. a 태그란?
+
+A. anchor 를 뜻한다. 링크로서의 기능과 해당 id 로 이동하는 기능이 있다.
+

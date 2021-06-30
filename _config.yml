@@ -24,10 +24,10 @@ subtitle                 : "Version 1.3.5" # site tagline that appears below sit
 # 닉네임
 name                     : "Connor"
 description              : "stories for developers"
-url                      : "https://connor-kor.github.io" # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
+url                      : "https://dev-connor.github.io" # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 # 레포지토리
-repository               : "connor-kor/connor-kor.github.io" # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
+repository               : "dev-connor/dev-connor.github.io" # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
 teaser                   : # path of fallback teaser image, e.g. "/assets/images/500x300.png"
 # 아바타 이름
 logo                     : # path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
