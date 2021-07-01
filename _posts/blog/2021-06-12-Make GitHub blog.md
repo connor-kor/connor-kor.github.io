@@ -7,9 +7,9 @@ tags: 테마 댓글 디스커스 지킬 포스팅 카테고리 타이포라 GitH
 이 문서는 깃허브블로그 만드는 법을 minimal-mistakes 테마를 사용하여 설명합니다.
 공통되는부분도 있고 다른부분도 있으니 유의해서 봐주세요.
 
-# 블로그구축
+# 1. 블로그구축
 
-## 블로그테마 정하기
+## I. 블로그테마 정하기
 
 Jekyll 테마제공 사이트
 
@@ -28,7 +28,7 @@ Jekyll 테마제공 사이트
 3. 검색, 태그, 댓글, Syntax Highlighting, 수식입력 등 기능 지원
 4. 가격 등
 
-## GitHub 페이지 만들기
+## II. GitHub 페이지 만들기
 
 > 선행학습 : GitHub 계정이 있나요? Git 이 깔려있나요? 
 
@@ -86,9 +86,9 @@ git clone "URL 붙여넣기" "폴더이름" # 붙여넣기는 Shift + Insert
 
 도움이 되었다면 댓글을 달아주세요!!
 
-# 블로그사용
+# 2. 블로그사용
 
-## 글쓰기 : 포스팅하기
+## I. 글쓰기 : 포스팅하기
 
 1. root directory 에 '_posts' 폴더를 만들고 
 
@@ -109,7 +109,7 @@ tags: tag
 
 \-\-\-
 
-## (옵션) 이미지 자동으로 추가하기
+## II. (옵션) 이미지 자동으로 추가하기
 
 이미지를 포스팅하기 위해서는 직접 assets/images 폴더에 이미지파일을 저장하고 상대경로로 연결해야 한다. 
 
@@ -147,7 +147,7 @@ tags: tag
 
 <[Images in Typora](https://support.typora.io/Images/#when-insert-images)>
 
-## 페이지 연결하기 : 카테고리 및 태그 
+## III. 페이지 연결하기 : 카테고리 및 태그 
 
 root directory 에 "_pages" 폴더를 만들고
 
@@ -167,9 +167,9 @@ layout: tags
 author_profile: true
 ```
 
-# 기능추가
+# 3. 기능추가
 
-## 헤드에 메뉴버튼 만들기
+## I. 헤드에 메뉴버튼 만들기
 
 ```yaml
 # main links
@@ -194,7 +194,7 @@ _data/navigation.yml 파일에 title 과 url 을 추가한다.
 
 이 url 은 root directory 에 _pages 폴더 내에 적절한 파일이 있어야 한다.
 
-## 댓글기능 넣기
+## II. 댓글기능 넣기
 
 > Disqus is an American blog comment hosting service for web sites and online communities that use a networked platform.
 
@@ -266,7 +266,7 @@ Settings - General - Shortname 을 확인합니다.
 
 완성! 도움이 되었다면 댓글을 달아주세요!!
 
-## 목차기능 넣기
+## III. 목차기능 넣기
 
 minimal-mistakes 테마기준으로 목차는 이미 구현되있습니다.
 
@@ -282,7 +282,7 @@ minimal-mistakes 테마기준으로 목차는 이미 구현되있습니다.
 
 오른쪽에 목차가 성공적으로 표시됩니다. :)
 
-## 코드블럭번호: line numbers 
+## IV. 코드블럭번호: line numbers 
 
 라인넘버를 추가하는 방법
 
@@ -297,9 +297,9 @@ _config.yml 파일 가장 하단부분 (defaults: 아래) 에 다음의 코드�
 
 > `block:` 을 추가하지 않으면 코드블럭 뿐만 아니라 `` 로 감싼 코드에도 번호가 붙어 문제가 생깁니다.
 
-# 꾸미기
+# 4. 꾸미기
 
-## 코드문법강조: Syntax highlight
+## I. 코드문법강조: Syntax highlight
 
 _sass/minimal-mistakes/\_syntax.scss 를 실행합니다.
 
@@ -337,7 +337,7 @@ $base00 ~ $base0f
 
 터미널 명령어 (bash: cd, ls 등) : `name.builtin` 를 검색해 찾아 바꿉니다.
 
-# 폴더구조
+# 5. 폴더구조
 
 _data/navigation.yml : 상단버튼 추가/제거
 

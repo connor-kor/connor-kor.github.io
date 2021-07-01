@@ -116,7 +116,7 @@ author:
   # I'm very interested in algorithm and data structure.<br/>
    
   location         : "South Korea"
-  email            : "dev.connor.kim@gmail.com"
+  email            : # "dev.connor.kim@gmail.com"
   links:
     - label: "Email"
       icon: "fas fa-fw fa-envelope-square"
@@ -141,24 +141,27 @@ author:
 # 사이트 하단수정
 footer:
   links:
-    - label: "Twitter"
-      icon: "fab fa-fw fa-twitter-square"
-      # url:
-    - label: "Facebook"
-      icon: "fab fa-fw fa-facebook-square"
-      # url:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
-      # url:
-    - label: "GitLab"
-      icon: "fab fa-fw fa-gitlab"
-      # url:
-    - label: "Bitbucket"
-      icon: "fab fa-fw fa-bitbucket"
-      # url:
+      url: "https://github.com/dev-connor"
     - label: "Instagram"
       icon: "fab fa-fw fa-instagram"
-      # url:
+      url: "https://www.instagram.com/dev_connor.kim/"
+    - label: "Email"
+      icon: "fas fa-fw fa-envelope-square"
+      url: "mailto:dev.connor.kim@gmail.com"
+    - label: "Twitter"
+      icon: "fab fa-fw fa-twitter-square"
+      url:
+    - label: "Facebook"
+      icon: "fab fa-fw fa-facebook-square"
+      url:
+    - label: "GitLab"
+      icon: "fab fa-fw fa-gitlab"
+      url: 
+    - label: "Bitbucket"
+      icon: "fab fa-fw fa-bitbucket"
+      url:
 
 
 # Reading Files
