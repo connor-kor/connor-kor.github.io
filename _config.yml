@@ -103,7 +103,7 @@ analytics:
 # 사이드바 개인정보 수정 및 이미지
 author:
   name             : "Connor"
-  avatar           : "/assets/images/standingconnor2.png" # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
+  avatar           : "/assets/images/standingConnor.png" # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
   bio              : "I'm preparing Developer." # L is for the way you look at me <br/>
     # O is for the only one I see <br/>
     # V is very, very, extraordinary <br/>
