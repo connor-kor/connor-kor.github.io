@@ -20,7 +20,7 @@ locale                   : "ko-KR"
 # 사이트 제목
 title                    : "코너의 개발이야기"
 title_separator          : "|"
-subtitle                 : "Version 1.3.5" # site tagline that appears below site title in masthead
+subtitle                 : "Version 1.3.6" # site tagline that appears below site title in masthead
 # 닉네임
 name                     : "Connor"
 description              : "stories for developers"
@@ -28,9 +28,9 @@ url                      : "https://dev-connor.github.io" # the base hostname & 
 baseurl                  : # the subpath of your site, e.g. "/blog"
 # 레포지토리
 repository               : "dev-connor/dev-connor.github.io" # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
-teaser                   : # path of fallback teaser image, e.g. "/assets/images/500x300.png"
-# 아바타 이름
-logo                     : # path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
+teaser                   :  # path of fallback teaser image, e.g. "/assets/images/500x300.png"
+# 타이틀 왼쪽이미지
+logo                     :  # path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
 masthead_title           : # overrides the website title displayed in the masthead, use " " for no title
 # breadcrumbs            : false # true, false (default)
 words_per_minute         : 200
@@ -100,11 +100,11 @@ analytics:
 
 
 # Site Author
-# 개인정보 수정
+# 사이드바 개인정보 수정 및 이미지
 author:
   name             : "Connor"
-  avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : <br> # "L is for the way you look at me <br/>
+  avatar           : "/assets/images/standingConnor.png" # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
+  bio              : "I'm preparing Developer." # L is for the way you look at me <br/>
     # O is for the only one I see <br/>
     # V is very, very, extraordinary <br/>
     # E is even more than anyone that you adore can <br/><br/>
@@ -114,9 +114,9 @@ author:
   # "I have Bachelor of Science in Electrical Engineering (EE).<br/>
   # I used to work at a company in US for an year.<br/>
   # I'm very interested in algorithm and data structure.<br/>
-  # I'm preparing Developer."
+   
   location         : "South Korea"
-  email            :
+  email            : "dev.connor.kim@gmail.com"
   links:
     - label: "Email"
       icon: "fas fa-fw fa-envelope-square"

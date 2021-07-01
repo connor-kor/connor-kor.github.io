@@ -34,24 +34,7 @@
                 {% endfor %}
             </ul>
 
-        <!-- 2. IOS -->
-        <span class="nav__sub-title"> IOS </span>
-            <ul>
-                {% for category in site.categories %}
-                    {% if category[0] == "ios-style" %}
-                        <!-- 사이드바 출력 -->
-                        <li><a href="/categories/ios-style" class=""> 스타일가이드 ({{category[1].size}})</a></li>
-                    {% endif %}
-                {% endfor %}
-            </ul>
-            <ul>
-                {% for category in site.categories %}
-                    {% if category[0] == "ios-hotkey" %}
-                        <!-- 사이드바 출력 -->
-                        <li><a href="/categories/ios-hotkey" class=""> 단축키 ({{category[1].size}})</a></li>
-                    {% endif %}
-                {% endfor %}
-            </ul>
+        
 
         <!-- 3. 강의 -->
         <span class="nav__sub-title"> Lecture </span>
