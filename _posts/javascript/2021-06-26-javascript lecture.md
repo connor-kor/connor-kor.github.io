@@ -472,3 +472,24 @@ Q. a 태그란?
 
 A. anchor 를 뜻한다. 링크로서의 기능과 해당 id 로 이동하는 기능이 있다.
 
+## 추천할만한 객체
+
+date: 07.01
+
+**UI vs API**
+
+UI (User Interface)
+
+API (Application Programming Interface)
+
+**객체**
+
+1. document 객체를 찾아볼 것: document 의 객체는 DOM (Document Object Model)
+2. window 객체를 찾아볼 것 
+3. ajax 객체
+4. cookie 현재 상태 유지하는 것: 개인화하는 것
+5. offline web application
+6. webRTC: 화상통신
+7. speech: 사용자 음성인식
+8. webGL: 3차원 그래픽
+9. webVR: 가상현실
