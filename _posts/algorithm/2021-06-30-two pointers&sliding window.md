@@ -1,7 +1,9 @@
 ---
-title: 3) tow pointers & sliding window 강의
+title: 3) two pointers & sliding window 강의
 category: algorithm
 ---
+
+이 문서에서는 two pointers algorithm 과 sliding window 를 사용하여 O($$n^2$$) 의 복잡도를 O(n) 으로 만듭니다.
 
 ## 1. 두 배열 합치기
 
@@ -139,4 +141,6 @@ public class Main {
 	}
 }
 ```
+
+## 2. 공통원소 구하기
 
