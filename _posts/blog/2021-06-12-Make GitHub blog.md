@@ -298,6 +298,92 @@ _config.yml 파일 가장 하단부분 (defaults: 아래) 에 다음의 코드�
 
 > `block:` 을 추가하지 않으면 코드블럭 뿐만 아니라 `` 로 감싼 코드에도 번호가 붙어 문제가 생깁니다.
 
+## V. 수학공식 넣기
+
+MathJax 란?
+
+매스잭스는 MathML, LaTeX 및 ASCIIMathML 마크 업을 사용하여 웹 브라우저에 수학 표기법을 표시하는 크로스 브라우저 JavaScript 라이브러리이다.
+
+1) MathJax 홈페이지로 들어갑니다.
+
+<https://www.mathjax.org/>
+
+![image-20210702112610812](../../assets/images/image-20210702112610812.png)
+
+2) Getting Started 를 누르고 Web Integration 에 있는 Start now 를 누릅니다.
+
+![image-20210702112728939](../../assets/images/image-20210702112728939.png)
+
+3) 스크립트 태그를 복사합니다.
+
+![image-20210702113334085](../../assets/images/image-20210702113334085.png)
+
+4) 태그를 자신의 메인 html 에 붙여넣습니다. 
+
+필자는 Jekyll 서버에 의해 _site 폴더에 로컬서버를 구동할 때마다 사이트가 생성되어 메인홈페이지에 이 태그를 추가할 수 없었으므로 _includes/scripts.html 하단에 붙여넣었습니다.
+
+5) 수학공식을 사용합니다.
+
+수학공식을 $$ 로 감싸주면 됩니다.
+
+I. 위 첨자
+
+- $$n^2$$ : n^2
+
+II. 아래 첨자 
+
+- $$H_2O$$ : H_2O
+
+III. 분수 : fraction
+
+- $$\frac1 2$$ : \frac1 2
+
+IV. 제곱근&루트 : square root
+
+- $$\sqrt3$$ : \sqrt3
+
+V. 총합&시그마 : sum 
+
+- $$\sum x$$ : \sum x
+
+VI. 적분&인트그랄 : integral 
+
+- $$\int_a^b f(x)dx$$ : \int_a^b f(x)dx
+
+VII. 극한&리미트 : limit
+
+- $$\lim_{x\to0}x^2$$ : \lim_{x\to0}x^2
+
+VIII. 부등호 : inequality
+
+- $$2\neq1$$ : 2\neq1
+
+분수와 극한
+
+- $$\lim_{x\to0}\frac{sinx}x$$ : \lim_{x\to0}\frac{sinx}x
+
+<br>
+
+문제. $$\lim_{x\to2}\frac{x^2-4}{x^2+ax} = b$$ (단, $$b\neq0$$) 가 성립하도록 상수 a, b 의 값을 정할 때, a+b 의 값은? 
+
+[2점] [2005년 6월] **- 정답을 클릭해주세요!!**
+
+① [-4](../../wrong-answer)
+
+② [-2](../../wrong-answer)
+
+③ [0](../../correct-answer)
+
+④ [2](../../wrong-answer)
+
+⑤ [4](../../wrong-answer) 
+
+---
+
+**백준 MathJax 정리**
+
+<https://www.acmicpc.net/blog/view/6> 
+
 # 4. 꾸미기
 
 ## I. 코드문법강조: Syntax highlight
