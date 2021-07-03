@@ -385,11 +385,10 @@ public class Main {
 		int n = sc.nextInt();
 		int count = 0;
 		int sum = 0;
-		int head = 1;
 		int tail = 1;
 
-		while (head <= n / 2 + 1) {
-			sum += head++;
+		for (int head = 1; head <= (n / 2) + 1; head++) {
+			sum += head;
 			while (sum > n) {
 				sum -= tail++;
 			}
@@ -413,12 +412,11 @@ public class Main {
 		int n = sc.nextInt();
 		int count = 0;
 		int sum = 0;
-		int head = 1;
 		int tail = 1;
 
-		while (head <= n / 2 + 1) {
+		for (int head = 1; head <= (n / 2) + 1; head++) {
 			System.out.print("+" + head);
-			sum += head++;
+			sum += head;
 			while (sum > n) {
 				System.out.print("-" + tail);
 				sum -= tail++;
