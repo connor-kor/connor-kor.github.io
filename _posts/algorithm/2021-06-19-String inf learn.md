@@ -1,5 +1,5 @@
 ---
-title: 1) 문자열 강의
+title: I. 문자열 강의
 category: algorithm
 ---
 

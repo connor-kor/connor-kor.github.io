@@ -1,5 +1,5 @@
 ---
-title: 2) 배열 강의
+title: II. 배열 강의
 category: algorithm
 ---
 
