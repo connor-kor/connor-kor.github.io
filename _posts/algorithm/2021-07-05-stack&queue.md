@@ -3,6 +3,8 @@ title: V. Stack&queue 강의
 category: algorithm
 ---
 
+# Stack 
+
 ## 1. 올바른 괄호
 
 Stack 은 구덩이, Queue 는 원통의 통로
@@ -290,3 +292,310 @@ public class Main {
 }
 ```
 
+# Queue
+
+`queue`
+
+- `offer(value)` 
+- `poll()` 
+- `peek()` 확인만
+- `size()`
+- `contains(x)` 
+
+FIFO: first in first out
+
+선언
+
+```java
+Queue<Integer> queue = new LinkedList<Integer>();
+```
+
+Q. Queue 에서 add 와 offer 의 차이점은?
+
+A. add() 는 Collection 프레임워크에서 오고 offer() 는 Queue 프레임워크에서 옵니다.
+
+add() 는 항상 true 를 반환하고 용량문제로 넣지못할 때에는 throws 예외를 발생시킵니다.
+
+반면 offer() 는 넣지못할 때에는 false 를 반환합니다.
+
+<https://stackoverflow.com/questions/15591431/difference-between-offer-and-add-in-priority-queue-in-java>
+
+## 6. 공주구하기
+
+1번 왕자부터 시계방향으로 돌아가며 1부터 시작하여 번호를 외치게 한다.
+
+한 왕자가 K(특정숫자)를 외치면 그 왕자는 공주를 구하러 가는데서 제외되고 원 밖으로 나오게 된다.
+
+그리고 다음 왕자부터 다시 1부터 시작하여 번호를 외친다.
+
+**예시**
+
+예를 들어 총 8명의 왕자가 있고, 3을 외친 왕자가 제외된다고 하자. 처음에는 3번 왕자가 3을 외쳐 제외된다.
+
+이어 6, 1, 5, 2, 8, 4번 왕자가 차례대로 제외되고 마지막까지 남게 된 7번 왕자에게 공주를 구하러갑니다.
+
+**입력**
+
+```
+8 3
+```
+
+**출력**
+
+```
+7
+```
+
+**코드**
+
+```java
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+
+public class Main {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		Queue<Integer> queue = new LinkedList<Integer>();
+		int n = sc.nextInt();
+		int k = sc.nextInt();
+		
+		for (int i = 1; i <= n; i++) {
+			queue.offer(i);
+		}
+		
+		while (queue.size() != 1) {
+			for (int i = 1; i < k; i++) {
+				queue.offer(queue.poll());
+			}
+			queue.poll();
+		}
+		System.out.println(queue.poll());
+	}
+}
+```
+
+## 7. 교육과정 설계
+
+**예시**
+
+만약 총 과목이 A, B, C, D, E, F, G가 있고, 여기서 필수과목이 CBA로 주어지면 필수과목은 C, B, A과목이며 이 순서대로 꼭 수업계획을 짜야 합니다.
+
+필수과목순서가 주어지면 현수가 짠 N개의 수업설계가 잘된 것이면 “YES", 잘못된 것이면 ”NO“를 출력하는 프로그램을 작성하세요.
+
+**입력**
+
+```
+CBA
+CBDAGE
+```
+
+**출력**
+
+```
+YES
+```
+
+**코드**
+
+```java
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+
+public class Main {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		Queue<Character> queue = new LinkedList<>();
+		String require = sc.next();
+		String subject = sc.next();
+		int count = 0;
+
+		for (char c : require.toCharArray()) {
+			queue.offer(c);
+		}
+
+		for (char c : subject.toCharArray()) {
+			if (queue.peek() == c) {
+				count++;
+				queue.poll();
+				if (queue.isEmpty()) {
+					break;
+				}
+			}
+		}
+
+		if (count == require.length()) {
+			System.out.println("YES");
+		} else {
+			System.out.println("NO");
+		}
+	}
+}
+```
+
+## 8. 응급실
+
+• 환자가 접수한 순서대로의 목록에서 제일 앞에 있는 환자목록을 꺼냅니다.
+
+• 나머지 대기 목록에서 꺼낸 환자 보다 위험도가 높은 환자가 존재하면 대기목록 제일 뒤로 다시 넣습니다. 그렇지 않으면 진료를 받습니다.
+
+즉 대기목록에 자기 보다 위험도가 높은 환자가 없을 때 자신이 진료를 받는 구조입니다.
+
+현재 N명의 환자가 대기목록에 있습니다.
+
+N명의 대기목록 순서의 환자 위험도가 주어지면, 대기목록상의 M번째 환자는 몇 번째로 진료를 받는지 출력하는 프로그램을 작성하세요.
+
+대기목록상의 M번째는 대기목록의 제일 처음 환자를 0번째로 간주하여 표현한 것입니다.
+
+M번째 환자는 몇 번째로 진료받는지 출력하세요.	
+
+**예시**
+
+위험도가 70인 2번째 환자는 3번째로 진료를 받는다.
+
+**입력**
+
+```
+5 2
+60 50 70 80 90
+```
+
+**출력**
+
+```
+[0환자:위험도60, 1환자:위험도50, 2환자:위험도70, 3환자:위험도80, 4환자:위험도90]
+0환자:위험도60를 뒤로 보냅니다.
+[1환자:위험도50, 2환자:위험도70, 3환자:위험도80, 4환자:위험도90, 0환자:위험도60]
+1환자:위험도50를 뒤로 보냅니다.
+[2환자:위험도70, 3환자:위험도80, 4환자:위험도90, 0환자:위험도60, 1환자:위험도50]
+2환자:위험도70를 뒤로 보냅니다.
+[3환자:위험도80, 4환자:위험도90, 0환자:위험도60, 1환자:위험도50, 2환자:위험도70]
+3환자:위험도80를 뒤로 보냅니다.
+[4환자:위험도90, 0환자:위험도60, 1환자:위험도50, 2환자:위험도70, 3환자:위험도80]
+1번째 진료는 4환자:위험도90입니다.
+0환자:위험도60를 뒤로 보냅니다.
+[1환자:위험도50, 2환자:위험도70, 3환자:위험도80, 0환자:위험도60]
+1환자:위험도50를 뒤로 보냅니다.
+[2환자:위험도70, 3환자:위험도80, 0환자:위험도60, 1환자:위험도50]
+2환자:위험도70를 뒤로 보냅니다.
+[3환자:위험도80, 0환자:위험도60, 1환자:위험도50, 2환자:위험도70]
+2번째 진료는 3환자:위험도80입니다.
+0환자:위험도60를 뒤로 보냅니다.
+[1환자:위험도50, 2환자:위험도70, 0환자:위험도60]
+1환자:위험도50를 뒤로 보냅니다.
+[2환자:위험도70, 0환자:위험도60, 1환자:위험도50]
+3번째 진료는 2환자:위험도70입니다.
+```
+
+**설명없는 코드**
+
+```java
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+
+class Person {
+	int id;
+	int risk;
+
+	public Person(int id, int risk) {
+		this.id = id;
+		this.risk = risk;
+	}
+}
+
+public class Main {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		Queue<Person> queue = new LinkedList<>();
+		int n = sc.nextInt();
+		int m = sc.nextInt();
+		int order = 1;
+		boolean pass;
+
+		for (int i = 0; i < n; i++) {
+			int risk = sc.nextInt();
+			queue.offer(new Person(i, risk));
+		}
+
+		while (true) {
+			pass = false;
+			for (Person person : queue) {
+				if (queue.peek().risk < person.risk) {
+					queue.offer(queue.poll());
+					pass = true;
+					break;
+				}
+			}
+			if (!pass) {
+				if (queue.poll().id == m) {
+					System.out.println(order);
+					break;
+				}
+				order++;
+			}
+		}
+	}
+}
+```
+
+**설명포함 코드**
+
+```java
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+
+class Person {
+	int id;
+	int risk;
+
+	public Person(int id, int risk) {
+		this.id = id;
+		this.risk = risk;
+	}
+
+	@Override
+	public String toString() {
+		return id + "환자:위험도" + risk;
+	}
+}
+
+public class Main {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		Queue<Person> queue = new LinkedList<>();
+		int n = sc.nextInt();
+		int m = sc.nextInt();
+		int order = 1;
+		boolean pass;
+
+		for (int i = 0; i < n; i++) {
+			int risk = sc.nextInt();
+			queue.offer(new Person(i, risk));
+		}
+		
+		System.out.println(queue);
+		while (true) {
+			pass = false;
+			for (Person person : queue) {
+				if (queue.peek().risk < person.risk) {
+					System.out.println(queue.peek() + "를 뒤로 보냅니다.");
+					queue.offer(queue.poll());
+					System.out.println(queue);
+					pass = true;
+					break;
+				}
+			}
+			if (!pass) {
+				System.out.println(order + "번째 진료는 " + queue.peek() + "입니다.");
+				if (queue.poll().id == m) {
+					break;
+				}
+				order++;
+			}
+		}
+	}
+}
+```
