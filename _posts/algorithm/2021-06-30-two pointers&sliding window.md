@@ -1,5 +1,5 @@
 ---
-title: III. two pointers & sliding window 강의
+title: III. Two pointers&Sliding window 강의
 category: algorithm
 ---
 
