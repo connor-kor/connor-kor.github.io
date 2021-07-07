@@ -5,7 +5,7 @@ category: algorithm
 
 # 정렬
 
-정렬상태와 알고리즘에 따른 속도
+정렬알고리즘 애니메이션
 
 <https://www.toptal.com/developers/sorting-algorithms>
 
@@ -223,5 +223,150 @@ public class Main {
 | 버블정렬 | 1      | n      | 0      | n-i         |
 | 삽입정렬 | 1      | n      | i-1    | 0 보다 크다 |
 
-## 4. LRU (캐시, 카카오 변형)
+## 4. LRU: Least Recently Used
+
+![Image1.jpg](../../assets/images/c366c701c2.jpg)
+
+캐시, 카카오 변형
+
+**입력**
+
+```
+5 9
+1 2 3 2 6 2 3 5 7
+```
+
+**출력** 
+
+```
+Cache Miss
+[1, 0, 0, 0, 0]: 1
+Cache Miss
+[1, 1, 0, 0, 0]: 1을 밀었습니다.
+[2, 1, 0, 0, 0]: 2
+Cache Miss
+[2, 1, 1, 0, 0]: 1을 밀었습니다.
+[2, 2, 1, 0, 0]: 2을 밀었습니다.
+[3, 2, 1, 0, 0]: 3
+Cache Hit
+2가 1위치에 있습니다.
+Cache Miss
+[3, 3, 1, 0, 0]: 3을 밀었습니다.
+[2, 3, 1, 0, 0]: 2
+Cache Miss
+[2, 3, 1, 1, 0]: 1을 밀었습니다.
+[2, 3, 3, 1, 0]: 3을 밀었습니다.
+[2, 2, 3, 1, 0]: 2을 밀었습니다.
+[6, 2, 3, 1, 0]: 6
+Cache Hit
+2가 1위치에 있습니다.
+Cache Miss
+[6, 6, 3, 1, 0]: 6을 밀었습니다.
+[2, 6, 3, 1, 0]: 2
+Cache Hit
+3가 2위치에 있습니다.
+Cache Miss
+[2, 6, 6, 1, 0]: 6을 밀었습니다.
+[2, 2, 6, 1, 0]: 2을 밀었습니다.
+[3, 2, 6, 1, 0]: 3
+Cache Miss
+[3, 2, 6, 1, 1]: 1을 밀었습니다.
+[3, 2, 6, 6, 1]: 6을 밀었습니다.
+[3, 2, 2, 6, 1]: 2을 밀었습니다.
+[3, 3, 2, 6, 1]: 3을 밀었습니다.
+[5, 3, 2, 6, 1]: 5
+Cache Miss
+[5, 3, 2, 6, 6]: 6을 밀었습니다.
+[5, 3, 2, 2, 6]: 2을 밀었습니다.
+[5, 3, 3, 2, 6]: 3을 밀었습니다.
+[5, 5, 3, 2, 6]: 5을 밀었습니다.
+[7, 5, 3, 2, 6]: 7
+```
+
+**설명없는 코드**
+
+```java
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int c = sc.nextInt();
+		int w = sc.nextInt();
+		int[] cash = new int[c];
+		int[] work = new int[w];
+		
+		for (int i = 0; i < w; i++) {
+			work[i] = sc.nextInt();
+		}
+		
+		for (int i = 0; i < w; i++) {
+			int index = c - 1;
+			for (int j = 0; j < c; j++) {
+				if (work[i] == cash[j]) {
+					index = j;
+					break;
+				}
+			}
+			for (int j = index; j > 0; j--) {
+				if (cash[j] != cash[j - 1]) {
+					cash[j] = cash[j - 1];
+				}
+			}
+			cash[0] = work[i];
+		}
+		System.out.println(Arrays.toString(cash));
+	}
+}
+```
+
+**설명있는 코드**
+
+```java
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int c = sc.nextInt();
+		int w = sc.nextInt();
+		int[] cash = new int[c];
+		int[] work = new int[w];
+
+		for (int i = 0; i < w; i++) {
+			work[i] = sc.nextInt();
+		}
+
+		for (int i = 0; i < w; i++) {
+			int index = c - 1;
+			boolean miss = false;
+			for (int j = 0; j < c; j++) {
+				if (work[i] == cash[j]) {
+					System.out.println("Cache Hit");
+					System.out.println(work[i] + "가 " + j + "위치에 있습니다.");
+					index = j;
+					break;
+				} else {
+					miss = true;
+				}
+			}
+			if (miss) {
+				System.out.println("Cache Miss");
+			}
+			for (int j = index; j > 0; j--) {
+				if (cash[j] != cash[j - 1]) {
+					cash[j] = cash[j - 1];
+					System.out.println(Arrays.toString(cash) + ": " + cash[j - 1] + "을 밀었습니다.");
+				}
+			}
+			cash[0] = work[i];
+			System.out.println(Arrays.toString(cash) + ": " + cash[0]);
+		}
+	}
+}
+```
+
+## 5. 중복확인
 
