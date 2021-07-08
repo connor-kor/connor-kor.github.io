@@ -1,6 +1,6 @@
 ---
-title: 자바스크립트 강의
-category: javascript
+title: 자바스크립트 boost course 강의
+category: frontend
 ---
 
 본 문서는 생활코딩 강의를 듣고 작성한 것입니다.
