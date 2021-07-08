@@ -370,3 +370,35 @@ public class Main {
 
 ## 5. 중복확인
 
+이 문제는 HashMap 으로도 풀 수 있을 것 같다.
+
+```java
+import java.util.Scanner;
+
+public class Main {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int n = sc.nextInt();
+		int[] numbers = new int[n];
+		char answer = 'U';
+
+		for (int i = 0; i < n; i++) {
+			numbers[i] = sc.nextInt();
+		}
+		
+		loop:
+		for (int i = 0; i < n - 1; i++) {
+			for (int j = i + 1; j < n; j++) {
+				if (numbers[i] == numbers[j]) {
+					answer = 'D';
+					break loop;
+				}
+			}
+		}
+		System.out.println(answer);
+	}
+}
+```
+
+## 6. 장난꾸러기
+
