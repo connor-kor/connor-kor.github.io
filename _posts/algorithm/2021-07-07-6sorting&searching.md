@@ -46,9 +46,6 @@ category: algorithm
 **swap 메서드사용 코드** 
 
 ```java
-import java.util.Arrays;
-import java.util.Scanner;
-
 public class Main {
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
@@ -82,9 +79,6 @@ public class Main {
 **메소드없는 코드**
 
 ```java
-import java.util.Arrays;
-import java.util.Scanner;
-
 public class Main {
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
@@ -114,9 +108,6 @@ public class Main {
 **설명포함 코드**
 
 ```java
-import java.util.Arrays;
-import java.util.Scanner;
-
 public class Main {
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
@@ -154,9 +145,6 @@ public class Main {
 이미 거의 정렬된 상태에서 빠르다.
 
 ```java
-import java.util.Arrays;
-import java.util.Scanner;
-
 public class Main {
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
@@ -190,9 +178,6 @@ public class Main {
 i 는 1부터 증가, j 는 감소하며 i 값을 끼워넣는다.
 
 ```java
-import java.util.Arrays;
-import java.util.Scanner;
-
 public class Main {
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
@@ -206,7 +191,7 @@ public class Main {
 		for (int i = 1; i < n; i++) {
 			int target = arr[i];
 			int j = i - 1;
-			while (j >= 0 && target < arr[j]) {
+			while (j >= 0 && arr[j] > target) {
 				arr[j + 1] = arr[j];
 				j--;
 			}
@@ -286,9 +271,6 @@ Cache Miss
 **설명없는 코드**
 
 ```java
-import java.util.Arrays;
-import java.util.Scanner;
-
 public class Main {
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
@@ -324,9 +306,6 @@ public class Main {
 **설명있는 코드**
 
 ```java
-import java.util.Arrays;
-import java.util.Scanner;
-
 public class Main {
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
@@ -373,8 +352,6 @@ public class Main {
 이 문제는 HashMap 으로도 풀 수 있을 것 같다.
 
 ```java
-import java.util.Scanner;
-
 public class Main {
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
@@ -401,4 +378,137 @@ public class Main {
 ```
 
 ## 6. 장난꾸러기
+
+**입력**
+
+```
+9
+120 125 152 130 135 135 143 127 160
+```
+
+**출력** 
+
+```
+3 8 
+```
+
+**코드 ** 
+
+```java
+public class Main {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int n = sc.nextInt();
+		int[] arr = new int[n];
+		int[] sorted = new int[n];
+		int number = 1;
+
+		for (int i = 0; i < n; i++) {
+			arr[i] = sc.nextInt();
+		}
+		sorted = arr.clone();
+		
+		for (int i = 1; i < n; i++) {
+			int target = sorted[i];
+			int j = i - 1;
+			while (j >= 0 && sorted[j] > target) {
+				sorted[j + 1] = sorted[j];
+				j--;
+			}
+			sorted[j + 1] = target;
+		}
+		
+		for (int i = 0; i < n; i++) {
+			if (arr[i] != sorted[i]) {
+				System.out.print(number + " ");
+			}
+			number++;
+		}
+	}
+}
+```
+
+## 7. 좌표정렬
+
+**입력**
+
+```
+5
+2 7
+1 3
+1 2
+2 5
+3 6
+```
+
+**출력**
+
+```
+[2 7, 2 7, 1 2, 2 5, 3 6]: 2 7를 밉니다.
+[1 3, 2 7, 1 2, 2 5, 3 6]
+[1 3, 2 7, 2 7, 2 5, 3 6]: 2 7를 밉니다.
+[1 3, 1 3, 2 7, 2 5, 3 6]: 1 3를 밉니다.
+[1 2, 1 3, 2 7, 2 5, 3 6]
+[1 2, 1 3, 2 7, 2 7, 3 6]: 2 7를 밉니다.
+[1 2, 1 3, 2 5, 2 7, 3 6]
+[1 2, 1 3, 2 5, 2 7, 3 6]
+```
+
+**코드**
+
+```java
+class Coordinate implements Cloneable {
+	int x;
+	int y;
+
+	Coordinate(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
+
+	@Override
+	public String toString() {
+		return x + " " + y;
+	}
+	
+	@Override
+	protected Coordinate clone() throws CloneNotSupportedException {
+		return (Coordinate) super.clone();
+	}
+}
+
+public class Main {
+	public static void main(String[] args) throws CloneNotSupportedException {
+		Scanner sc = new Scanner(System.in);
+		int n = sc.nextInt();
+		Coordinate[] coordinates = new Coordinate[n];
+
+		for (int i = 0; i < n; i++) {
+			int x = sc.nextInt();
+			int y = sc.nextInt();
+			coordinates[i] = new Coordinate(x, y);
+		}
+
+		for (int i = 1; i < n; i++) {
+			Coordinate target = coordinates[i];
+			int j = i - 1;
+			while (j >= 0 && coordinates[j].x >= target.x) {
+				if (coordinates[j].x > target.x) {
+					coordinates[j + 1] = coordinates[j].clone();
+					System.out.println(Arrays.toString(coordinates) + ": " + coordinates[j].x + ", " + coordinates[j].y + "를 밉니다.");
+					j--;
+				} else if (coordinates[j].y > target.y) {
+					coordinates[j + 1] = coordinates[j].clone();
+					System.out.println(Arrays.toString(coordinates) + ": " + coordinates[j].x + ", " + coordinates[j].y + "를 밉니다.");
+					j--;
+				}
+			}
+			coordinates[j + 1] = target.clone();
+			System.out.println(Arrays.toString(coordinates));
+		}
+	}
+}
+```
+
+## 8. 이분검색
 

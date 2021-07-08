@@ -1,5 +1,5 @@
 ---
-title: 3개월간 배운것들
+title: 3개월간 배운 과목들
 categories: daily
 ---
 
