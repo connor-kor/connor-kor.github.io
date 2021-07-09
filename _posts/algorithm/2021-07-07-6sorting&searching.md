@@ -7,7 +7,7 @@ category: algorithm
 
 정렬알고리즘 애니메이션
 
-<https://www.toptal.com/developers/sorting-algorithms>
+<https://www.toptal.com/developers/sorting-algorithms>{:target="blank"}
 
 ## 1. 선택정렬
 
