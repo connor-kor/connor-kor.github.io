@@ -3,7 +3,7 @@ title: 1) 사이드바에 카테고리 만드는 방법 (커스텀)
 categories: blog
 ---
 
-<[사이드바에 카테고리 만드는 방법 (커스텀) (velog.io)](https://velog.io/@connor/사이드바에-카테고리-만드는-방법-커스텀#1-category-cppmd){:target="blank"}>
+<[사이드바에 카테고리 만드는 방법 (커스텀) (velog.io)](https://velog.io/@connor/사이드바에-카테고리-만드는-방법-커스텀#1-category-cppmd){:target="_blank"}>
 
 > 코드를 여기 넣으니 for 문이 실행되서 velog 에 옮겨놓았습니다.
 
@@ -31,4 +31,4 @@ root directory 에 _pages 폴더를 만들고 그 안에 categories 폴더를 �
 
 식빵맘님 감사합니다 :)
 
-<[[Github 블로그\] minimal-mistake 블로그 카테고리 만들기 (+ 전체 글 수) - 평생 공부 블로그 : Today I Learned‍ 🌙 (ansohxxn.github.io)](https://ansohxxn.github.io/blog/category/){:target="blank"}>
+<[[Github 블로그\] minimal-mistake 블로그 카테고리 만들기 (+ 전체 글 수) - 평생 공부 블로그 : Today I Learned‍ 🌙 (ansohxxn.github.io)](https://ansohxxn.github.io/blog/category/){:target="_blank"}>

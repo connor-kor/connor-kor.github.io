@@ -59,7 +59,7 @@ GIF 는 움직이는 사진의 연속이다.
 
 MIT 미디어랩에서 만든 교육용 언어입니다.
 
-<https://scratch.mit.edu/about>{:target="blank"}
+<https://scratch.mit.edu/about>{:target="_blank"}
 
 ![image-20210615113301942](../../assets/images/image-20210615113301942.png)
 
@@ -77,13 +77,13 @@ MIT 미디어랩에서 만든 교육용 언어입니다.
 
 아스키코드 변환사이트
 
-<https://ko.rakko.tools/tools/74/>{:target="blank"}
+<https://ko.rakko.tools/tools/74/>{:target="_blank"}
 
 ## C언어
 
 실습사이트
 
-<https://sandbox.cs50.io/>{:target="blank"}
+<https://sandbox.cs50.io/>{:target="_blank"}
 
 GitHub 계정을 연동해 사용하므로 계정이 없다면 생성합니다.
 

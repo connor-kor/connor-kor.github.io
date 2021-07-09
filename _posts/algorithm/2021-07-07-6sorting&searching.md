@@ -561,6 +561,12 @@ public class Main {
 
 ## 8. 이분검색: Binary search
 
+![img](../../assets/images/img.png)
+
+이 교수님이 페이지를 찾는데 책을 찢는 것과 같은 방법이다.
+
+[책 예시](../../cs50/Computational-thinking/#알고리즘--algorithms){:target="_brank"}
+
 이분검색은 정렬이 되어있어야 합니다.
 
 ```java

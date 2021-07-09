@@ -1,5 +1,5 @@
 ---
-title: Recursive&Tree&Graph(DFS, BFS 기초)
+title: VII. Recursive&Tree&Graph(DFS, BFS 기초)
 category: algorithm
 ---
 

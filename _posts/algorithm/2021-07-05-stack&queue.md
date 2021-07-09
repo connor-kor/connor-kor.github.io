@@ -318,7 +318,7 @@ add() 는 항상 true 를 반환하고 용량문제로 넣지못할 때에는 th
 
 반면 offer() 는 넣지못할 때에는 false 를 반환합니다.
 
-<https://stackoverflow.com/questions/15591431/difference-between-offer-and-add-in-priority-queue-in-java>
+<https://stackoverflow.com/questions/15591431/difference-between-offer-and-add-in-priority-queue-in-java>{:target="_blank"}
 
 ## 6. 공주구하기
 

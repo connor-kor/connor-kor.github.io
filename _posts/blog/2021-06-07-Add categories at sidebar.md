@@ -5,7 +5,7 @@ categories: blog
 
 **코드**
 
-<[사이드바에 카테고리 추가하는 방법 (커스텀) (velog.io)](https://velog.io/@connor/사이드바에-카테고리-추가하는-방법-커스텀){:target="blank"}>
+<[사이드바에 카테고리 추가하는 방법 (커스텀) (velog.io)](https://velog.io/@connor/사이드바에-카테고리-추가하는-방법-커스텀){:target="_blank"}>
 
 
 1. _pages/categories 폴더에 카테고리 생성 : 세 곳 변경

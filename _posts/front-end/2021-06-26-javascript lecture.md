@@ -108,7 +108,7 @@ script 태그에 사이에 자바스크립트 코드를 넣는다.
 
 **참고**
 
-<https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String>
+<https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String>{:target="_blank"}
 
 
 ## CSS 기초와 선택자
@@ -176,7 +176,7 @@ css 의 속성: property
 
 **참고**
 
-<https://developer.mozilla.org/ko/docs/Web/API/Document/querySelector>
+<https://developer.mozilla.org/ko/docs/Web/API/Document/querySelector>{:target="_blank"}
 
 # 제어문
 
@@ -419,7 +419,7 @@ Q. 프레임워크란? (framework)
 
 **jQuery 다운로드방법**
 
-<https://jquery.com/>
+<https://jquery.com/>{:target="_blank"}
 
 1. Download 탭 클릭
 2. Download the compressed, production jQuery 버전 을 클릭

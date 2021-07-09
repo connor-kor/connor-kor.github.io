@@ -57,7 +57,7 @@ ex) <\<abstract>> <\<interface>>
 
 **출처**
 
-<https://gmlwjd9405.github.io/2018/07/04/class-diagram.html>
+<https://gmlwjd9405.github.io/2018/07/04/class-diagram.html>{:target="_blank"}
 
 # draw.io 사용법
 

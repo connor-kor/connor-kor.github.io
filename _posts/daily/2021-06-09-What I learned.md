@@ -37,7 +37,7 @@ categories: daily
 
 > Jekyll theme 테마 가이드, 구글링
 
-Minimal Mistakes 테마 가이드 <[Quick-Start Guide - Minimal Mistakes (mmistakes.github.io)](https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/){:target="blank"}>
+Minimal Mistakes 테마 가이드 <[Quick-Start Guide - Minimal Mistakes (mmistakes.github.io)](https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/){:target="_blank"}>
 
 ## 잠깐 만져본것들
 
@@ -49,6 +49,6 @@ Minimal Mistakes 테마 가이드 <[Quick-Start Guide - Minimal Mistakes (mmista
 
 ## 블로그
 
-카카오 티스토리 <[코너의 개발블로그 (tistory.com)](https://devconnor.tistory.com/){:target="blank"}>
+카카오 티스토리 <[코너의 개발블로그 (tistory.com)](https://devconnor.tistory.com/){:target="_blank"}>
 
-벨로그 <[connor (Connor) - velog](https://velog.io/@connor){:target="blank"}>
+벨로그 <[connor (Connor) - velog](https://velog.io/@connor){:target="_blank"}>
