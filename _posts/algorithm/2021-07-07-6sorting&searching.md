@@ -7,7 +7,7 @@ category: algorithm
 
 정렬알고리즘 애니메이션
 
-<https://www.toptal.com/developers/sorting-algorithms>{:target="blank"}
+<https://www.toptal.com/developers/sorting-algorithms>{:target="_blank"}
 
 ## 1. 선택정렬
 
@@ -428,7 +428,52 @@ public class Main {
 }
 ```
 
-## 7. 좌표정렬
+## 7. 객체정렬: compareTo
+
+x, y 좌표를 정렬하는 문제입니다.
+
+**compareTo 메서드구현 코드**
+
+```java
+class Point implements Comparable<Point> {
+	int x;
+	int y;
+	
+	Point(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
+
+	@Override
+	public int compareTo(Point o) {
+		if (this.x == o.x) {
+			return this.y - o.y;
+		}
+		return this.x - o.x;
+	}
+}
+```
+
+```java
+public class Main {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int n = sc.nextInt();
+		ArrayList<Point> arr = new ArrayList<>();
+		
+		for (int i = 0; i < n; i++) {
+			int x = sc.nextInt();
+			int y = sc.nextInt();
+			arr.add(new Point(x, y));
+		}
+		
+		Collections.sort(arr);
+		for (Point point : arr) {
+			System.out.println(point.x + " " + point.y);
+		}
+	}
+}
+```
 
 **입력**
 
@@ -454,7 +499,7 @@ public class Main {
 [1 2, 1 3, 2 5, 2 7, 3 6]
 ```
 
-**코드**
+**삽입정렬구현 코드**
 
 ```java
 class Coordinate implements Cloneable {
@@ -476,7 +521,9 @@ class Coordinate implements Cloneable {
 		return (Coordinate) super.clone();
 	}
 }
+```
 
+```java
 public class Main {
 	public static void main(String[] args) throws CloneNotSupportedException {
 		Scanner sc = new Scanner(System.in);
@@ -510,5 +557,299 @@ public class Main {
 }
 ```
 
-## 8. 이분검색
+
+
+## 8. 이분검색: Binary search
+
+이분검색은 정렬이 되어있어야 합니다.
+
+```java
+public class Main {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int n = sc.nextInt();
+		int m = sc.nextInt();
+		int[] arr = new int[n];
+		int left = 0;
+		int right = n - 1;
+		
+		for (int i = 0; i < n; i++) {
+			arr[i] = sc.nextInt();
+		}
+		
+		Arrays.sort(arr);
+		while (left <= right) {
+			int mid = (left + right) / 2;
+			if (m == arr[mid]) {
+				System.out.println(mid + 1);
+				break;
+			} else if (m < arr[mid]) {
+				right = mid - 1;
+			} else {
+				left = mid + 1;
+			}
+		}
+	}
+}
+```
+
+## 9. 결정알고리즘: 뮤직비디오
+
+`Arrays.stream(arr)`
+
+- `.max().getAsInt()` 
+- `.sum()` 
+
+**입력**
+
+```
+9 3
+1 2 3 4 5 6 7 8 9
+```
+
+**출력** 
+
+```
+left: 9, right: 45, mid: 27
+2<=3
+answer: 27, right: 26
+left: 9, right: 26, mid: 17
+3<=3
+answer: 17, right: 16
+left: 9, right: 16, mid: 12
+5>3
+answer: 17, left: 13
+left: 13, right: 16, mid: 14
+5>3
+answer: 17, left: 15
+left: 15, right: 16, mid: 15
+4>3
+answer: 17, left: 16
+left: 16, right: 16, mid: 16
+4>3
+answer: 17, left: 17
+```
+
+**설명없는 코드**
+
+```java
+public class Main {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int n = sc.nextInt();
+		int m = sc.nextInt();
+		int[] arr = new int[n];
+		int answer = 0;
+
+		for (int i = 0; i < n; i++) {
+			arr[i] = sc.nextInt();
+		}
+
+		int left = Arrays.stream(arr).max().getAsInt();
+		int right = Arrays.stream(arr).sum();
+
+		while (left <= right) {
+			int mid = (left + right) / 2;
+			if (count(arr, mid) <= m) {
+				answer = mid;
+				right = mid - 1;
+			} else {
+				left = mid + 1;
+			}
+		}
+		System.out.println(answer);
+	}
+
+	static int count(int[] arr, int DVD) {
+		int sum = 0;
+		int count = 1;
+		
+		for (int minute : arr) {
+			if (sum + minute > DVD) {
+				count++;
+				sum = 0;
+			}
+			sum += minute;
+		}
+		return count;
+	}
+}
+```
+
+**설명있는 코드**
+
+```java
+public class Main {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int n = sc.nextInt();
+		int m = sc.nextInt();
+		int[] arr = new int[n];
+		int answer = 0;
+
+		for (int i = 0; i < n; i++) {
+			arr[i] = sc.nextInt();
+		}
+
+		int left = Arrays.stream(arr).max().getAsInt();
+		int right = Arrays.stream(arr).sum();
+
+		while (left <= right) {
+			int mid = (left + right) / 2;
+			System.out.println("left: " + left + ", right: " + right + ", mid: " + mid);
+			if (count(arr, mid) <= m) {
+				answer = mid;
+				right = mid - 1;
+				System.out.println(count(arr, mid) + "<=" + m);
+				System.out.println("answer: " + answer + ", right: " + right);
+			} else {
+				left = mid + 1;
+				System.out.println(count(arr, mid) + ">" + m);
+				System.out.println("answer: " + answer + ", left: " + left);
+			}
+		}
+	}
+
+	static int count(int[] arr, int DVD) {
+		int sum = 0;
+		int count = 1;
+		
+		for (int minute : arr) {
+			if (sum + minute > DVD) {
+				count++;
+				sum = 0;
+			}
+			sum += minute;
+		}
+		return count;
+	}
+}
+```
+
+## 10. 결정알고리즘: 마구간 정하기
+
+N개의 마구간이 수직선상에 있습니다. 각 마구간은 x1, x2, x3, ......, xN의 좌표를 가지며, 마구간간에 좌표가 중복되는 일은 없습니다.
+
+현수는 C마리의 말을 가지고 있는데, 이 말들은 서로 가까이 있는 것을 좋아하지 않습니다. 각 마구간에는 한 마리의 말만 넣을 수 있고,
+
+가장 가까운 두 말의 거리가 최대가 되게 말을 마구간에 배치하고 싶습니다.
+
+C마리의 말을 N개의 마구간에 배치했을 때 가장 가까운 두 말의 거리가 최대가 되는 그 최대값을 출력하는 프로그램을 작성하세요.
+
+**입력**
+
+```
+5 3
+1 2 8 4 9
+```
+
+**출력**
+
+```
+[1, 2, 4, 8, 9]
+left: 1, right: 8, mid: 4
+5>=8, count: 2
+left: 1, right: 3, mid: 2
+3>=4, count: 2
+6>=8, count: 3
+left: 3, right: 3, mid: 3
+4>=4, count: 2
+7>=8, count: 3
+```
+
+**설명없는 코드**
+
+```java
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int n = sc.nextInt();
+		int c = sc.nextInt();
+		int[] arr = new int[n];
+		int answer = 0;
+
+		for (int i = 0; i < n; i++) {
+			arr[i] = sc.nextInt();
+		}
+
+		Arrays.sort(arr);
+		int left = 1;
+		int right = arr[n - 1] - arr[0];
+		while (left <= right) {
+			int mid = (left + right) / 2;
+			if (horse(arr, mid) >= c) {
+				answer = mid;
+				left = mid + 1;
+			} else {
+				right = mid - 1;
+			}
+		}
+		System.out.println(answer);
+	}
+
+	private static int horse(int[] arr, int mid) {
+		int recent = arr[0];
+		int count = 1;
+		
+		for (int point : arr) {
+			if (recent + mid <= point) {
+				recent = point;
+				count++;
+			}
+		}
+		return count;
+	}
+}
+```
+
+**설명있는 코드**
+
+```java
+public class Main {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int n = sc.nextInt();
+		int c = sc.nextInt();
+		int[] arr = new int[n];
+		int answer = 0;
+
+		for (int i = 0; i < n; i++) {
+			arr[i] = sc.nextInt();
+		}
+
+		Arrays.sort(arr);
+		System.out.println(Arrays.toString(arr));
+		int left = 1;
+		int right = arr[n - 1] - arr[0];
+		while (left <= right) {
+			int mid = (left + right) / 2;
+			System.out.println("left: " + left + ", right: " + right + ", mid: " + mid);
+			if (horse(arr, mid) >= c) {
+				answer = mid;
+				left = mid + 1;
+			} else {
+				right = mid - 1;
+			}
+		}
+	}
+
+	private static int horse(int[] arr, int mid) {
+		int recent = arr[0];
+		int count = 1;
+		
+		for (int point : arr) {
+			if (recent + mid <= point) {
+				System.out.print(recent + mid + ">=" + point + ", count: ");
+				recent = point;
+				count++;
+				System.out.println(count);
+			}
+		}
+		return count;
+	}
+}
+```
 

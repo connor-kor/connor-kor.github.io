@@ -39,6 +39,44 @@ category: algorithm
 
 # 자료구조 
 
+## 정렬 
+
+| sort             | parameter | function | note |
+| ---------------- | --------- | -------- | ---- |
+| Collections.sort | ArrayList | 객체정렬 |      |
+| Arrays.sort      | Array     | 배열정렬 |      |
+
+**객체정렬 예시** 
+
+```java
+class Point implements Comparable<Point> {
+	int x;
+	int y;
+	
+    // x 에 대해 정렬, x 값이 같을 경우 y 에 대해 정렬
+	@Override
+	public int compareTo(Point o) {
+		if (this.x == o.x) {
+			return this.y - o.y;
+		}
+		return this.x - o.x;
+	}
+}
+```
+
+```java
+public class Main {
+	public static void main(String[] args) {
+		ArrayList<Point> arr = new ArrayList<>();
+		Collections.sort(arr);
+	}
+}
+```
+
+`this.x - o.x` 오름차순
+
+`o.x - this.x` 내림차순
+
 ## Array (length)
 
 | Array    | parameter  | function         | note |
@@ -47,6 +85,13 @@ category: algorithm
 | clone    | (같은타입) | 복사             |      |
 | equals   | (Object)   | 요소 같으면 true |      |
 | toString |            |                  |      |
+
+| Arrays   | parameter | function        | note |
+| -------- | --------- | --------------- | ---- |
+| sort     | Array     | 정렬            |      |
+| toString | Array     | 리스트요소 반환 |      |
+
+
 
 ## ArrayList  (add, get, set, remove, size)
 
@@ -85,6 +130,12 @@ category: algorithm
 | keySet       |                |                                                  | for-each 구문 |
 
 ## TreeMap
+
+## Stack
+
+## Queue
+
+
 
 # ETC
 
