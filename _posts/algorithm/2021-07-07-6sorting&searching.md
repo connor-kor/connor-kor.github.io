@@ -137,8 +137,8 @@ public class Main {
 
 ## 2. 버블정렬
 
-![img](../../assets/images/img.png)
 
+![bubble-sort](../../assets/images/bubble-sort-1625845909357.png)
 
 이웃한 것 끼리 비교하여 정렬
 
