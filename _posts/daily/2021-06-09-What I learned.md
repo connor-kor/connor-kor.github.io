@@ -49,8 +49,6 @@ Minimal Mistakes 테마 가이드 <[Quick-Start Guide - Minimal Mistakes (mmista
 
 ## 블로그
 
-GitHub 블로그 <[코너의 개발이야기 (connor-kor.github.io)](https://connor-kor.github.io/){:target="blank"}>
-
 카카오 티스토리 <[코너의 개발블로그 (tistory.com)](https://devconnor.tistory.com/){:target="blank"}>
 
 벨로그 <[connor (Connor) - velog](https://velog.io/@connor){:target="blank"}>

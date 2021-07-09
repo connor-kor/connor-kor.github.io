@@ -14,7 +14,9 @@ tags: 테마 댓글 디스커스 지킬 포스팅 카테고리 타이포라 GitH
 
 Jekyll 테마제공 사이트
 
-<[Free Jekyll Themes](https://jekyllthemes.io/free){:target="blank"}>
+<[Free Jekyll Themes](https://jekyllthemes.io/free){:target="_blank"}>
+
+1
 
 후보테마
 
