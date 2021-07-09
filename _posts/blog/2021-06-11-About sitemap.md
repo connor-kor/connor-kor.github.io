@@ -23,8 +23,6 @@ categories: blog
 
 ### 등록방법
 
-<https://search.google.com/search-console/sitemaps?resource_id=https%3A%2F%2Fconnor-kor.github.io%2F&hl=ko>
-
 ![1](/assets/images/1.png)
 
 최근 URL 등록 : feed.xml 를 제출합니다. (Jekyll server 를 사용하는 GitHub 블로그 기준)
@@ -45,4 +43,4 @@ categories: blog
 
 ## 출처
 
-<https://support.google.com/webmasters/answer/7451001?hl=ko&ref_topic=9456557>
+<https://support.google.com/webmasters/answer/7451001?hl=ko&ref_topic=9456557>{:target="blank"}

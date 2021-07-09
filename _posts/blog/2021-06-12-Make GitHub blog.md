@@ -14,13 +14,13 @@ tags: 테마 댓글 디스커스 지킬 포스팅 카테고리 타이포라 GitH
 
 Jekyll 테마제공 사이트
 
-<[Free Jekyll Themes](https://jekyllthemes.io/free)>
+<[Free Jekyll Themes](https://jekyllthemes.io/free){:target="blank"}>
 
 후보테마
 
-<[mmistakes/minimal-mistakes: Jekyll theme for building a personal site, blog, project documentation, or portfolio. (github.com)](https://github.com/mmistakes/minimal-mistakes)>
+<[mmistakes/minimal-mistakes: Jekyll theme for building a personal site, blog, project documentation, or portfolio. (github.com)](https://github.com/mmistakes/minimal-mistakes){:target="blank"}>
 
-<[mmistakes/minimal-mistakes: Jekyll theme for building a personal site, blog, project documentation, or portfolio. (github.com)](https://github.com/mmistakes/minimal-mistakes)>
+<[mmistakes/minimal-mistakes: Jekyll theme for building a personal site, blog, project documentation, or portfolio. (github.com)](https://github.com/mmistakes/minimal-mistakes){:target="blank"}>
 
 기준
 
@@ -146,7 +146,7 @@ tags: tag
 
 **출처**
 
-<[Images in Typora](https://support.typora.io/Images/#when-insert-images)>
+<[Images in Typora](https://support.typora.io/Images/#when-insert-images){:target="blank"}>
 
 ## III. 페이지 연결하기 : 카테고리 및 태그 
 
@@ -201,7 +201,7 @@ _data/navigation.yml 파일에 title 과 url 을 추가한다.
 
 우리는 disqus 라는 '웹사이트 혹은 온라인 커뮤니티를 위한 미국 블로그 댓글호스팅 서비스' 를 이용할 것입니다.
 
-<https://disqus.com/profile/login/>
+<https://disqus.com/profile/login/>{:target="blank"}
 
 ![image-20210612210333738](../../assets/images/image-20210612210333738.png)&#160;&#160;![image-20210612210552316](../../assets/images/image-20210612210552316.png)&#160;&#160;![image-20210612211347815](../../assets/images/image-20210612211347815.png)
 
@@ -306,7 +306,7 @@ MathJax 란?
 
 1) MathJax 홈페이지로 들어갑니다.
 
-<https://www.mathjax.org/>
+<https://www.mathjax.org/>{:target="blank"}
 
 ![image-20210702112610812](../../assets/images/image-20210702112610812.png)
 
@@ -368,21 +368,21 @@ VIII. 부등호 : inequality
 
 [2점] [2005년 6월] **- 정답을 클릭해주세요!!**
 
-① [-4](../../wrong-answer)
+① [-4](../../wrong-answer){:target="blank"}
 
-② [-2](../../wrong-answer)
+② [-2](../../wrong-answer){:target="blank"}
 
-③ [0](../../correct-answer)
+③ [0](../../correct-answer){:target="blank"}
 
-④ [2](../../wrong-answer)
+④ [2](../../wrong-answer){:target="blank"}
 
-⑤ [4](../../wrong-answer) 
+⑤ [4](../../wrong-answer){:target="blank"} 
 
 ---
 
 **백준 MathJax 정리**
 
-<https://www.acmicpc.net/blog/view/6> 
+<https://www.acmicpc.net/blog/view/6>{:target="blank"} 
 
 # 4. 꾸미기
 
