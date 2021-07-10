@@ -6,13 +6,8 @@ div.highlighter-rouge,
 figure.highlight {
   position: relative;
   margin-bottom: 1em;
-
-  /* 0: 흰색, 3: 진한흰색, 4: 검정,  5: 회색, 7: 연한회색, 8: 분홍, 9: 주황, a: 노랑, b: 연두, c: 하늘, d: 파랑, e: 보라, f: 주황 */
-  /* 네온기준 background: 0, (가독성x: 4(주석), 5, 6) color: 5 */
-  background: $base07;
-
-  /* 기본글자 색 */
-  color: $base00;
+  background: $base00;
+  color: $base05;
   font-family: $monospace;
   font-size: $type-size-6;
   line-height: 1.8;
@@ -40,8 +35,8 @@ figure.highlight {
     &.rouge-gutter {
       padding-right: 1em;
       width: 1em;
-      color: $base03;
-      border-right: 1px solid $base03;
+      color: $base04;
+      border-right: 1px solid $base04;
       text-align: right;
     }
 
@@ -66,8 +61,8 @@ figure.highlight {
 }
 .highlight {
   .c {
-    /* 주석: Comment */
-    color: $base03;
+    /* Comment */
+    color: $base04;
   }
   .err {
     /* Error */
@@ -82,32 +77,32 @@ figure.highlight {
     color: $base09;
   }
   .n {
-    /* 인스턴스 & 변수 이름: Name */
-    color: $base09;
+    /* Name */
+    color: $base05;
   }
   .o {
-    /* 괄호: Operator */
-    color: $base00;
+    /* Operator */
+    color: $base0c;
   }
   .p {
-    /* HTML 괄호, 콜론: Punctuation */
-    color: $base00;
+    /* Punctuation */
+    color: $base05;
   }
   .cm {
-    /* 주석: Comment.Multiline */
-    color: $base03;
+    /* Comment.Multiline */
+    color: $base04;
   }
   .cp {
-    /* 주석: Comment.Preproc */
-    color: $base03;
+    /* Comment.Preproc */
+    color: $base04;
   }
   .c1 {
-    /* 주석: Comment.Single */
-    color: $base03;
+    /* Comment.Single */
+    color: $base04;
   }
   .cs {
-    /* 주석: Comment.Special */
-    color: $base03;
+    /* Comment.Special */
+    color: $base04;
   }
   .gd {
     /* Generic.Deleted */
@@ -181,8 +176,8 @@ figure.highlight {
     color: $base0d;
   }
   .nb {
-    /* terminal 명령어: Name.Builtin */
-    color: $base00;
+    /* Name.Builtin */
+    color: $base05;
   }
   .nc {
     /* Name.Class */
@@ -209,8 +204,8 @@ figure.highlight {
     color: $base0d;
   }
   .nl {
-    /* CSS 스타일속성: Name.Label */
-    color: $base00;
+    /* Name.Label */
+    color: $base05;
   }
   .nn {
     /* Name.Namespace */
@@ -261,8 +256,8 @@ figure.highlight {
     color: $base0b;
   }
   .sc {
-    /* 문자: Literal.String.Char */
-    color: $base0b;
+    /* Literal.String.Char */
+    color: $base05;
   }
   .sd {
     /* Literal.String.Doc */
