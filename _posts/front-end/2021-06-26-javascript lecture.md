@@ -1,5 +1,5 @@
 ---
-title: 자바스크립트 boost course 강의
+title: 자바스크립트 boost course
 category: frontend
 ---
 
