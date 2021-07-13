@@ -22,8 +22,6 @@ Jekyll 테마제공 사이트
 
 <[mmistakes/minimal-mistakes: Jekyll theme for building a personal site, blog, project documentation, or portfolio. (github.com)](https://github.com/mmistakes/minimal-mistakes){:target="_blank"}>
 
-<[mmistakes/minimal-mistakes: Jekyll theme for building a personal site, blog, project documentation, or portfolio. (github.com)](https://github.com/mmistakes/minimal-mistakes){:target="_blank"}>
-
 기준
 
 1. 모바일에서 보기 편한 반응형인지
