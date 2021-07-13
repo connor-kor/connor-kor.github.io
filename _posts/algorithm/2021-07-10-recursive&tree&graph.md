@@ -285,3 +285,176 @@ static void dfs(Node node) {
 4 5 2 6 7 3 1 
 ```
 
+## 6. 부분집합 구하기 (DFS)
+
+date: 07.13
+
+```java
+public class Main {
+	static int input = 3;
+	static int[] arr = new int[input + 1];
+	
+	public static void main(String[] args) {
+		dfs(1);
+	}
+	
+	static void dfs(int n) {
+		if (n != input + 1) {
+			arr[n] = 1;
+			dfs(n + 1);
+			arr[n] = 0;
+			dfs(n + 1);
+		} else {
+			for (int i = 1; i <= input; i++) {
+				if (arr[i] == 1) {
+					System.out.print(i);
+				}
+			}
+			System.out.println();
+		}
+	}
+}
+```
+
+## 7. 이진트리 레벨탐색 (BFS: Breadth-First Search)
+
+너비우선탐색
+
+Queue 에서 빼면서 자식들을 저장한다.
+
+```java
+class Node {
+	int data;
+	Node left, right;
+
+	Node(int data) {
+		this.data = data;
+	}
+}
+
+public class Main {
+	public static void main(String[] args) {
+		Node root = new Node(1);
+		root.left = new Node(2);
+		root.right = new Node(3);
+		root.left.left = new Node(4);
+		root.left.right = new Node(5);
+		root.right.left = new Node(6);
+		root.right.right = new Node(7);
+		
+		bfs(root);
+	}
+	
+	static void bfs(Node node) {
+		Queue<Node> q = new LinkedList<>();
+		q.add(node);
+		int level = 0;
+		while (!q.isEmpty()) {
+			int len = q.size();
+			System.out.print(level + ": ");
+			for (int i = 0; i < len; i++) {
+				Node current = q.poll();
+				System.out.print(current.data + " ");
+				if (current.left != null) {
+					q.add(current.left);
+				}
+				if (current.right != null) {
+					q.add(current.right);
+				}
+			}
+			level++;
+			System.out.println();
+		}
+	}
+}
+```
+
+## 8. 송아지찾기1 (BFS)
+
+**입력**
+
+```
+5 14
+```
+
+**출력**
+
+```
+5를 꺼냈습니다. []
+6를 넣었습니다.
+4를 넣었습니다.
+10를 넣었습니다.
+level: 1
+6를 꺼냈습니다. [4, 10]
+7를 넣었습니다.
+11를 넣었습니다.
+4를 꺼냈습니다. [10, 7, 11]
+3를 넣었습니다.
+9를 넣었습니다.
+10를 꺼냈습니다. [7, 11, 3, 9]
+15를 넣었습니다.
+level: 2
+7를 꺼냈습니다. [11, 3, 9, 15]
+8를 넣었습니다.
+12를 넣었습니다.
+11를 꺼냈습니다. [3, 9, 15, 8, 12]
+16를 넣었습니다.
+3를 꺼냈습니다. [9, 15, 8, 12, 16]
+2를 넣었습니다.
+9를 꺼냈습니다. [15, 8, 12, 16, 2]
+3
+```
+
+**설명있는 코드**
+
+```java
+public class Main {
+	static int answer = 0;
+	static int[] move = {1, -1, 5};
+	static int[] point = new int[10001];
+	static Queue<Integer> q = new LinkedList<>();
+	private static int next;
+	private static int level = 0;
+	
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int su = sc.nextInt();
+		int cow = sc.nextInt();
+		int answer = bfs(su, cow);
+		System.out.println(answer);
+	}
+
+	static int bfs(int su, int cow) {
+		q.add(su);
+		point[su] = 1;
+		
+		while (!q.isEmpty()) {
+			int len = q.size();
+			for (int i = 0; i < len; i++) {
+				int poll = q.poll();
+				System.out.println(poll + "를 꺼냈습니다. " + q);
+				
+				for (int j = 0; j < move.length; j++) {
+					next = poll + move[j];
+					if (next == cow) {
+						return level + 1;
+					}
+					if (point[next] == 1) {
+						continue;
+					}
+					
+					if (next >= 1 && next <= 10000) {
+						q.add(next);
+						point[next] = 1;
+						System.out.println(next + "를 넣었습니다.");
+					}
+				}
+			}
+			level++;
+			System.out.println("level: " + level);
+		}
+		return 0;
+	}
+}
+```
+
