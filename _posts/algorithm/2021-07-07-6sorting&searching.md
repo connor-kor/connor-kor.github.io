@@ -1,5 +1,5 @@
 ---
-title: VI. Sorting&Searching 강의
+title: 6' Sorting&Searching 강의
 category: algorithm
 ---
 

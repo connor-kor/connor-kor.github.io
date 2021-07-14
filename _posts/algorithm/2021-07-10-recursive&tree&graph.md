@@ -1,5 +1,5 @@
 ---
-title: VII. Recursive&Tree&Graph(DFS, BFS 기초)
+title: 7' Recursive&Tree&Graph(DFS, BFS 기초)
 category: algorithm
 ---
 
@@ -454,6 +454,154 @@ public class Main {
 			System.out.println("level: " + level);
 		}
 		return 0;
+	}
+}
+```
+
+## 9. Tree 말단노드까지의 가장 잛은 경로 (DFS)
+
+## 10. 그래프와 인접행렬
+
+1. 무방향 그래프
+2. 방향 그래프
+3. 가중치방향 그래프
+
+## 11. 경로탐색 (DFS)
+
+방향그래프가 주어지면 1번 정점에서 point 정점으로 가는 모든 경로의 가지수를 출력하는 프로그램을 작성하세요.
+
+아래 그래프에서 1번 정점에서 5번 정점으로 가는 가지 수는 총 6가지 입니다.
+
+![image-20210715002335963](../../assets/images/image-20210715002335963.png)
+
+**입력** 
+
+```
+5 9
+1 2
+1 3
+1 4
+2 1
+2 3
+2 5
+3 4
+4 2
+4 5
+```
+
+**출력**
+
+```
+1에서 2로 이동
+2에서 3로 이동
+3에서 4로 이동
+4에서 5로 이동
+도착!
+2에서 5로 이동
+도착!
+1에서 3로 이동
+3에서 4로 이동
+4에서 2로 이동
+2에서 5로 이동
+도착!
+4에서 5로 이동
+도착!
+1에서 4로 이동
+4에서 2로 이동
+2에서 3로 이동
+2에서 5로 이동
+도착!
+4에서 5로 이동
+도착!
+6
+```
+
+**설명없는 코드**
+
+```java
+static void solve(int start) {
+	check[start] = 1;
+
+	if (start == point) {
+		count++;
+	}
+	for (int end = 1; end <= point; end++) {
+		if (arr[start][end] == 1 && check[end] == 0) {
+			solve(end);
+			check[start] = 0;
+		}
+	}
+}
+```
+
+```java
+public class Main {
+	static int count = 0;
+	static int point;
+	static int arrow;
+	static int[][] arr;
+	static int[] check;
+
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		point = sc.nextInt();
+		arrow = sc.nextInt();
+		arr = new int[point + 1][point + 1];
+		check = new int[point + 1];
+		
+		for (int i = 0; i < arrow; i++) {
+			int n = sc.nextInt();
+			int m = sc.nextInt();
+			arr[n][m] = 1;
+		}
+
+		solve(1);
+		System.out.println(count);
+	}	
+}
+```
+
+**설명있는 코드**
+
+```java
+public class Main {
+	static int count = 0;
+	static int point;
+	static int arrow;
+	static int[][] arr;
+	static int[] check;
+
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		point = sc.nextInt();
+		arrow = sc.nextInt();
+		arr = new int[point + 1][point + 1];
+		check = new int[point + 1];
+
+		for (int i = 0; i < arrow; i++) {
+			int n = sc.nextInt();
+			int m = sc.nextInt();
+			arr[n][m] = 1;
+		}
+
+		solve(1);
+		System.out.println(count);
+	}
+
+	static void solve(int start) {
+		check[start] = 1;
+
+		if (start == point) {
+			count++;
+			System.out.println("도착!");
+		}
+		for (int end = 1; end <= point; end++) {
+			if (arr[start][end] == 1 && check[end] == 0) {
+				System.out.println(start + "에서 " + end + "로 이동");
+				solve(end);
+				check[start] = 0;
+			}
+		}
 	}
 }
 ```

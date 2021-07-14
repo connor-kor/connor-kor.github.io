@@ -1,5 +1,5 @@
 ---
-title: V. Stack&queue 강의
+title: 5' Stack&queue 강의
 category: algorithm
 ---
 
