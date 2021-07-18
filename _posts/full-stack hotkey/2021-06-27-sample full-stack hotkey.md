@@ -7,42 +7,46 @@ categories: fullstack-hotkey
 
 도움이 되었거나 추천하는 개인 단축키가 있다면 댓글을 달아주세요!!
 
+줄생성, 줄이동, 줄복사, 줄삭제는 정말 많이 씁니다.
+
 ## 단축키 
 
 
-| Hotkey                       | Java: eclipse                          | JavaScript: VScode           |
-| ---------------------------- | -------------------------------------- | ---------------------------- |
-| 줄 삭제                      | ctrl + D                               | ctrl + shift + K (*)         |
-| 자동완성                     | ctrl + space                           |                              |
-| 실행                         | ctrl + F11 (*)                         | **ctrl + F5**                |
-| 해당 객체 혹은 메서드로 이동 | ctrl + Click                           |                              |
-| 한 줄 정렬                   | ctrl + I                               |                              |
-| 모든 줄 정렬 (format)        | ctrl + shift + F                       | alt + shift + F (*)          |
-| 창 닫기                      | ctrl + W                               | ctrl + W                     |
-| 모든 창 닫기                 | ctrl + shift + W                       | ctrl + K, W (*)              |
-| 한 줄 주석                   | ctrl + shift + C 혹은 ctrl + /         | ctrl + /                     |
-| 블록주석 및 해제             | ctrl + shift + /<br />ctrl + shift + \ |                              |
-| 문서주석                     | alt + shift + J                        |                              |
-| **텍스트블록**               | ctrl + shift + '                       |                              |
-| **대문자 변환**              | ctrl + shift + X                       |                              |
-| **소문자 변환**              | ctrl + shift + Y                       |                              |
-| **화면나누기**               | ctrl + shift + [ 혹은 _                | **ctrl + alt + ←→**          |
-| 아랫줄 생성                  | shift + enter                          | ctrl + enter (*)             |
-| 윗줄 생성                    | ctrl + shift + enter                   | ctrl + shift + enter         |
-| 줄의 가장 앞으로 커서이동    | home                                   |                              |
-| 처음부터 커서까지 블록지정   | shift + home                           |                              |
-| 줄 이동                      | alt + ↑↓                               | alt + ↑↓                     |
-| 줄 복사                      | ctrl + alt + ↑↓                        | shift + alt + ↑↓ (*)         |
-| **현재줄과 아랫줄 합치기**   | ctrl + alt + J                         |                              |
-| 같은글자 수정                | alt + shift + R                        | **ctrl + F2**                |
-| 오류처리                     | F2                                     |                              |
-| 에디터창으로 커서이동        | F12                                    |                              |
-| 커서에 주석추가              |                                        | alt + shift + A              |
-| 화면 한칸이동                | ctrl + ↑↓                              |                              |
-| 화면 페이지이동              |                                        | shift + page up, down        |
-| 특정 줄로 이동               | ctrl + L                               | **ctrl + G**                 |
-| 다른파일 열기                |                                        | ctrl + shift + page up, down |
-| 수정본 비교하며 작성         |                                        | ctrl + K, D (Draw)           |
+| Hotkey                       | Java: eclipse                          | JavaScript: VScode           | Android                                                      |
+| ---------------------------- | -------------------------------------- | ---------------------------- | ------------------------------------------------------------ |
+| 줄 삭제                      | ctrl + D                               | ctrl + shift + K (*)         | ctrl + Y (*)                                                 |
+| 자동완성                     | ctrl + space                           |                              | alt + enter                                                  |
+| 제네레이트                   |                                        |                              | **alt + insert**                                             |
+| 오버라이딩                   |                                        |                              | **ctrl + O**                                                 |
+| 실행                         | ctrl + F11 (*)                         | **ctrl + F5**                |                                                              |
+| 해당 객체 혹은 메서드로 이동 | ctrl + Click                           |                              |                                                              |
+| 한 줄 정렬                   | ctrl + I                               |                              | ctrl + alt + I<br />ctrl + I: implements                     |
+| 모든 줄 정렬 (format)        | ctrl + shift + F                       | alt + shift + F (*)          |                                                              |
+| 창 닫기                      | ctrl + W                               | ctrl + W                     |                                                              |
+| 모든 창 닫기                 | ctrl + shift + W                       | ctrl + K, W (*)              |                                                              |
+| 한 줄 주석                   | ctrl + shift + C 혹은 ctrl + /         | ctrl + /                     |                                                              |
+| 블록주석 및 해제             | ctrl + shift + /<br />ctrl + shift + \ |                              |                                                              |
+| 문서주석                     | alt + shift + J                        |                              |                                                              |
+| **텍스트블록**               | ctrl + shift + '                       |                              |                                                              |
+| **대문자 변환**              | ctrl + shift + X                       |                              |                                                              |
+| **소문자 변환**              | ctrl + shift + Y                       |                              |                                                              |
+| **화면나누기**               | ctrl + shift + [ 혹은 _                | **ctrl + alt + ←→**          |                                                              |
+| 아랫줄 생성                  | shift + enter                          | ctrl + enter (*)             | shift + enter                                                |
+| 윗줄 생성                    | ctrl + shift + enter                   | ctrl + shift + enter         | ctrl + alt + enter (*)<br />현재구문완성: ctrl + shift + enter |
+| 줄의 가장 앞으로 커서이동    | home                                   |                              |                                                              |
+| 처음부터 커서까지 블록지정   | shift + home                           |                              |                                                              |
+| 줄 이동                      | alt + ↑↓                               | alt + ↑↓                     | alt + shift + ↑↓ (*)<br />next method: alt + ↑↓              |
+| 줄 복사                      | ctrl + alt + ↑↓                        | shift + alt + ↑↓ (*)         | duplicate entire lines: ctrl + alt + ↓                       |
+| **현재줄과 아랫줄 합치기**   | ctrl + alt + J                         |                              |                                                              |
+| 같은글자 수정                | alt + shift + R                        | **ctrl + F2**                | **shift + F6**                                               |
+| 오류처리                     | F2                                     |                              |                                                              |
+| 에디터창으로 커서이동        | F12                                    |                              |                                                              |
+| 커서에 주석추가              |                                        | alt + shift + A              |                                                              |
+| 화면 한칸이동                | ctrl + ↑↓                              |                              |                                                              |
+| 화면 페이지이동              |                                        | shift + page up, down        |                                                              |
+| 특정 줄로 이동               | ctrl + L                               | **ctrl + G**                 |                                                              |
+| 다른파일 열기                |                                        | ctrl + shift + page up, down |                                                              |
+| 수정본 비교하며 작성         |                                        | ctrl + K, D (Draw)           |                                                              |
 
 **개인지정 단축키** 
 
