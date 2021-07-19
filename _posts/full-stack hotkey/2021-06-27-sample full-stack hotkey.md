@@ -39,7 +39,8 @@ categories: fullstack-hotkey
 | 줄 복사                      | ctrl + alt + ↑↓                        | shift + alt + ↑↓ (*)         | duplicate entire lines: ctrl + alt + ↓                       |
 | **현재줄과 아랫줄 합치기**   | ctrl + alt + J                         |                              |                                                              |
 | 같은글자 수정                | alt + shift + R                        | **ctrl + F2**                | **shift + F6**                                               |
-| 오류처리                     | F2                                     |                              |                                                              |
+| 오류처리                     | F2                                     |                              | **alt + enter**                                              |
+| 다음에러 찾기                |                                        |                              | F2                                                           |
 | 에디터창으로 커서이동        | F12                                    |                              |                                                              |
 | 커서에 주석추가              |                                        | alt + shift + A              |                                                              |
 | 화면 한칸이동                | ctrl + ↑↓                              |                              |                                                              |

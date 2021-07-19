@@ -78,6 +78,14 @@
                     {% endif %}
                 {% endfor %}
             </ul>
+            <ul>
+                {% for category in site.categories %}
+                    {% if category[0] == "android" %}
+                        <!-- 사이드바 출력 -->
+                        <li><a href="/categories/android" class=""> 안드로이드 ({{category[1].size}})</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
 
         <!-- 4. 기타 -->
         <span class="nav__sub-title"> etc </span>
