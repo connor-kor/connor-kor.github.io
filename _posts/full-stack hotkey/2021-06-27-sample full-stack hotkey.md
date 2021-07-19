@@ -20,6 +20,7 @@ categories: fullstack-hotkey
 | 오버라이딩                   |                                        |                              | **ctrl + O**                                                 |
 | 실행                         | ctrl + F11 (*)                         | **ctrl + F5**                |                                                              |
 | 해당 객체 혹은 메서드로 이동 | ctrl + Click                           |                              |                                                              |
+| 파라미터 확인                |                                        |                              | ctrl + P                                                     |
 | 한 줄 정렬                   | ctrl + I                               |                              | ctrl + alt + I<br />ctrl + I: implements                     |
 | 모든 줄 정렬 (format)        | ctrl + shift + F                       | alt + shift + F (*)          |                                                              |
 | 창 닫기                      | ctrl + W                               | ctrl + W                     |                                                              |
