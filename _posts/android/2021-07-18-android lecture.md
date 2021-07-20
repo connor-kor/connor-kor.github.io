@@ -3,7 +3,7 @@ title: 안드로이드 부스트코스
 category: android
 ---
 
-# 0. 위젯
+**위젯**
 
 **토스트**
 
@@ -105,6 +105,8 @@ bias: 위치조정
 
 guidelines 을 만들 수 있다.
 
+## 종류
+
 **대표레이아웃**
 
 | 레이아웃   | 설명                                                         |
@@ -187,7 +189,528 @@ public void clicked(View view) {
 
 - `isChecked` 
 
+## 드로어블
+
 **상태 드로어블**
+
+새로운 xml 파일을 만든다.
+
+`drawable` 
+
+`state_pressed` 
+
+`state_focused` 
+
+```xml
+<item
+    android:state_pressed="true"
+    android:drawable="@drawable/ic_thumb_up_selected"/>
+<item
+    android:drawable="@drawable/ic_thumb_up"/>
+```
+
+**쉐이프 드로어블**
+
+selector 를 shape 로 바꾼다.
+
+```xml
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <size android:width="200dp"
+        android:height="120dp"/>
+    <stroke android:width="1dp"
+        android:color="#00f"/>
+    <solid android:color="#adf"/>
+    <padding android:bottom="1dp"/>
+</shape>
+```
+
+`<Shape`
+
+`shape` 내부속성 
+
+- `size`
+- `stroke` 
+- `solid` 테두리
+- `padding` 내부여백
+- `gradient` `startColor` `centerColor` `endColor` `angle` `centerY`
+- `corners` `radius` 
+
+```xml
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient
+        android:startColor="#7288DB"
+        android:centerColor="#3250B4"
+        android:endColor="#254095"
+        android:angle="90"
+        android:centerY="0.5"
+        />
+    <corners android:radius="2dp"
+        />
+</shape>
+```
+
+**테두리**
+
+```xml
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <stroke android:width="1dp"
+                android:color="#BE55DA"/>
+            <solid android:color="#0000"/>
+        </shape>
+    </item>
+    <item android:top="1dp"
+        android:bottom="1dp"
+        android:right="1dp"
+        android:left="1dp">
+        <shape android:shape="rectangle">
+            <stroke android:width="1dp"
+                android:color="#BE55DA"/>
+            <solid android:color="#0000"/>
+        </shape>
+    </item>
+</layer-list>
+```
+
+**앱 정보**
+
+manifests 폴더의 AndroidManifest.xml 에서
+
+`icon` 앱 아이콘
+
+`label` 앱 이름
+
+# 2. 이벤트와 리스트뷰
+
+**테이블 레이아웃**
+
+격자로 추가할 수 있다.
+
+`stretchColumns` 갯수만큼 `0, 1, 2` 해주면 크기를 동일하게 나눠 갖는다.
+
+`layout_column` `0` `1` `2` 
+
+`layout_span` 몇 칸 차지할지 정할 수 있다.
+
+**스크롤뷰**
+
+`<ScrollView>` 로 감싸주면 된다.
+
+**이벤트처리**
+
+- 터치 이벤트
+- 키 이벤트
+- 제스처 이벤트
+- 포커스
+- 화면방향 변경
+
+| 메서드           | 이벤트                                                    |
+| ---------------- | --------------------------------------------------------- |
+| onDown           | 눌렀을 경우                                               |
+| onShowPress      | 눌렀다 떼어지는 경우                                      |
+| onSingleTapUp    | 한손가락으로 눌르는 경우                                  |
+| onDoubleTap      |                                                           |
+| onDoubleTabEvent | 두 손가락이 눌러진 상태에서 떼거나 이동하는 세부적인 액션 |
+| onScroll         | 화면을 누른 채 일정한 속도와 방향으로 움직였다 떼는 경우  |
+| onFling          | 화면을 누른 채 가속도를 붙여 손가락을 움직였다 떼는 경우  |
+| onLongPress      | 화면을 손가락으로 오래 누르는 경우                        |
+
+`textView` 
+
+- `append` 글자 추가
+
+```java
+public void println(String data) {
+        textView.append(data + "\n");
+}
+```
+
+**터치 감지**
+
+```java
+view.setOnTouchListener(new View.OnTouchListener() {
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        int action = event.getAction();
+        float curX = event.getX();
+        float curY = event.getY();
+
+        if (action == MotionEvent.ACTION_DOWN) {
+            println("손가락 눌렸음:" + curX + ", " + curY);
+
+        } else if (action == MotionEvent.ACTION_MOVE) {
+            println("손가락 움직임:" + curX + ", " + curY);
+
+        } else if (action == MotionEvent.ACTION_UP) {
+            println("손가락 떼졌음:" + curX + ", " + curY);
+        }
+        return true;
+    }
+});
+```
+
+**제스처 감지**
+
+```java
+detector = new GestureDetector(this, new GestureDetector.OnGestureListener() {
+    @Override
+    public boolean onDown(MotionEvent e) {
+        println("onDown() 호출됨");
+        return true;
+    }
+
+    @Override
+    public void onShowPress(MotionEvent e) {
+        println("ShowPress");
+
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent e) {
+        println("SingleTapUp");
+        return true;
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+        println("Scroll" + distanceX + ", " + distanceY);
+        return true;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent e) {
+        println("LongPress");
+
+    }
+
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+        println("Fling" + velocityX + ", " + velocityY);
+        return true;
+    }
+});
+```
+
+```java
+view2.setOnTouchListener(new View.OnTouchListener() {
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        detector.onTouchEvent(event);
+        return true;
+    }
+});
+```
+
+**키 입력 이벤트 처리**
+
+| 키 코드             | 설명                         |
+| ------------------- | ---------------------------- |
+| keycode_dpad_left   | 왼쪽 화살표                  |
+| keycode_dpad_right  | 오른쪽 화살표                |
+| keycode_dpad_up     | 위쪽 화살표                  |
+| keycode_dpad_down   | 아래쪽 화살표                |
+| keycode_dpad_center | 중앙 버튼                    |
+| keycode_call        | 통화 버튼                    |
+| keycode_endcall     | 통화종료 버튼                |
+| keycode_home        | 홈 버튼                      |
+| keycode_back        | 뒤로가기 버튼                |
+| keycode_volume_up   | 소리크기증가 버튼            |
+| keycode_volume_down | 소리크기감소 버튼            |
+| keycode_0~keycode_9 | 숫자 0부터 9까지의 키 값     |
+| keycode_A~keycode_Z | 알파벳 A 부터 Z 까지의 키 값 |
+
+ctrl + O (메서드 오버라이딩) 을 통해 정의
+
+**뒤로가기 버튼**
+
+```java
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Toast.makeText(this, "시스템 Back 버튼눌림", Toast.LENGTH_LONG).show();
+        }
+        return true;
+    }
+```
+
+**무료아이콘 사이트**
+
+아이콘파인더:  <https://www.iconfinder.com/>{:target="_blank"}
+
+**토스트**
+
+`setGravity` 
+
+`setMargin` 
+
+클릭: 셋온클릭리스너(뉴 뷰.온클릭리스너: . - new - V)
+
+**토스트 위치바꾸기**
+
+```java
+button.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        Toast toast = Toast.makeText(getApplicationContext(), "위치가 바뀐 토스트", Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.TOP|Gravity.LEFT, 0, 0);
+        toast.show();
+    }
+});
+```
+
+```java
+LayoutInflater inflater = getLayoutInflater();
+```
+
+`inflater.inflate(layout res, root layout id)` 레이아웃을 찾습니다.
+
+**토스트 꾸미기**
+
+```xml
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <stroke
+        android:width="4dp"
+        android:color="#ffffff00"/>
+    <solid
+        android:color="#ff883300"/>
+    <padding
+        android:left="20dp"
+        android:top="20dp"
+        android:right="20dp"
+        android:bottom="20dp"/>
+    <corners
+        android:radius="15dp"/>
+</shape>
+```
+
+**토스트**
+
+```xml
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/toast_layout_root">
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:textSize="40dp"
+        android:background="@drawable/toast"/>
+</LinearLayout>
+```
+
+**버튼클릭 시 토스트**
+
+```java
+button2.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        LayoutInflater inflater = getLayoutInflater();
+        View layout = inflater.inflate(R.layout.toastborder, (ViewGroup) findViewById(R.id.toast_layout_root));
+        TextView text = layout.findViewById(R.id.text);
+        text.setText("모양을 바꾼 토스트");
+        Toast toast = new Toast(getApplicationContext());
+        toast.setGravity(Gravity.CENTER, 100, 100);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setView(layout);
+        toast.show();
+    }
+});
+```
+
+**스낵바**
+
+file - project structure - dependencies - "+" - library dependency - design 이라고 검색하면
+
+com.android.support 라고 있다. 
+
+선택하여 ok 를 눌러주면
+
+![image-20210720220609644](../../assets/images/image-20210720220609644.png)
+
+gradle scripts 의 build.gradle (module: event-4.app) 의 dependencies 에 design 이 
+
+implementation 된 것을 볼 수 있다.
+
+> 저는 외부 라이브러리가 되지않아 삭제하고 내장된 come.google.android.material.snackbar 를 이용했습니다.
+
+```java
+Button button3 = findViewById(R.id.button3);
+button3.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        Snackbar.make(v, "스낵바입니다.", Snackbar.LENGTH_LONG).show();
+    }
+});
+```
+
+**알림대화상자**
+
+```java
+public void showMessage() {
+    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    builder.setTitle("안내");
+    builder.setMessage("종료하시겠습니까?");
+    builder.setIcon(android.R.drawable.ic_dialog_alert);
+    builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            Snackbar.make(textView, "예 버튼이 눌렸습니다.", Snackbar.LENGTH_LONG).show();
+        }
+    });
+    builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            Snackbar.make(textView, "아니오 버튼이 눌렸습니다.", Snackbar.LENGTH_LONG).show();
+        }
+    });
+    AlertDialog dialog = builder.create();
+    dialog.show();
+}
+```
+
+**나인패치 이미지**
+
+Nine patch 이미지란?
+
+- 이미지가 늘어나거나 줄어들 때 생기는 이미지 왜곡을 해결하는 방법을 정의한 것
+- 서로 다른 해상도를 가진 여러 단말에 dp 단위로 뷰의 크기를 맞추다 보면 이미지 크기가 자동조절되면서 왜곡되는 현상발생 -> 나인패치 이미지로 해결한다.
+
+나인패치 정식 가이드: <https://developer.android.com/studio/write/draw9patch.html?hl=ko>{:target="_blank"}
+
+나인패치 비공식 가이드: <https://recipes4dev.tistory.com/132>{:target="_blank"}
+
+나인패치 만드는 사이트: <http://romannurik.github.io/AndroidAssetStudio/nine-patches.html#&sourceDensity=320&name=example>{:target="_blank"}
+
+**비트맵 버튼**
+
+나인패치 이미지를 적용하는 대표적인 경우가 바로 버튼이다.
+
+하지만 이런 버튼은 아무리 눌러도 이미지의 변화가 없어 사용자가 버튼을 눌렀는지 알 수 없다는 단점이 있다.
+
+비트맵 이미지를 이용해 버튼의 상태를 표시하려면 버튼이 눌렸을 때와 떼어졌을 때를 이벤트로 구분하여 처리한다.
+
+`onMeasure` 
+
+`onDraw` 
+
+`setMeasuredDimension` 
+
+뷰에 그래픽이 그려질 때 onDraw() 메소드가 호출됨
+
+다시 그리기는 invalidate() 메소드를 사용함
+
+AppCompatButton 의 필수 생성자
+
+- 파라미터 하나: 자바에서 버튼생성
+- 파라미터 둘: layout.xml 로 버튼생성
+
+자바 소스코드에서는 px 단위로 텍스트크기가 설정된다.
+
+설정하고 싶다면 values 폴더에 xml 파일을 만들어 불러온다.
+
+```xml
+<resources>
+    <dimen name="text_size">16dp</dimen>
+</resources>
+```
+
+**비트맵 버튼**
+
+```java
+public class BitmapButton extends AppCompatButton {
+    public BitmapButton(Context context) {
+        super(context);
+        init(context);
+    }
+    public BitmapButton(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init(context);
+    }
+    private void init(Context context) {
+        setBackgroundResource(R.drawable.title_bitmap_button_normal);
+        float textSize = getResources().getDimension(R.dimen.text_size);
+        setTextSize(textSize);
+        setTextColor(Color.WHITE);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        int action = event.getAction();
+        switch (action) {
+            case MotionEvent.ACTION_DOWN:
+                setBackgroundResource(R.drawable.title_bitmap_button_clicked);
+                break;
+            case MotionEvent.ACTION_UP:
+                setBackgroundResource(R.drawable.title_bitmap_button_normal);
+                break;
+        }
+        invalidate();
+        return true;
+    }
+}
+```
+
+버튼은 `<com.example.mybutton.BitmapButton>` 로 선언해야 한다.
+
+**인플레이션**
+
+XML 레이아웃에 정의된 내용이 메모리에 객체화되는 과정
+
+안드로이드가 버튼과 같은 것을 만들어준다.
+
+`setContentView(R.layout.activity_main)` xml 파일을 화면으로 만들어줍니다.
+
+전체화면이 아닌경우 `LayoutInflater` 클래스를 사용해 사용자가 직접 인플레이트를 해야한다.
+
+```java
+FrameLayout container = findViewById(R.id.container);
+Button button = findViewById(R.id.button);
+button.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater.inflate(R.layout.sub1, container, true);
+    }
+});
+```
+
+`inflater.inflate(R.layout.부분 레이아웃, 부모 레이아웃 id, true)` 
+
+**리스트뷰**
+
+여러 개의 아이템중에서 하나를 선택하는 방식의 선택위젯은 어댑터를 사용하여야 한다.
+
+이 어댑터에서 데이터를 관리하도록 해야할 뿐만 아니라 화면에 보여지는 뷰도 어댑터의 getView() 메소드에서 결정한다.
+
+선택위젯의 가장 큰 특징은 원본 데이터를 위젯에 직접 설정하지 않고 어댑터라는 클래스를 사용하도록 되어있다는 점이다.
+
+- 리스트뷰
+- 스피너: 콤보박스
+- 그리드뷰
+- 갤러리
+
+리스트뷰로 보여줄 때 해야할 일들
+
+1. 리스트뷰에 들어갈 각 아이템의 레이아웃을 XML 로 정의한다.
+2. 인플레이션 후 설정해야 한다.
+3. 데이터관리 역할을 하는 어댑터 클래스를 만들고 그 안에 각 아이템으로 표시할 뷰를 리턴하는 getView() 메소드를 정의한다.
+4. 화면에 보여줄 리스트뷰를 만들고 그 안에 데이터가 선택되었을 때 호출될 리스너 객체를 정의한다.
+
+**어댑터**
+
+`BaseAdapter` 를 상속한다.
+
+데이터를 관리한다.
+
+
+
+
+
+
 
 
 
@@ -198,8 +721,6 @@ public void clicked(View view) {
 
 
 ---
-
-
 
 # 5. 네트워킹
 
