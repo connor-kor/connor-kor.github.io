@@ -22,6 +22,8 @@ startActivity(intent);
 
 # 1. 레이아웃
 
+## 환경설정
+
 android studio: IntelliJ 에서 발전된 개발도구
 
 다운로드링크: <https://developer.android.com/studio?gclid=CjwKCAjwos-HBhB3EiwAe4xM91psnsUbokVvgwEWcNRh-BxSys_fKIvvB6wOoWJ5ZnKqZk_rzkfX0BoCt10QAvD_BwE&gclsrc=aw.ds>{:target="_blank"}
@@ -105,7 +107,7 @@ bias: 위치조정
 
 guidelines 을 만들 수 있다.
 
-## 종류
+## 레이아웃 종류
 
 **대표레이아웃**
 
@@ -282,6 +284,8 @@ manifests 폴더의 AndroidManifest.xml 에서
 `label` 앱 이름
 
 # 2. 이벤트와 리스트뷰
+
+## 이벤트
 
 **테이블 레이아웃**
 
@@ -572,6 +576,8 @@ public void showMessage() {
 }
 ```
 
+## 나인패치
+
 **나인패치 이미지**
 
 Nine patch 이미지란?
@@ -656,6 +662,8 @@ public class BitmapButton extends AppCompatButton {
 
 버튼은 `<com.example.mybutton.BitmapButton>` 로 선언해야 한다.
 
+## 어댑터 및 인플레이션
+
 **인플레이션**
 
 XML 레이아웃에 정의된 내용이 메모리에 객체화되는 과정
@@ -706,15 +714,363 @@ button.setOnClickListener(new View.OnClickListener() {
 
 데이터를 관리한다.
 
+만드는 법
 
+1. 객체클래스를 생성 후 생성자, getter, setter, toString 을 작성
+2. singer_item.xml 리스트뷰 디자인
+3. singer_item 을 inflate
+4. BaseAdapter 를 상속하는 어댑터클래스 생성 후 객체리스트 작성
 
+**객체**
 
+```java
+public class SingerItem {
+    String name;
+    String mobile;
+    int resId;
 
+    public SingerItem(String name, String mobile, int resId) {
+        this.name = name;
+        this.mobile = mobile;
+        this.resId = resId;
+    }
 
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
 
+    public int getResId() {
+        return resId;
+    }
 
+    public String getMobile() {
+        return mobile;
+    }
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
 
+    public int getImage() {
+        return resId;
+    }
 
+    @Override
+    public String toString() {
+        return "SingerItem{" +
+                "name='" + name + '\'' +
+                ", mobile='" + mobile + '\'' +
+                '}';
+    }
+}
+```
+
+**뷰 레이아웃**
+
+```xml
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@mipmap/ic_launcher"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="이름"
+            android:textSize="30dp"
+            android:textColor="@color/design_default_color_primary_dark"/>
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="전화번호"
+            android:textColor="@android:color/holo_orange_light"
+            android:layout_marginTop="3dp"
+            android:textSize="30dp" />
+    </LinearLayout>
+</LinearLayout>
+```
+
+**inflate**
+
+```java
+public class SingerItemView extends LinearLayout {
+    TextView textView;
+    TextView textView2;
+    ImageView imageView;
+
+    public SingerItemView(Context context) {
+        super(context);
+        init(context);
+    }
+
+    public SingerItemView(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+        init(context);
+    }
+
+    private void init(Context context) {
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater.inflate(R.layout.singer_item, this, true);
+        textView = findViewById(R.id.textView);
+        textView2 = findViewById(R.id.textView2);
+        imageView = findViewById(R.id.imageView);
+    }
+
+    public void setName(String name) {
+        textView.setText(name);
+    }
+    public void setMobile(String mobile) {
+        textView2.setText(mobile);
+    }
+
+    public void setImage(int resId) {
+        imageView.setImageResource(resId);
+    }
+}
+```
+
+**리스트뷰**
+
+```java
+public class MainActivity extends AppCompatActivity {
+    SingerAdapter adapter;
+    EditText editText;
+    EditText editText2;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        ListView listView = findViewById(R.id.listView);
+        adapter = new SingerAdapter();
+        adapter.addItem(new SingerItem("소녀시대", "010-1000-1000", android.R.drawable.ic_lock_idle_lock));
+        adapter.addItem(new SingerItem("동방신기", "010-2000-1000", android.R.drawable.ic_btn_speak_now));
+        adapter.addItem(new SingerItem("걸스데이", "010-3000-1000", android.R.drawable.ic_lock_silent_mode));
+        adapter.addItem(new SingerItem("여자친구", "010-4000-1000", android.R.drawable.ic_dialog_email));
+        adapter.addItem(new SingerItem("티아라", "010-5000-1000", android.R.drawable.ic_lock_idle_alarm));
+        listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                SingerItem item = (SingerItem) adapter.getItem(position);
+                Toast.makeText(getApplicationContext(), "선택: " + item.getName(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+        editText = findViewById(R.id.editText);
+        editText2 = findViewById(R.id.editText2);
+        Button button = findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = editText.getText().toString();
+                String mobile = editText2.getText().toString();
+                adapter.addItem(new SingerItem(name, mobile, R.drawable.ic_launcher_foreground));
+                adapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    class SingerAdapter extends BaseAdapter {
+        ArrayList<SingerItem> items = new ArrayList<>();
+
+        @Override
+        public int getCount() {
+            return items.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return items.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            SingerItemView view = null;
+            if (convertView == null) {
+                view = new SingerItemView(getApplicationContext());
+            } else {
+                view = (SingerItemView) convertView;
+            }
+
+            SingerItem item = items.get(position);
+            view.setName(item.getName());
+            view.setMobile(item.getMobile());
+            view.setImage(item.getImage());
+            return view;
+        }
+
+        public void addItem(SingerItem item) {
+            items.add(item);
+        }
+    }
+}
+```
+
+**요소 추가하는 법**
+
+1. 객체에 속성, 생성자, getter 추가
+2. 디자인에 id 추가
+3. 속성, init, setter 추가
+4. getView 추가
+
+> 뷰는 setter, 객체는 getter
+
+**클릭 시 토스트**
+
+```java
+listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        SingerItem item = (SingerItem) adapter.getItem(position);
+        Toast.makeText(getApplicationContext(), "선택: " + item.getName(), Toast.LENGTH_LONG).show();
+    }
+});
+```
+
+**버튼클릭 시 추가**
+
+```java
+button.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        String name = editText.getText().toString();
+        String mobile = editText2.getText().toString();
+        adapter.addItem(new SingerItem(name, mobile, R.drawable.ic_launcher_foreground));
+        adapter.notifyDataSetChanged();
+    }
+});
+```
+
+**뷰 돌려쓰기**
+
+```java
+    SingerItemView view = null;
+    if (convertView == null) {
+        view = new SingerItemView(getApplicationContext());
+    } else {
+        view = (SingerItemView) convertView;
+    }
+```
+
+**스피너**
+
+```java
+public class MainActivity extends AppCompatActivity {
+    TextView textView;
+    String[] items = {"소녀시대", "걸스데이", "티아라", "블랙핑크", "여자친구", "동방신기"};
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        textView = findViewById(R.id.textView);
+        Spinner spinner = findViewById(R.id.spinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this, android.R.layout.simple_spinner_item, items
+        );
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                textView.setText(items[position]);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                textView.setText("선택: ");
+            }
+        });
+    }
+}
+```
+
+**그리드뷰**
+
+`numColumns` 격자의 칼럼갯수. 1이라면 리스트뷰와 차이가 없다.
+
+리스트뷰와 구현방식이 똑같다.
+
+**setText**
+
+>  `textView.setText(String)` 파라미터로 String 형만 받으므로 int 형을 넣고싶을 때는 `String.valueOf()` 를 사용한다.
+
+**프로필 둥글게 만들기**
+
+build.gradle(Module) - dependencies 에 라이브러리 추가
+
+```
+implementation 'de.hdodenhof:circleimageview:2.2.0'
+```
+
+```xml
+<de.hdodenhof.circleimageview.CircleImageView
+    android:layout_width="90dp"
+    android:layout_height="90dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginTop="16dp"
+    android:src="@drawable/ic_launcher_background"
+    app:civ_border_color="#ffcccccc"
+    app:civ_border_width="2dp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+```
+
+위와 같이 선언한다.
+
+**inflate 요약**
+
+1. L i = sy Co. 후 캐스팅
+2. i. R.l.레이아웃 뷰
+
+리시코 아이 알 엘
+
+```java
+FrameLayout view = findViewById(R.id.view);
+LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+inflater.inflate(R.layout.xml, view);
+```
+
+> FrameLayout 은 바로 추가할 수 있다.
+
+**뷰 생성**
+
+1. 클래스 생성 후 LinearLayout 상속받는다.
+2. 생성자 2개 생성 후 init(content) 메서드 호출
+
+**버튼생성 요약**
+
+1. B b = f R.id.
+2. b. new
+
+버튼.셋온클릭리스너(뉴 뷰.온클릭리스너)
+
+# 3. 여러 개의 화면
 
 
 

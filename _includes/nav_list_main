@@ -25,14 +25,7 @@
                     {% endif %}
                 {% endfor %}
             </ul>
-            <ul>
-                {% for category in site.categories %}
-                    {% if category[0] == "fullstack-hotkey" %}
-                        <!-- 사이드바 출력 -->
-                        <li><a href="/categories/fullstack-hotkey" class=""> 단축키 ({{category[1].size}})</a></li>
-                    {% endif %}
-                {% endfor %}
-            </ul>
+            
 
         
 
@@ -89,6 +82,14 @@
 
         <!-- 4. 기타 -->
         <span class="nav__sub-title"> etc </span>
+        <ul>
+                {% for category in site.categories %}
+                    {% if category[0] == "hotkey" %}
+                        <!-- 사이드바 출력 -->
+                        <li><a href="/categories/hotkey" class=""> 단축키 ({{category[1].size}})</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
             <ul>
                 {% for category in site.categories %}
                     <!-- 카테고리 명 -->

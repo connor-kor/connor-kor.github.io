@@ -1,10 +1,10 @@
 ---
-title: "풀스택 단축키"
+title: "단축키"
 layout: archive
-permalink: /categories/fullstack-hotkey
+permalink: /categories/hotkey
 author_profile: true
 ---
 
-{% assign posts = site.categories.fullstack-hotkey %}
+{% assign posts = site.categories.hotkey %}
 {% for post in posts %} {% include archive-single.html type=page.entries_layout %} {% endfor %}
 

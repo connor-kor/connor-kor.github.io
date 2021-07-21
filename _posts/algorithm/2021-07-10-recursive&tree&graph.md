@@ -606,3 +606,95 @@ public class Main {
 }
 ```
 
+## 12. 경로탐색 (인접리스트)
+
+DFS 는 $$n^2$$ 개의 배열을 만들어야 하므로 데이터를 많이 차지한다.
+
+갈 수 있는 경로의 리스트만 만들어 데이터를 적게 차지하는 인접리스트를 배워보자.
+
+```java
+public class Main {
+	static ArrayList<ArrayList<Integer>> graph;
+	static int count;
+	static int[] ch;
+	static int point;
+	
+	public static void main(String[] args) {
+		int line, answer = 0;
+		graph = new ArrayList<ArrayList<Integer>>();
+		Scanner sc = new Scanner(System.in);
+		point = sc.nextInt();
+		line = sc.nextInt();
+		ch = new int[point + 1];
+		
+		for (int i = 0; i <= point; i++) {
+			graph.add(new ArrayList<>());
+		}
+		for (int i = 0; i < line; i++) {
+			int start = sc.nextInt();
+			int end = sc.nextInt();
+			graph.get(start).add(end);
+		}
+
+		ch[1] = 1;
+		dfs(1);
+		System.out.println(count);
+	}
+	
+	static void dfs(int start) {
+		if (start == point) {
+			count++;
+		}
+		for (int end : graph.get(start)) {
+			if (ch[end] == 0) {
+				ch[end] = 1;
+				dfs(end);
+				ch[end] = 0;
+			}
+		}
+	}
+}
+```
+
+**리스트 확인코드**
+
+```java
+// 리스트 확인코드
+for (int i = 1; i <= point; i++) {
+    System.out.print(i + ": ");
+    for (int n : graph.get(i)) {
+        System.out.print(n + " ");
+    }
+    System.out.println();
+}
+```
+
+## 13. 그래프 최단거리 (BFS)
+
+레벨로 풀어도 되고 배열로 풀어도 된다.
+
+**입력**
+
+```
+6 9
+1 3
+1 4
+2 1
+2 5
+3 4
+4 5
+4 6
+6 2
+6 5
+```
+
+**출력**
+
+```
+2: 3
+3: 1
+4: 1
+5: 2
+6: 2
+```
+
