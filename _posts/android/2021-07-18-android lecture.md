@@ -1072,6 +1072,258 @@ inflater.inflate(R.layout.xml, view);
 
 # 3. 여러 개의 화면
 
+네 가지 구성요소
+
+- 액티비티
+- 서비스
+- 브로드캐스트 수신자
+- 내용 제공자
+
+**Main 화면**
+
+```java
+public class MainActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        Button button = findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
+                startActivityForResult(intent, 101);
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode,  Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 101) {
+            String name = data.getStringExtra("name");
+            Toast.makeText(getApplicationContext(), "메뉴화면으로부터 응답: " + name, Toast.LENGTH_LONG).show();
+        }
+    }
+}
+```
+
+1. Intent i = new g , 액티비티. 
+
+오버라이딩: acr 검색 (onActivityResult)
+
+**Menu 화면**
+
+```java
+button2.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        Intent intent = new Intent();
+        intent.putExtra("name", "mike");
+        setResult(Activity.RESULT_OK, intent);
+        finish();
+    }
+});
+```
+
+**Manifest**
+
+```xml
+<activity android:name=".MenuActivity"
+    android:label="메뉴"
+    android:theme="@style/Theme.AppCompat.Light.Dialog"></activity>
+```
+
+ **인텐트**
+
+액티비티, 서비스, 브로드캐스트 수신자끼리 이동하게 해준다. 화면이동 그 이상이라고 할 수 있다.
+
+| 속성                                    | 설명                                                         |
+| --------------------------------------- | ------------------------------------------------------------ |
+| ACTION_DIAL tel:01077881234             | 주어진 전화번호를 이용해 전화걸기 화면을 보여줌              |
+| ACTION_VIEW tel:01077881234             | 주어진 전화번호를 이용해 전화걸기 화면을 보여줌. URI 값의 유형에 따라 VIEW 액션이 다른 기능을 수행함 |
+| ACTION_EDIT content://contacts/people/2 | 전화번호부 데이터베이스에 있는 정보중에서 ID 값이 2인 정보를 편집하기 위한 화면을 보여줌 |
+| ACTION_VIEW content://contacts/people   | 전화번호부 데이터베이스의 내용을 보여줌                      |
+
+명시적 인텐트 (Explicit Intent)
+
+- 인텐트에 클래스 객체나 컴포넌트 이름을 지정하여 호출할 대상을 확실히 알 수 있는경우
+
+암시적 인텐트 (Implicit Intent)
+
+- 액션과 데이터를 지정하긴 햇지만 호출할 대상이 달라질 수 있는경우
+- 범주 (category), 타입 (type), 컴포넌트 (component), 부가데이터 (extras)
+
+**전화걸기**
+
+```java
+button.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        String receiver = editText.getText().toString();
+        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + receiver));
+        startActivity(intent);
+    }
+});
+```
+
+인텐트로 화면전환이 아닌 전화걸기라는 서비스로 연결해준 것을 볼 수 있다.
+
+**화면이동**
+
+```java
+button.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        Intent intent2 =new Intent();
+        ComponentName name = new ComponentName("com.example.a11mycallintent", "com.example.a11mycallintent.MenuActivity");
+        intent2.setComponent(name);
+        startActivity(intent2);
+    }
+});
+```
+
+객체가 아닌 문자열로 화면이동이 가능하다.
+
+인텐트로 PDF 파일을 보여줄 수 있다. 그러려면 pdf 파일을 앱에 다운로드 받아야 한다.
+
+**읽기/쓰기 권한**
+
+**Manifest**
+
+```xml
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+```
+
+하지만 이것은 위험권한이다.
+
+targetSdkVersion 을 22 보다 낮게하면 위험권한 감지가 되지 않는다.
+
+**부가데이터**
+
+액티비티는 스택구조이다.
+
+- 새로운 액티비티를 실행할 때마다 메모리에 새로운 객체를 만들고 이전화면 위에 쌓는 방식은 비효율적일 수 있다.
+- 동일한 화면이 이미 만들어져 있는 경우에는 그 화면을 그대로 보여주고 싶다면 플래그를 사용하면 된다.
+
+`FLAG_ACTIVITY_SINGLE_TOP` 
+
+`FLAG_ACTIVITY_NO_HISTORY` 
+
+`FLAG_ACTIVITY_CLEAR_TOP` 
+
+플래그 사용 예
+
+1. 인텐트객체 생성
+2. 부가데이터 넣기
+3. 인텐트플래그 설정
+4. 인텐트 띄우기
+
+![image-20210722210709247](../../assets/images/image-20210722210709247.png)
+
+실무에서는 clear top 과 single top 을 많이 쓴다.
+
+**MyParcelable**
+
+**데이터 넘겨주기**
+
+`intent.putExtra("names", names)` 
+
+**데이터 넘겨받기**
+
+```java
+private void processIntent(Intent intent) {
+    if (intent != null) {
+        ArrayList<String> names = (ArrayList<String>) intent.getSerializableExtra("names");
+        if (names != null) {
+            Toast.makeText(getApplicationContext(), "전달받은 이름 리스트 갯수: " + names.size(), Toast.LENGTH_LONG).show();
+        }
+    }
+}
+```
+
+getIntent() 로 받아서 토스트를 띄운다.
+
+파슬은 데이터를 전달할 때 사용되는 객체
+
+1. 변수선언 및 생성자
+2. writeToParcel 구현
+
+**객체 데이터**
+
+```java
+public class SimpleData implements Parcelable {
+    int number;
+    String message;
+
+    public SimpleData(int number, String message) {
+        this.number = number;
+        this.message = message;
+    }
+
+    protected SimpleData(Parcel in) {
+        number = in.readInt();
+        message = in.readString();
+    }
+
+    public static final Creator<SimpleData> CREATOR = new Creator<SimpleData>() {
+        @Override
+        public SimpleData createFromParcel(Parcel in) {
+            return new SimpleData(in);
+        }
+
+        @Override
+        public SimpleData[] newArray(int size) {
+            return new SimpleData[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(number);
+        dest.writeString(message);
+    }
+}
+```
+
+**객체 데이터 넘겨주기**
+
+```java
+button.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
+        SimpleData data = new SimpleData(100, "Hello");
+        intent.putExtra("data", data);
+        startActivityForResult(intent, 101);
+    }
+});
+```
+
+**객체 데이터 받기**
+
+getIntent 로 받은 후
+
+```java
+private void processIntent(Intent intent) {
+    if (intent != null) {
+        SimpleData data = intent.getParcelableExtra("data");
+        if (data != null) {
+            Toast.makeText(getApplicationContext(), "전달받은 SimpleData: " + data.message, Toast.LENGTH_LONG).show();
+        }
+    }
+}
+```
+
+
+
 
 
 
