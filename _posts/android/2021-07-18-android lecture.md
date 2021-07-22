@@ -1322,6 +1322,352 @@ private void processIntent(Intent intent) {
 }
 ```
 
+**액티비티 수명주기** 
+
+| 상태              | 설명                                                         |
+| ----------------- | ------------------------------------------------------------ |
+| 실행 (Running)    | 화면상에 액티비티가 보이면서 실행되어있는 상태               |
+| 일시중지 (Paused) | 사용자에게 보이지만 다른 액티비티가 위에있어 포커스 받지 못하는 상태. 대화상자가 위에 있어 일부가 가려져있는 경우에 해당함 |
+| 중지 (Stopped)    | 다른 액티비티에 의해 완전히 가려져 보이지 않는 상태          |
+
+![image-20210722232006530](../../assets/images/image-20210722232006530.png)
+
+**토스트 요약** 
+
+```java
+Toast.makeText(this, "Hello", Toast.LENGTH_LONG).show();
+```
+
+To. t, 텍스트, T탭.탭 .탭
+
+**오버라이딩** 
+
+```java
+@Override
+protected void onRestart() {
+    Toast.makeText(this, "리스타트", Toast.LENGTH_LONG).show();
+    super.onRestart();
+}
+
+@Override
+protected void onPause() {
+    Toast.makeText(this, "퍼즈", Toast.LENGTH_LONG).show();
+    super.onPause();
+}
+
+@Override
+protected void onResume() {
+    Toast.makeText(this, "리쥼", Toast.LENGTH_LONG).show();
+    super.onResume();
+}
+
+@Override
+protected void onStart() {
+    Toast.makeText(this, "스타트", Toast.LENGTH_LONG).show();
+    super.onStart();
+}
+
+@Override
+protected void onStop() {
+    Toast.makeText(this, "스탑", Toast.LENGTH_LONG).show();
+    super.onStop();
+}
+
+@Override
+protected void onDestroy() {
+    Toast.makeText(this, "디스트로이", Toast.LENGTH_LONG).show();
+    super.onDestroy();
+}
+```
+
+**앱을 끄는 순간 저장하기**
+
+```java
+@Override
+protected void onPause() {
+    super.onPause();
+    Toast.makeText(this, "퍼즈", Toast.LENGTH_LONG).show();
+    SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
+    SharedPreferences.Editor editor = pref.edit();
+    editor.putString("name", "소녀시대");
+    editor.commit();
+}
+
+@Override
+protected void onResume() {
+    super.onResume();
+    Toast.makeText(this, "리쥼", Toast.LENGTH_LONG).show();
+    SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
+    if (pref != null) {
+        String name = pref.getString("name", "");
+        Toast.makeText(this, "복구된 이름: " + name, Toast.LENGTH_LONG).show();
+    }
+}
+```
+
+**서비스**
+
+- 서비스는 화면이 없는 상태에서 백그라운드로 실행됨
+- 서비스는 프로세스가 종료되어도 시스템에서 자동으로 재시작됨
+
+new - service - service 메뉴를 이용해 서비스 추가
+
+서비스는 한 번 실행되면 계속 실행되어있다.
+
+onCreate 에서 확인할 수 없다.
+
+그래서 서비스는 onStartCommand 에서 확인할 수 있다. 
+
+인텐트를 StartCommand 에 넣는다.
+
+```java
+public class MyService extends Service {
+    private static final String TAG = "MyService";
+
+    public MyService() {
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        Log.d(TAG, "onCreate() 호출됨.");
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.d(TAG, "onStartCommand() 호출됨.");
+        if (intent == null) {
+            return Service.START_STICKY;
+        } else {
+            processCommand(intent);
+        }
+        return super.onStartCommand(intent, flags, startId);
+    }
+
+    private void processCommand(Intent intent) {
+        String command = intent.getStringExtra("command");
+        String name = intent.getStringExtra("name");
+        Log.d(TAG, "전달받은 데이터: " + command + ", " + name);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy() 호출됨.");
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        // TODO: Return the communication channel to the service.
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+}
+```
+
+Logcat 에서 로그를 확인할 수 있다.
+
+android monitor 에서 서비스를 확인할 수 있다.
+
+화면이 없는 상태에서 띄우려면 flag 가 필요하다.
+
+**Main**
+
+```java
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        EditText editText = findViewById(R.id.editText);
+        Button button = findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = editText.getText().toString();
+                Intent intent = new Intent(getApplicationContext(), MyService.class);
+                intent.putExtra("command", "show");
+                intent.putExtra("name", name);
+                startService(intent);
+            }
+        });
+    Intent passedIntent = getIntent();
+    processCommand(passedIntent);
+    }
+
+    private void processCommand(Intent intent) {
+        if (intent != null) {
+            String command = intent.getStringExtra("command");
+            String name = intent.getStringExtra("name");
+            Toast.makeText(this, "서비스로부터 전달받은 데이터: ", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        processCommand(intent);
+    }
+}
+```
+
+**Service**
+
+```java
+public class MyService extends Service {
+    private static final String TAG = "MyService";
+
+    public MyService() {
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        Log.d(TAG, "onCreate() 호출됨.");
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.d(TAG, "onStartCommand() 호출됨.");
+        if (intent == null) {
+            return Service.START_STICKY;
+        } else {
+            processCommand(intent);
+        }
+        return super.onStartCommand(intent, flags, startId);
+    }
+
+    private void processCommand(Intent intent) {
+        String command = intent.getStringExtra("command");
+        String name = intent.getStringExtra("name");
+        Log.d(TAG, "전달받은 데이터: " + command + ", " + name);
+        try {
+            Thread.sleep(5000);
+        } catch (Exception e) {
+        }
+        Intent showIntent = new Intent(getApplicationContext(), MainActivity.class);
+        showIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|
+                Intent.FLAG_ACTIVITY_SINGLE_TOP|
+                Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        showIntent.putExtra("command", "show");
+        showIntent.putExtra("name", name + " from service.");
+        startActivity(showIntent);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy() 호출됨.");
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        // TODO: Return the communication channel to the service.
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+}
+```
+
+**브로드캐스트 수신자**
+
+- 애플리케이션이 글로벌이벤트를 받아서 처리하려면 브로드캐스트 수신자로 등록
+- "전화가 왔습니다." "문자 메시지가 도착했습니다." 와 같이 안드로이드 시스템 전체에 보내지는 이벤트
+- 브로드캐스트 수신자는 인텐트필터를 포함하며 매니페스트 파일에 등록함으로써 인텐트를 받을 준비를 함
+- 수신자가 매니페스트 파일에 등록되었다면 따로 시작시키지 않아도 됨
+- 애플리케이션은 컨텍스트 클래스틔 registerReceiver 메소드를 이용하면 런타임시에도 수신자를 등록할 수 있음
+- 서비스처럼 브로드캐스트 수신자도 UI 가 없음
+
+크게 두가지 클래스로 구분된다.
+
+- 일반
+- 순차
+
+서비스처럼 시작할 필요가 없다.
+
+```xml
+<receiver>
+    <intent-filter>
+        <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
+    </intent-filter>
+</receiver>
+```
+
+필터로 특정 액션정보만 받는다.
+
+```xml
+<uses-permission android:name="android.permission.RECEIVE_SMS"/>
+```
+
+권한을 한 후 사용자에게도 권한을 받아야 한다.
+
+targetSdkVersion 이 22 이하이면 사용자권한이 필요없다.
+
+**가상 에뮬레이터로 메시지 받는방법** 
+
+![image-20210723003957968](../../assets/images/image-20210723003957968.png)
+
+실험
+
+1. 앱이 꺼진 백그라운드에서도 실행됨
+2. targetSdkVersion 22 이하에서만 실행됨 (앱 재설치 필요)
+3. **브로드캐스트 리시버 생성**
+
+```java
+public class SmsReceiver extends BroadcastReceiver {
+    private static final String TAG = "SmsReceiver";
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        Log.d(TAG, "onReceiver() 호출됨.");
+    }
+}
+```
+
+**SMS Receiver**
+
+```java
+public class SmsReceiver extends BroadcastReceiver {
+    private static final String TAG = "SmsReceiver";
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        Log.d(TAG, "onReceiver() 호출됨.");
+
+        Bundle bundle = intent.getExtras();
+        SmsMessage[] messages = parseSmsMessage(bundle);
+
+        if (messages.length > 0) {
+            String sender = messages[0].getOriginatingAddress();
+            Log.d(TAG, "sender: " + sender);
+
+            String contents = messages[0].getMessageBody().toString();
+            Log.d(TAG, "contents: " + contents);
+
+            Date receiverDate = new Date(messages[0].getTimestampMillis());
+            Log.d(TAG, "received dated: " + receiverDate);
+        }
+    }
+
+    private SmsMessage[] parseSmsMessage(Bundle bundle) {
+        Object[] objs = (Object[]) bundle.get("pdus");
+        SmsMessage[] messages = new SmsMessage[objs.length];
+
+        for (int i = 0; i < objs.length; i++) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                String format = bundle.getString("format");
+                messages[i] = SmsMessage.createFromPdu((byte[]) objs[i], format);
+            } else {
+            messages[i] = SmsMessage.createFromPdu((byte[]) objs[i]);
+            }
+        }
+        return messages;
+    }
+}
+```
+
+
+
 
 
 
