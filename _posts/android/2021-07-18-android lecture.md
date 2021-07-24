@@ -1079,6 +1079,8 @@ inflater.inflate(R.layout.xml, view);
 - 브로드캐스트 수신자
 - 내용 제공자
 
+## 액티비티
+
 **Main 화면**
 
 ```java
@@ -1405,7 +1407,7 @@ protected void onResume() {
 }
 ```
 
-**서비스**
+## **서비스**
 
 - 서비스는 화면이 없는 상태에서 백그라운드로 실행됨
 - 서비스는 프로세스가 종료되어도 시스템에서 자동으로 재시작됨
@@ -1569,7 +1571,7 @@ public class MyService extends Service {
 }
 ```
 
-**브로드캐스트 수신자**
+## **브로드캐스트 수신자**
 
 - 애플리케이션이 글로벌이벤트를 받아서 처리하려면 브로드캐스트 수신자로 등록
 - "전화가 왔습니다." "문자 메시지가 도착했습니다." 와 같이 안드로이드 시스템 전체에 보내지는 이벤트
@@ -1666,15 +1668,1033 @@ public class SmsReceiver extends BroadcastReceiver {
 }
 ```
 
+**sms receiver**
+
+```java
+public class SmsReceiver extends BroadcastReceiver {
+    private static final String TAG = "SmsReceiver";
+    private static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        Log.d(TAG, "onReceiver() 호출됨.");
+
+        Bundle bundle = intent.getExtras();
+        SmsMessage[] messages = parseSmsMessage(bundle);
+
+        if (messages.length > 0) {
+            String sender = messages[0].getOriginatingAddress();
+            Log.d(TAG, "sender: " + sender);
+
+            String contents = messages[0].getMessageBody().toString();
+            Log.d(TAG, "contents: " + contents);
+
+            Date receivedDate = new Date(messages[0].getTimestampMillis());
+            Log.d(TAG, "received dated: " + receivedDate);
+
+            sendToActivity(context, sender, contents, receivedDate);
+        }
+    }
+
+    private void sendToActivity(Context context, String sender, String contents, Date receivedDate) {
+        Intent intent = new Intent(context, SmsActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+        |Intent.FLAG_ACTIVITY_SINGLE_TOP
+        |Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("sender", sender);
+        intent.putExtra("contents", contents);
+        intent.putExtra("receivedDate", format.format(receivedDate));
+        context.startActivity(intent);
+    }
+
+    private SmsMessage[] parseSmsMessage(Bundle bundle) {
+        Object[] objs = (Object[]) bundle.get("pdus");
+        SmsMessage[] messages = new SmsMessage[objs.length];
+
+        for (int i = 0; i < objs.length; i++) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                String format = bundle.getString("format");
+                messages[i] = SmsMessage.createFromPdu((byte[]) objs[i], format);
+            } else {
+            messages[i] = SmsMessage.createFromPdu((byte[]) objs[i]);
+            }
+        }
+        return messages;
+    }
+}
+```
+
+**sms activity**
+
+```java
+public class SmsActivity extends AppCompatActivity {
+    private EditText editText;
+    private EditText editText2;
+    private EditText editText3;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_sms);
+
+        editText = findViewById(R.id.editText);
+        editText2 = findViewById(R.id.editText2);
+        editText3 = findViewById(R.id.editText3);
+        Button button = findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        Intent passedIntent = getIntent();
+        processCommand(passedIntent);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        processCommand(intent);
+    }
+
+    private void processCommand(Intent intent) {
+        if (intent != null) {
+            String sender = intent.getStringExtra("sender");
+            String contents = intent.getStringExtra("contents");
+            String receivedDate = intent.getStringExtra("receivedDate");
+            editText.setText((sender));
+            editText3.setText((contents));
+            editText2.setText((receivedDate));
+        }
+    }
+}
+```
+
+## 권한
+
+**위험권한 부여**
+
+일반권한과 위험권한 (마시멜로 API 23 부터)
+
+- 위험권한은 실행 시 권한부여
+
+대표 위험권한
+
+- 위치
+- 카메라
+- 마이크
+- 연락처
+- 전화
+- 문자
+- 일정
+- 센서
+
+![image-20210723164239145](../../assets/images/image-20210723164239145.png)
+
+**권한 대화상자**
+
+```java
+public class MainActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        Button button2 = findViewById(R.id.button2);
+        int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS);
+        if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "SMS 수신권한 주어져있음", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "SMS 수신권한 없음", Toast.LENGTH_LONG).show();
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.RECEIVE_SMS}, 1);
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 1:
+                if (grantResults.length > 0) {
+                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        Toast.makeText(this, "SMS 수신권한을 사용자가 승인함", Toast.LENGTH_LONG).show();
+                    } else if (grantResults[0] == PackageManager.PERMISSION_DENIED){
+                        Toast.makeText(this, "SMS 수신권한을 사용자가 거부함", Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                        Toast.makeText(this, "SMS 수신권한을 부여받지 못함", Toast.LENGTH_LONG).show();
+                }
+        }
+    }
+}
+```
+
+**화면이동 정리**
+
+startActivityForresult() 로 requestCode 와 함께 데이터를 넘겨주면
+
+화면이동 후 getIntent 로 받는다.
+
+돌아갈 때 setResult() 와 requestCode 로 받는다.
+
+- 데이터를 넘겨주지 않을 때
+
+```java
+Intent intent = new Intent(getApplicationContext(), CommentWriteActivity.class);
+startActivity();
+```
+
+- 데이터를 넘겨줄 때
+
+```java
+Intent intent = new Intent(getApplicationContext(), CommentWriteActivity.class);
+intent.putExtra("rating", rating);
+startActivityForResult(intent, 101);
+```
+
+- 데이터를 받을 때
+
+```java
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_comment_write);
+
+    ratingBar = findViewById(R.id.ratingBar);
+    Intent intent = getIntent();
+    processIntent(intent);
+}
+
+private void processIntent(Intent intent) {
+    if (intent != null) {
+        float rating = intent.getFloatExtra("rating", 0.0f);
+        ratingBar.setRating(rating);
+    }
+}
+```
+
+**Main**
+
+```java
+public class MainActivity extends AppCompatActivity {
+    private RatingBar ratingBar;
+    TextView outputView;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        ratingBar = findViewById(R.id.ratingBar);
+        outputView = findViewById(R.id.outputView);
+        Button button = findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCommentWriteActivity();
+            }
+        });
+    }
+
+    private void showCommentWriteActivity() {
+        float rating = ratingBar.getRating();
+        Intent intent = new Intent(getApplicationContext(), CommentWriteActivity.class);
+        intent.putExtra("rating", rating);
+        startActivityForResult(intent, 101);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 101) {
+            if (data != null) {
+                String contents = data.getStringExtra("contents");
+                outputView.setText(contents);
+            }
+        }
+    }
+}
+```
+
+**Comment**
+
+```java
+public class CommentWriteActivity extends AppCompatActivity {
+    private RatingBar ratingBar;
+    private EditText contentsInput;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_comment_write);
+
+        ratingBar = findViewById(R.id.ratingBar);
+        Intent intent = getIntent();
+        processIntent(intent);
+        contentsInput = findViewById(R.id.contentsInput);
+        Button saveButton = findViewById(R.id.saveButton);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                returnToMain();
+            }
+        });
+    }
+
+    private void returnToMain() {
+        String contents = contentsInput.getText().toString();
+        // 화면이동이 없다면 Intent 에 파라미터가 필요없다.
+        Intent intent = new Intent();
+        intent.putExtra("contents", contents);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
+    private void processIntent(Intent intent) {
+        if (intent != null) {
+            float rating = intent.getFloatExtra("rating", 0.0f);
+            ratingBar.setRating(rating);
+        }
+    }
+}
+```
+
+# 4. 화면 내비게이션
+
+## **프래그먼트**
+
+![image-20210723195619514](../../assets/images/image-20210723195619514.png)
+
+액티비티와 사용방법이 비슷하다.
+
+프래그먼트도 액티비티처럼 화면전환으로 사용할 수 있다.
+
+setContentView 는 액티비티에만 있어서 프래그먼트는 인플레이션을 직접 해주어야 한다.
+
+`Fragment` 상속받는다.
+
+**fragment**
+
+```java
+public class fragmentActivity extends Fragment {
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.activity_fragment, container, false);
+        return rootView;
+    }
+}
+```
+
+**activity_main.xml**
+
+```xml
+<fragment
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:name="com.example.a17myfragment2.ListFragment"
+    android:id="@+id/listFragment"/>
+```
+
+xml 에 선언한 경우 자바에서는 
+
+```java
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+
+    FragmentManager manager = getSupportFragmentManager();
+    fragment1 = (ListFragment) manager.findFragmentById(R.id.listFragment);
+    fragment2 = (ViewerFragment) manager.findFragmentById(R.id.viewerFragment);
+}
+```
+
+findFragmentById 를 사용해 변수로 가져온다.
+
+xml 에 추가해도 되지만 java 에 추가해도 된다.
+
+```java
+button.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        fragmentActivity fragment1 = new fragmentActivity();
+        getSupportFragmentManager().beginTransaction().add(R.id.container, fragment1).commit();
+    }
+});
+```
+
+**프래그먼트로 화면이동**
+
+```java
+public class MainActivity extends AppCompatActivity {
+    fragmentActivity fragment1;
+    MenuFragment fragment2;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        fragment1 = new fragmentActivity();
+        fragment2 = new MenuFragment();
+        Button main = findViewById(R.id.main);
+        main.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment1).commit();
+            }
+        });
+        Button menu = findViewById(R.id.menu);
+        menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment2).commit();
+            }
+        });
+    }
+}
+```
+
+**프래그먼트 내 버튼**
+
+```java
+@Override
+public void onAttach(Context context) {
+    super.onAttach(context);
+    activity = (MainActivity) getActivity();
+}
+
+@Override
+public void onDetach() {
+    super.onDetach();
+    activity = null;
+}
+```
+
+프래그먼트 내 버튼으로 이동 시 onAttach 와 onDetach 를 오버라이딩 해야합니다.
+
+**화면이동 메서드**
+
+```java
+public void onFragmentChange(int index) {
+    if (index == 0) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment1).commit();
+    } else {
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment2).commit();
+    }
+}
+```
+
+화면이동을 메서드로 정의해도 됩니다.
+
+![image-20210723213757027](../../assets/images/image-20210723213757027.png)
+
+프래그먼트 활성화 (액티비티 화면에 보이는 상태)
+
+**프래그먼트 이미지변환**
+
+**Main**
+
+```java
+public class MainActivity extends AppCompatActivity {
+    ListFragment fragment1;
+    ViewerFragment fragment2;
+    FragmentManager manager;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        manager = getSupportFragmentManager();
+        fragment1 = (ListFragment) manager.findFragmentById(R.id.listFragment);
+        fragment2 = (ViewerFragment) manager.findFragmentById(R.id.viewerFragment);
+    }
+
+    public void onImageChange(int index) {
+        fragment2.setImage(index);
+    }
+}
+```
+
+**ListFragment**
+
+```java
+public class ListFragment extends Fragment {
+    private MainActivity activity;
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        activity = null;
+    }
+
+    @Override
+    public void onAttach( Context context) {
+        super.onAttach(context);
+        activity = (MainActivity) getActivity();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_list, container, false);
+        Button button = rootView.findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.onImageChange(0);
+            }
+        });
+        Button button2 = rootView.findViewById(R.id.button2);
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.onImageChange(1);
+            }
+        });
+        Button button3 = rootView.findViewById(R.id.button3);
+        button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.onImageChange(2);
+            }
+        });
+        return rootView;
+    }
+}
+```
+
+**ViewerFragment**
+
+```java
+public class ViewerFragment extends Fragment {
+    private ImageView imageView;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_viewer, container, false);
+        imageView = rootView.findViewById(R.id.imageView);
+        return rootView;
+    }
+
+    public void setImage(int index) {
+        if (index == 0) {
+            imageView.setImageResource(R.mipmap.ic_launcher);
+        } else if (index == 1) {
+            imageView.setImageResource(R.drawable.ic_launcher_foreground);
+        } else {
+            imageView.setImageResource(R.drawable.ic_launcher_background);
+        }
+    }
+}
+```
+
+## **액션바**
+
+res 에 menu 폴더를 만든다.
+
+`xmlns:android="http://schemas.android.com/apk/res/android"` 안드로이드에 정해진 속성을 쓰겠다.
+
+`xmlns:app="http://schemas.android.com/apk/res-auto"` 앱에 정해진 속성을 쓰겠다.
+
+**버튼구현** 
+
+**menu**
+
+```xml
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/menu_refresh"
+        android:title="새로고침"
+        android:icon="@drawable/menu_refresh"
+        app:showAsAction="always"/>
+    <item android:id="@+id/menu_search"
+        android:title="검색"
+        android:icon="@drawable/menu_search"
+        app:showAsAction="always"/>
+    <item android:id="@+id/menu_settings"
+        android:title="설정"
+        android:icon="@drawable/menu_settings"
+        app:showAsAction="always"/>
+</menu>
+```
+
+**MainActivity.java**
+
+```java
+@Override
+public boolean onCreateOptionsMenu(Menu menu) {
+    getMenuInflater().inflate(R.menu.menu_main, menu);
+    return true;
+}
+```
+
+call back method 란?
+
+어떤 상황이 됐을 때 호출되는 함수
+
+**버튼이벤트**
+
+```java
+@Override
+public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+    int curId = item.getItemId();
+    switch(curId) {
+        case R.id.menu_refresh:
+            Toast.makeText(this, "새로고침 메뉴 클릭됨", Toast.LENGTH_SHORT).show();
+            break;
+        case R.id.menu_search:
+            Toast.makeText(this, "검색 메뉴 클릭됨", Toast.LENGTH_SHORT).show();
+            break;
+        case R.id.menu_settings:
+            Toast.makeText(this, "설정 메뉴 클릭됨", Toast.LENGTH_SHORT).show();
+            break;
+        default:
+            break;
+    }
+    return super.onOptionsItemSelected(item);
+}
+```
+
+**액션바 없애기**
+
+themes 폴더 내 themes.xml 파일
+
+```xml
+<style name="Theme.MyOptionMenu" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+```
+
+parent 에서 NoActionBar 로 바꾸면 액션바가 없어진다.
+
+혹은 
+
+**MainActivity.java**
+
+```java
+ActionBar abar = getSupportActionBar();
+abar.hide();
+```
+
+를 onCreate 에 선언해도 된다.
+
+**액션바에 레이아웃넣기**
+
+```xml
+<item android:id="@+id/menu_search"
+    android:title="검색"
+    android:icon="@drawable/menu_search"
+    app:showAsAction="always|withText"
+    app:actionLayout="@layout/activity_search"/>
+```
+
+툴바는 다음과 같은 것을 임폴트해야 한다.
+
+```java
+import androidx.appcompat.widget.Toolbar;
+```
 
 
 
+**탭 만들기**
 
+~~프로젝트 스트럭처 - 디펜던시 - com.android.support.design 추가~~
 
+~~build.gradle 에서~~
 
+~~implementation 'com.android.support:design:30.+' 와 같이~~
 
+~~현재버전과 맞춰준다.~~
 
----
+**activity_main.xml**
+
+```xml
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/design_default_color_primary"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark"
+                android:elevation="1dp"
+                android:id="@+id/toolbar">
+            </androidx.appcompat.widget.Toolbar>
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="1dp"
+                android:background="@android:color/background_light"
+                app:tabMode="fixed"
+                app:tabGravity="fill"
+                app:tabTextColor="@color/design_default_color_primary"
+                app:tabSelectedTextColor="@color/design_default_color_primary">
+            </com.google.android.material.tabs.TabLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+            android:id="@+id/container">
+        </FrameLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
+```
+
+**MainActivity.java**
+
+```java
+public class MainActivity extends AppCompatActivity {
+    FirstFragment fragment1;
+    SecondFragment fragment2;
+    ThirdFragment fragment3;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        fragment1 = new FirstFragment();
+        fragment2 = new SecondFragment();
+        fragment3 = new ThirdFragment();
+        getSupportFragmentManager().beginTransaction().add(R.id.container, fragment1).commit();
+
+        TabLayout tabs = findViewById(R.id.tabs);
+        tabs.addTab(tabs.newTab().setText("친구"));
+        tabs.addTab(tabs.newTab().setText("일대일채팅"));
+        tabs.addTab(tabs.newTab().setText("기타"));
+        tabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                int position = tab.getPosition();
+                Fragment selected = null;
+                switch (position) {
+                    case 0:
+                        selected = fragment1;
+                        break;
+                    case 1:
+                        selected = fragment2;
+                        break;
+                    case 2:
+                        selected = fragment3;
+                        break;
+                    default:
+                        break;
+                }
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, selected).commit();
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
+        });
+    }
+}
+```
+
+*강사쌤은 if 문으로 작성했지만 switch 문이 더 직관적이라서 수정했습니다.
+
+## **뷰페이저**
+
+어댑터를 통해 만든다.
+
+```java
+public class MainActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        ViewPager pager = findViewById(R.id.pager);
+        pager.setOffscreenPageLimit(3);
+        MoviePagerAdapter adapter = new MoviePagerAdapter(getSupportFragmentManager());
+        FirstFragment fragment1 = new FirstFragment();
+        SecondFragment fragment2 = new SecondFragment();
+        ThirdFragment fragment3 = new ThirdFragment();
+        adapter.addItem(fragment1);
+        adapter.addItem(fragment2);
+        adapter.addItem(fragment3);
+        pager.setAdapter(adapter);
+    }
+
+    class MoviePagerAdapter extends FragmentStatePagerAdapter {
+        ArrayList<Fragment> items = new ArrayList<>();
+
+        public MoviePagerAdapter(@NonNull @NotNull FragmentManager fm) {
+            super(fm);
+        }
+
+        public void addItem(Fragment item) {
+            items.add(item);
+        }
+
+        @NonNull
+        @NotNull
+        @Override
+        public Fragment getItem(int position) {
+            return items.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return items.size();
+        }
+    }
+}
+```
+
+유지보수
+
+```java
+adapter.addItem(new ThirdFragment());
+```
+
+하나의 프래그먼트와 한 줄의 코드를 통해 화면을 추가할 수 있다.
+
+**타이틀 스트립**
+
+뷰페이저를 넘기면 어느 화면을 나타내는지 알 수 없다.
+
+탭스트립 혹은 타이틀스트립이 그것을 보여준다.
+
+**activity_main.xml**
+
+```xml
+<androidx.viewpager.widget.PagerTitleStrip
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foregroundGravity="top"
+    android:background="#55cedf"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp">
+</androidx.viewpager.widget.PagerTitleStrip>
+```
+
+**MainActivity.java**
+
+```java
+@Nullable
+@org.jetbrains.annotations.Nullable
+@Override
+public CharSequence getPageTitle(int position) {
+    return "페이지 " + position;
+}
+```
+
+**버튼으로 뷰페이저 보기**: MainActivity.java
+
+```java
+button.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        pager.setCurrentItem(1);
+    }
+});
+```
+
+**바로가기 메뉴**
+
+drawer layout: 다른 레이아웃을 담을 수 있다.
+
+`<include>` 다른 레이아웃을 넣는다.
+
+`onOptionsItemSelected` 옵션선택 오버라이딩 메서드
+
+**버튼으로 뷰페이저 작동**
+
+추가한 코드
+
+**MainActivity.java** 내 onCreate 
+
+```java
+fragment1 = new FirstFragment();
+fragment2 = new SecondFragment();
+fragment3 = new ThirdFragment();
+toolbar = findViewById(R.id.toolbar);
+
+toolbar.setTitle("첫번째 화면");
+getSupportFragmentManager().beginTransaction().add(R.id.container, fragment1).commit();
+navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+    @Override
+    public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.nav_home:
+                Toast.makeText(MainActivity.this, "첫 번째 메뉴", Toast.LENGTH_SHORT).show();
+                onFragmentSelected(0, null);
+                drawer.close();
+                break;
+            case R.id.nav_gallery:
+                Toast.makeText(MainActivity.this, "두 번째 메뉴", Toast.LENGTH_SHORT).show();
+                onFragmentSelected(1, null);
+                drawer.close();
+                break;
+            case R.id.nav_slideshow:
+                Toast.makeText(MainActivity.this, "세 번째 메뉴", Toast.LENGTH_SHORT).show();
+                onFragmentSelected(2, null);
+                drawer.close();
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
+});
+```
+
+**새 인터페이스**
+
+```java
+public interface FragmentCallback {
+    public void onFragmentSelected(int position, Bundle bundle);
+}
+```
+
+**MainActivity.java** 내 메서드
+
+직접 구현한 인터페이스를 상속받았습니다.
+
+```java
+@Override
+public void onFragmentSelected(int position, Bundle bundle) {
+    Fragment curFragment = null;
+    switch (position) {
+        case 0:
+            curFragment = fragment1;
+            toolbar.setTitle("첫번째 화면");
+            break;
+        case 1:
+            curFragment = fragment2;
+            toolbar.setTitle("두번째 화면");
+            break;
+        case 2:
+            curFragment = fragment3;
+            toolbar.setTitle("세번째 화면");
+            break;
+        default:
+            break;
+    }
+    getSupportFragmentManager().beginTransaction().replace(R.id.container, curFragment).commit();
+}
+```
+
+**정리**
+
+**프래그먼트 띄우기**
+
+```java
+getSupportFragmentManager().beginTransaction().add(R.id.container, fragment1).commit();
+```
+
+1. sfm . . a R.id.container, f c
+
+Q. onAttach 에서 Context 는 어떤 것일까?
+
+A. 
+
+## 데이터 주고받기: 프래그먼트
+
+**프래그먼트에서 메인으로 데이터넘기기**
+
+**FirstFragment.java**
+
+```java
+public class F1Fragment extends Fragment {
+    FragmentCallback callback;
+
+    @Override
+    public void onAttach(@NonNull @NotNull Context context) {
+        super.onAttach(context);
+        if (context instanceof FragmentCallback) {
+            callback = (FragmentCallback) context;
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        if (callback != null) {
+            callback = null;
+        }
+    }
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.f1_fragment, container, false);
+        Button button = root.findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (callback != null) {
+                    callback.onCommand("show", "프래그먼트1에서 전달함");
+                }
+            }
+        });
+        return root;
+    }
+}
+```
+
+**새 인터페이스**
+
+```java
+public interface FragmentCallback {
+    public void onCommand(String command, String data);
+}
+```
+
+**MainActivity.java** 내 메서드
+
+```java
+@Override
+public void onCommand(String command, String data) {
+    button2.setText(data);
+}
+```
+
+> 데이터를 넘길 때 프래그먼트에서 메인으로는 인터페이스가 필요하고 메인에서 프래그먼트로는 인터페이스가 필요없다.
+
+**메인에서 프래그먼트로 데이터넘기기**
+
+**MainActivity.java** 내 onCreate
+
+```java
+button2.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        if (fragment1 != null) {
+            fragment1.onCommandFromActivity("show", "액티비티로부터 전달됨.");
+        }
+    }
+});
+```
+
+**FirstFragment.java** 내 메서드
+
+```java
+public void onCommandFromActivity(String command, String data) {
+    textView.setText(data);
+}
+```
 
 # 5. 네트워킹
 
@@ -1883,17 +2903,6 @@ doInBackground 에서 PostExecute 로 값을 넘겨준다.
 publishProgress 를 선언하면 onProgressUpdate 를 호출
 
 ```java
-package com.example.test;
-
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.Handler;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-
 public class MainActivity extends AppCompatActivity {
     TextView textView;
     Handler handler = new Handler();

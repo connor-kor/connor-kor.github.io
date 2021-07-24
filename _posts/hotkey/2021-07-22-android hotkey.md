@@ -32,3 +32,11 @@ inflater.inflate(R.layout.xml, view);
 
 리시코 아이 알 엘
 
+**Toast**
+
+```java
+Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
+```
+
+Toast
+
