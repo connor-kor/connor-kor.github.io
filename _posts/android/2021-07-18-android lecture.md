@@ -3,14 +3,6 @@ title: 안드로이드 부스트코스
 category: android
 ---
 
-**위젯**
-
-**토스트**
-
-```java
-Toast.makeText(getApplicationContext(), "버튼이 눌렸어요.", Toast.LENGTH_LONG).show();
-```
-
 **링크연결** 
 
 ```java
@@ -18,11 +10,9 @@ Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://m.naver.com"));
 startActivity(intent);
 ```
 
-
-
 # 1. 레이아웃
 
-## 환경설정
+## 환경설정 및 기본속성
 
 android studio: IntelliJ 에서 발전된 개발도구
 
@@ -1577,7 +1567,7 @@ public class MyService extends Service {
 - "전화가 왔습니다." "문자 메시지가 도착했습니다." 와 같이 안드로이드 시스템 전체에 보내지는 이벤트
 - 브로드캐스트 수신자는 인텐트필터를 포함하며 매니페스트 파일에 등록함으로써 인텐트를 받을 준비를 함
 - 수신자가 매니페스트 파일에 등록되었다면 따로 시작시키지 않아도 됨
-- 애플리케이션은 컨텍스트 클래스틔 registerReceiver 메소드를 이용하면 런타임시에도 수신자를 등록할 수 있음
+- 애플리케이션은 컨텍스트 클래스의 registerReceiver 메소드를 이용하면 런타임시에도 수신자를 등록할 수 있음
 - 서비스처럼 브로드캐스트 수신자도 UI 가 없음
 
 크게 두가지 클래스로 구분된다.
@@ -2734,6 +2724,8 @@ thread1.start();
 
 **스레드 예제**
 
+제일 아래의 압축형코드를 쓰시기를 추천합니다.
+
 ```java
 TextView textView = (TextView) findViewById(R.id.textView);
 
@@ -2868,10 +2860,8 @@ start.setOnClickListener(new View.OnClickListener() {
 
 **사용방법**
 
-1. 뉴 쓰레드
-2. 뉴 러너블
-3. 핸들러 포스트
-4. 뉴 러너블
+1. 뉴 쓰레드 (뉴 러너블)
+2. 런 메서드 내부에 핸들러 포스트 (뉴 러너블)
 5. 쓰레드 스타트
 
 ```java
@@ -2902,70 +2892,5 @@ doInBackground 에서 PostExecute 로 값을 넘겨준다.
 
 publishProgress 를 선언하면 onProgressUpdate 를 호출
 
-```java
-public class MainActivity extends AppCompatActivity {
-    TextView textView;
-    Handler handler = new Handler();
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        textView = (TextView) findViewById(R.id.textView);
-        Button start = (Button) findViewById(R.id.start);
-        start.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        for (int i = 0; i < 1000; i++) {
-                            int value= i;
-                            handler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    textView.setText("현재 값: " + value);
-                                }
-                            });
-
-                            try {
-                                Thread.sleep(1000);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }).start();
-            }
-
-            class ProgressTask extends AsyncTask<String, Integer, Integer> {
-                int value = 0;
-
-                @Override
-                protected Integer doInBackground(String... strings) {
-                    for(int i = 0; i < 100; i++) {
-                        publishProgress(i);
-
-                    }
-                    return null;
-                }
-
-                @Override
-                protected void onProgressUpdate(Integer... values) {
-                    super.onProgressUpdate(values);
-                }   
-
-                @Override
-                protected void onPostExecute(Integer integer) {
-                    super.onPostExecute(integer);
-                }
-            }
-
-
-        });
-
-    }
-}
-```
 
