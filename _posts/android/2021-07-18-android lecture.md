@@ -2892,5 +2892,588 @@ doInBackground 에서 PostExecute 로 값을 넘겨준다.
 
 publishProgress 를 선언하면 onProgressUpdate 를 호출
 
+**프로그래스 바 넣기:** MainActivity.java
 
+```java
+public class MainActivity extends AppCompatActivity {
+    ProgressBar progressBar;
+    Handler handler = new Handler();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        Button button = findViewById(R.id.button);
+        progressBar = findViewById(R.id.progressBar);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProgressThread thread = new ProgressThread();
+                thread.start();
+            }
+        });
+    }
+
+    class ProgressThread extends Thread {
+        @Override
+        public void run() {
+            for (int i = 0; i < 100; i++) {
+                int value = i;
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                    progressBar.setProgress(value);
+                    }
+                });
+                try {
+                    Thread.sleep(200);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+}
+```
+
+`handler` 
+
+- `.post` 
+- `.postAtFrontOfQueue` 
+- `.postAtTime` 
+- `.postDelayed` 
+
+**postDelayed 예시**
+
+```java
+button.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ProgressThread thread = new ProgressThread();
+                thread.start();
+            }
+        }, 5000);
+    }
+});
+```
+
+`onPostExecute` 실행이 끝나면 메서드 실행
+
+**AsyncTask 예제**
+
+```java
+public class MainActivity extends AppCompatActivity {
+    ProgressBar progressBar;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        progressBar = findViewById(R.id.progressBar);
+        Button button = findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProgressTask task = new ProgressTask();
+                task.execute("시작");
+            }
+        });
+    }
+
+    class ProgressTask extends AsyncTask<String, Integer, Integer> {
+        @Override
+        protected Integer doInBackground(String... strings) {
+            int value;
+            for (value = 0; value < 100; value++) {
+                publishProgress(value);
+                try {
+                    Thread.sleep(200);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            return value;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+            progressBar.setProgress(values[0].intValue());
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+            super.onPostExecute(integer);
+            Toast.makeText(MainActivity.this, "완료됨", Toast.LENGTH_SHORT).show();
+        }
+    }
+}
+```
+
+스레드보다 AsyncTask 를 이용하는 경우가 많다.
+
+**소켓**
+
+웹서버에서 데이터를 가져오는 것을 구현한다.
+
+![image-20210728163238299](../../assets/images/image-20210728163238299.png)
+
+일반적인 프로그래밍에서는 대부분 TCP 연결을 사용한다.
+
+주의할 점
+
+- 네트워킹을 사용할 때에는 반드시 스레드 사용
+- UI 업데이트를 위해 반드시 핸들러 사용. post() 메서드사용 권장
+
+![image-20210728163440009](../../assets/images/image-20210728163440009.png)
+
+**Manifest.xml** 
+
+```
+<uses-permission android:name="android.permission.INTERNET"/>
+```
+
+**서버스레드**
+
+```java
+public class MainActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        Button button = findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ServerThread thread = new ServerThread();
+                thread.start();
+            }
+        });
+    }
+
+    class ServerThread extends Thread {
+        @Override
+        public void run() {
+            int port = 5001;
+            try {
+                ServerSocket server = new ServerSocket(port);
+                Log.d("ServerThread", "서버가 실행됨");
+                while (true) {
+                    Socket socket = server.accept();
+                    ObjectInputStream instream = new ObjectInputStream(socket.getInputStream());
+                    Object input = instream.readObject();
+                    Log.d("ServerThread", "input:" + input);
+                    ObjectOutputStream outstream = new ObjectOutputStream(socket.getOutputStream());
+                    outstream.writeObject(input + " from server.");
+                    outstream.flush();
+                    Log.d("ServerThread", "output 보냄");
+                    socket.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+```
+
+**소켓스레드**
+
+```java
+public class MainActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        Button button = findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ClientThread thread = new ClientThread();
+                thread.start();
+            }
+        });
+    }
+
+    class ClientThread extends Thread {
+        @Override
+        public void run() {
+            String host = "localhost";
+            int port = 5001;
+            try {
+                Socket socket = new Socket(host, port);
+                ObjectOutputStream outstream = new ObjectOutputStream(socket.getOutputStream());
+                outstream.writeObject("안녕!");
+                outstream.flush();
+                Log.d("ClentThread", "서버로 보냄");
+                ObjectInputStream instream = new ObjectInputStream(socket.getInputStream());
+                Object input = instream.readObject();
+                Log.d("ClientThread", "받은 데이터: " + input);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+```
+
+UI 에 넘겨주려면 꼭 handler 를 써야한다.
+
+**핸들러:** MySocket - MainActivity.java
+
+```java
+handler.post(new Runnable() {
+    @Override
+    public void run() {
+        textView.setText("받은데이터: " + input);
+    }
+});
+```
+
+**서비스 실행: ** MyServer - MainActivity.java
+
+```java
+button.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        Intent intent = new Intent(getApplicationContext(), ChatService.class);
+        startService(intent);
+    }
+});
+```
+
+**챗 서비스:** MyServer - 새 서비스
+
+```java
+public class ChatService extends Service {
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        ServerThread thread = new ServerThread();
+        thread.start();
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        return super.onStartCommand(intent, flags, startId);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+    public ChatService() {
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        // TODO: Return the communication channel to the service.
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    class ServerThread extends Thread {
+        @Override
+        public void run() {
+            int port = 5001;
+            try {
+                ServerSocket server = new ServerSocket(port);
+                Log.d("ServerThread", "서버가 실행됨");
+                while (true) {
+                    Socket socket = server.accept();
+                    ObjectInputStream instream = new ObjectInputStream(socket.getInputStream());
+                    Object input = instream.readObject();
+                    Log.d("ServerThread", "input:" + input);
+                    ObjectOutputStream outstream = new ObjectOutputStream(socket.getOutputStream());
+                    outstream.writeObject(input + " from server.");
+                    outstream.flush();
+                    Log.d("ServerThread", "output 보냄");
+                    socket.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+```
+
+**HTTP**
+
+HTTP 는 소켓과 별반 다르지 않다.
+
+![image-20210728173334121](../../assets/images/image-20210728173334121.png)
+
+**요청**
+
+![image-20210728173420706](../../assets/images/image-20210728173420706.png)
+
+**응답** 
+
+![image-20210728173540523](../../assets/images/image-20210728173540523.png)
+
+요청코드를 작성하는 것이 복잡하므로 volley 라는 라이브러리를 사용하여 작성한다.
+
+**웹으로 요청**
+
+- 자바에서 사용하는 클래스를 그대로 사용할 수 있다.
+
+URL Connection 클래스
+
+**Manifest **\<application> 태그내부
+
+
+
+```
+android:usesCleartextTraffic="true"
+```
+
+**HTTP 예시** 
+
+```java
+public class MainActivity extends AppCompatActivity {
+    EditText editText;
+    TextView textView;
+    Handler handler = new Handler();
+    String urlStr;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        textView = findViewById(R.id.textView);
+        editText = findViewById(R.id.editText);
+        Button button = findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                urlStr = editText.getText().toString();
+                RequestThread thread = new RequestThread();
+                thread.start();
+            }
+        });
+    }
+
+    class RequestThread extends Thread {
+        @Override
+        public void run() {
+            try {
+                URL url = new URL(urlStr);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                if (conn != null) {
+                    conn.setConnectTimeout(10000);
+                    conn.setRequestMethod("GET");
+                    conn.setDoInput(true);
+                    conn.setDoOutput(true);
+                    int resCode = conn.getResponseCode();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    String line = null;
+                    while (true) {
+                        line = reader.readLine();
+                        if (line == null) {
+                            break;
+                        }
+                        println(line);
+                    }
+                    reader.close();
+                    conn.disconnect();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void println(String data) {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                textView.append(data + "\n");
+            }
+        });
+    }
+}
+```
+
+**Volley**
+
+코드의 양이 적고 스레드를 사용하지 않는다.
+
+1. Request 객체를 만든다.
+2. RequestQueue 에 추가해준다: 자동으로 스레드를 만들어준다.
+
+**볼리 라이브러리**
+
+```
+implementation 'com.android.volley:volley:1.1.0'
+```
+
+영화 API: <https://www.kobis.or.kr/kobisopenapi/homepg/main/main.do>{:target="_blank"}
+
+**볼리 예제**
+
+Mainfest
+
+```
+<uses-permission android:name="android.permission.INTERNET"/>
+
+<application
+android:usesCleartextTraffic="true">
+```
+
+MainActivity.java
+
+```java
+public class MainActivity extends AppCompatActivity {
+    TextView textView;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        textView = findViewById(R.id.textView);
+        Button button = findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendRequest();
+            }
+        });
+        if (AppHelper.requestQueue == null) {
+            AppHelper.requestQueue = Volley.newRequestQueue(getApplicationContext());
+        }
+    }
+
+    public void sendRequest() {
+        String url = "http://www.google.co.kr";
+        StringRequest request = new StringRequest(
+                Request.Method.GET,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        println("응답 -> " + response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        println("에러 -> " + error.getMessage());
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                return params;
+            }
+        };
+        request.setShouldCache(false);
+        AppHelper.requestQueue.add(request);
+        println("요청 보냄.");
+    }
+
+    public void println(String data) {
+        textView.append(data + "\n");
+    }
+}
+```
+
+**AppHelper**
+
+```java
+public class AppHelper {
+    public static RequestQueue requestQueue;
+}
+```
+
+**JSON**
+
+데이터포맷이다.
+
+자바스크립트 객체로 바꿔 바로 사용가능하다.
+
+구글에서 만든 GSON 은 이 객체를 자바객체로 바꿔준다.
+
+**GSON**
+
+```
+implementation 'com.google.code.gson:gson:2.8.2'
+```
+
+예시 JSON 파일: <http://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=f5eef3421c602c6cb7ea224104795888&targetDt=20120101>{:target="_blank"}
+
+`{ }` 중괄호: 객체
+
+`[ ]` 대괄호: 배열
+
+JSON 정렬 사이트: <http://json.parser.online.fr/>{:target="_blank"}
+
+```json
+{
+    "boxOfficeResult":{
+        "boxofficeType":"일별 박스오피스",
+        "showRange":"20120101~20120101",
+        "dailyBoxOfficeList":[10]
+    }
+}
+```
+
+클래스로 구조를 만든다.
+
+1. 가장 상단 클래스 생성
+2. BoxofficeType 클래스 생성
+3. DailyBoxOfficeList 클래스 생성
+
+**최상위 클래스**
+
+```java
+public class MovieList {
+    MovieListResult boxOfficeResult;
+}
+```
+
+**boxOfficeResult**
+
+```java
+public class MovieListResult {
+    String boxofficeType;
+    String showRange;
+    ArrayList<Movie> dailyBoxOfficeList = new ArrayList<>();
+}
+```
+
+**DailyBoxOfficeList **
+
+```java
+public class Movie {
+    String rnum;
+    String rank;
+    String rankInten;
+    String rankOldAndNew;
+    String movieCd;
+    String movieNm;
+    String openDt;
+    String salesAmt;
+    String salesShare;
+    String salesInten;
+    String salesChange;
+    String salesAcc;
+    String audiCnt;
+    String audiInten;
+    String audiChange;
+    String audiAcc;
+    String scrnCnt;
+    String showCnt;
+}
+```
 
