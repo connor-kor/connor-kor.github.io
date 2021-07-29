@@ -3017,7 +3017,7 @@ public class MainActivity extends AppCompatActivity {
 
 스레드보다 AsyncTask 를 이용하는 경우가 많다.
 
-**소켓**
+## 소켓&HTTP
 
 웹서버에서 데이터를 가져오는 것을 구현한다.
 
@@ -3038,7 +3038,7 @@ public class MainActivity extends AppCompatActivity {
 <uses-permission android:name="android.permission.INTERNET"/>
 ```
 
-**서버스레드**
+**서버 스레드**
 
 ```java
 public class MainActivity extends AppCompatActivity {
@@ -3083,7 +3083,7 @@ public class MainActivity extends AppCompatActivity {
 }
 ```
 
-**소켓스레드**
+**소켓 스레드**
 
 ```java
 public class MainActivity extends AppCompatActivity {
@@ -3137,7 +3137,7 @@ handler.post(new Runnable() {
 });
 ```
 
-**서비스 실행: ** MyServer - MainActivity.java
+**서비스 실행:** MyServer - MainActivity.java
 
 ```java
 button.setOnClickListener(new View.OnClickListener() {
@@ -3227,7 +3227,7 @@ HTTP 는 소켓과 별반 다르지 않다.
 
 URL Connection 클래스
 
-**Manifest **\<application> 태그내부
+**Manifest**\<application> 태그내부
 
 
 
@@ -3303,7 +3303,7 @@ public class MainActivity extends AppCompatActivity {
 }
 ```
 
-**Volley**
+## **Volley&GSON**
 
 코드의 양이 적고 스레드를 사용하지 않는다.
 
@@ -3431,7 +3431,7 @@ JSON 정렬 사이트: <http://json.parser.online.fr/>{:target="_blank"}
 클래스로 구조를 만든다.
 
 1. 가장 상단 클래스 생성
-2. BoxofficeType 클래스 생성
+2. boxOfficeResult 클래스 생성
 3. DailyBoxOfficeList 클래스 생성
 
 **최상위 클래스**
@@ -3452,7 +3452,7 @@ public class MovieListResult {
 }
 ```
 
-**DailyBoxOfficeList **
+**DailyBoxOfficeList**
 
 ```java
 public class Movie {
@@ -3474,6 +3474,278 @@ public class Movie {
     String audiAcc;
     String scrnCnt;
     String showCnt;
+}
+```
+
+**GSON 의 사용방법**
+
+1. processResponse 메서드를 작성
+
+```java
+public void processResponse(String response) {
+    Gson gson = new Gson();
+    MovieList movieList = gson.fromJson(response, MovieList.class);
+    if (movieList != null) {
+        int countMovie = movieList.boxOfficeResult.dailyBoxOfficeList.size();
+        println("박스오피스 타입: " + movieList.boxOfficeResult.boxofficeType);
+        println("응답받은 영화갯수: " + countMovie);
+    }
+}
+```
+
+2. `processResponse(response)` Response.Listener 내부에 선언
+
+**전체코드**
+
+```java
+StringRequest request = new StringRequest(
+        Request.Method.GET,
+        url,
+        new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                println("응답 -> " + response);
+                processResponse(response);
+            }
+        },
+        new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                println("에러 -> " + error.getMessage());
+            }
+        }
+) {
+    @Override
+    protected Map<String, String> getParams() throws AuthFailureError {
+        Map<String, String> params = new HashMap<>();
+        return params;
+    }
+};
+```
+
+**이미지 다운로드**
+
+onPreExecute - doInBackground - onProgressUpdate - onPostExecute 순으로 실행된다.
+
+**ImageLoadTask.java**
+
+```java
+public class ImageLoadTask extends AsyncTask<Void, Void, Bitmap> {
+    private String urlStr;
+    private ImageView imageView;
+
+    public ImageLoadTask(String urlStr, ImageView imageView) {
+        this.urlStr = urlStr;
+        this.imageView = imageView;
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+    }
+
+    @Override
+    protected Bitmap doInBackground(Void... voids) {
+        Bitmap bitmap = null;
+        try {
+        URL url = new URL(urlStr);
+        bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return bitmap;
+    }
+
+    @Override
+    protected void onProgressUpdate(Void... values) {
+        super.onProgressUpdate(values);
+    }
+
+    @Override
+    protected void onPostExecute(Bitmap bitmap) {
+        super.onPostExecute(bitmap);
+        imageView.setImageBitmap(bitmap);
+        imageView.invalidate();
+    }
+}
+```
+
+**메인메서드**
+
+```java
+private void sendImageRequest() {
+    String url = "https://movie-phinf.pstatic.net/20210610_86/1623290294202tkWYJ_JPEG/movie_image.jpg?type=m665_443_2";
+    ImageLoadTask task = new ImageLoadTask(url, imageView);
+    task.execute();
+}
+```
+
+**메모리**
+
+```java
+@Override
+protected Bitmap doInBackground(Void... voids) {
+    Bitmap bitmap = null;
+    try {
+        if (bitmapHash.containsKey(urlStr)) {
+            Bitmap oldBitmap = bitmapHash.remove(urlStr);
+            if (oldBitmap != null) {
+                oldBitmap.recycle();
+                oldBitmap = null;
+            }
+        }
+        URL url = new URL(urlStr);
+        bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+        bitmapHash.put(urlStr, bitmap);
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return bitmap;
+}
+```
+
+보통은 HashMap 을 사용하지 않고 데이터베이스에 캐쉬로 저장했다가 비트맵이 이미 있다면 거기서 불러온다.
+
+프로그레스바를 넣어 이미지요청에 대해 visible, unvisible 을 설정할 수 있다.
+
+**영화 API**
+
+샘플 영화 API: <http://boostcourse-appapi.connect.or.kr:10000/movie/readMovieList?type=1>{:target="_blank"}
+
+JSON View or Viewer 를 브라우저 플러그인 (확장프로그램) 을 받으면 브라우저에서 정렬된 JSON 코드를 볼 수 있다.
+
+**정리**
+
+Volley 내부에 Gson 을 선언한다.
+
+Mainfest
+
+```
+<uses-permission android:name="android.permission.INTERNET"/>
+
+<application
+    android:usesCleartextTraffic="true">
+```
+
+build.gradle
+
+```
+implementation 'com.android.volley:volley:1.1.0'
+implementation 'com.google.code.gson:gson:2.8.2'
+```
+
+data 패키지 내부에 클래스 생성
+
+```java
+public class ResponseInfo {
+    public String message;
+    public int code;
+    public String resultType;
+}
+```
+
+```java
+public class MovieList {
+    public ArrayList<MovieInfo> result = new ArrayList<>();
+}
+```
+
+```java
+public class MovieInfo {
+    public int id;
+    public String title;
+    public String title_eng;
+    public String date;
+    public float user_rating;
+    public float audience_rating;
+    public float reviewer_rating;
+    public float reservation_rate;
+    public int reservation_grade;
+    public int grade;
+    public String thumb;
+    public String image;
+}
+```
+
+**Volley**
+
+볼리 라이브러리를 사용해 스레드와 핸들러를 사용할 필요가 없어진다.
+
+```java
+public class AppHelper {
+    public static RequestQueue requestQueue;
+    public static String host = "boostcourse-appapi.connect.or.kr";
+    public static int port = 10000;
+}
+```
+
+**MainActivity.java**
+
+```java
+public class MainActivity extends AppCompatActivity {
+    TextView textView;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        textView = findViewById(R.id.textView);
+        Button button = findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                requestMovieList();
+            }
+        });
+        if (AppHelper.requestQueue == null) {
+            AppHelper.requestQueue = Volley.newRequestQueue(getApplicationContext());
+        }
+    }
+
+    public void requestMovieList() {
+        String url = "http://" + AppHelper.host + ":" + AppHelper.port + "/movie/readMovieList";
+        url += "?" + "type=1";
+        StringRequest request = new StringRequest(
+                Request.Method.GET,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        println("응답받음 -> " + response);
+                        processResponse(response);
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        println("에러발생 -> " + error.getMessage());
+                    }
+                }
+        );
+        request.setShouldCache(false);
+        AppHelper.requestQueue.add(request);
+        println("영화목록 요청보냄.");
+    }
+
+    public void processResponse(String response) {
+        Gson gson = new Gson();
+        ResponseInfo info = gson.fromJson(response, ResponseInfo.class);
+        if (info.code == 200) {
+            MovieList movieList = gson.fromJson(response, MovieList.class);
+            println("영화갯수: " + movieList.result.size());
+
+            for (int i = 0; i < movieList.result.size(); i++) {
+                MovieInfo movieInfo = movieList.result.get(i);
+                println("영화 #" + i + " -> " + movieInfo.id + ", " + movieInfo.title + ", " + movieInfo.grade);
+            }
+        }
+    }
+
+    public void println(String data) {
+        textView.append(data + "\n");
+    }
 }
 ```
 
