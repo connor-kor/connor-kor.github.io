@@ -5,6 +5,8 @@ category: android
 
 # 6. 데이터베이스
 
+## 이론
+
 ![image-20210729165519661](../../assets/images/image-20210729165519661.png)
 
 테이블을 Relation 이라고 한다.
@@ -62,6 +64,8 @@ category: android
 SQLite 의 데이터를 PC 로도 볼 수 있다.
 
 ![image-20210729173257900](../../assets/images/image-20210729173257900.png)
+
+## 예시
 
 **데이터베이스 열기**
 
@@ -297,7 +301,7 @@ SQLite: <https://sqlitebrowser.org/>{:target="_blank"}
 
 ![image-20210729210842081](../../assets/images/image-20210729210842081.png)
 
-**헬퍼클래스**
+## **헬퍼 클래스**
 
 배포 후 데이터베이스를 수정하기 위해 사용한다.
 
@@ -347,7 +351,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
 }
 ```
 
-**인터넷 연결상태**
+## **인터넷 연결상태**
 
 NetworkStatus.java
 
