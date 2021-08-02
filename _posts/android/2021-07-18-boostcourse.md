@@ -1,5 +1,5 @@
 ---
-title: 안드로이드 부스트코스1
+title: 부스트코스1
 category: android
 ---
 

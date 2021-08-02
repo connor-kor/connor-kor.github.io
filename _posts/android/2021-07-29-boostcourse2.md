@@ -1,5 +1,5 @@
 ---
-title: 안드로이드 부스트코스2
+title: 부스트코스2
 category: android
 ---
 
@@ -1213,4 +1213,330 @@ button.setOnClickListener(new View.OnClickListener() {
 ```
 
 # 8. 애니메이션
+
+## 애니메이션
+
+**1. 스레드 애니메이션**
+
+```java
+public class MainActivity extends AppCompatActivity {
+    ArrayList<Drawable> imageList = new ArrayList<>();
+    ImageView imageView;
+    Handler handler = new Handler();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        imageView = findViewById(R.id.imageView);
+        Resources res = getResources();
+        imageList.add(res.getDrawable(R.drawable.ic_launcher_foreground));
+        imageList.add(res.getDrawable(R.drawable.ic_launcher_background));
+        imageList.add(res.getDrawable(R.mipmap.ic_launcher_round));
+        Button button = findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AnimThread thread = new AnimThread();
+                thread.start();
+            }
+        });
+    }
+
+    class AnimThread extends Thread {
+        @Override
+        public void run() {
+            for (int i = 0; i < 100; i++) {
+                int index = i % 3;
+                Drawable drawable = imageList.get(index);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        imageView.setImageDrawable(drawable);
+                    }
+                });
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+}
+```
+
+**2. 트윈 애니메이션 (Tweened Animation)**
+
+- 뷰 애니메이션이라고도 하며, 보여줄 대상을 적절하게 연산한 후 그 결과를 연속적으로 디스플레이하는 방식임
+- 애니메이션 대상과 변환방식을 지정하면 애니메이션 효과를 낼 수 있도록 만들어 줌
+- 따라서 프레임 애니메이션처럼 변경하면서 보여줄 각각의 이미지를 추가할 필요없이 대상만 지정하면 시스템 내부적으로 적절하게 연산하는 과정을 거치게 됨
+
+애니메이션을 위한 액션정보
+
+- XML 리소스로 정의하거나 자바코드에서 직접 객체로 만듬
+- 애니메이션을 위한 XML 파일은 [/res/anim] 폴더의 밑에 두어야 하며 확장자를 xml 로 함
+- 리소스로 포함된 애니메이션 액션정의는 다른 리소스와 마찬가지로 빌드할 때 컴파일되어 설치파일에 포함됨
+
+**대상과 애니메이션 효과**
+
+![image-20210802120510499](../../assets/images/image-20210802120510499.png)
+
+**MainActivity.java** 버튼 클릭
+
+```java
+button.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        Animation scale = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.scale);
+        v.startAnimation(scale);
+    }
+});
+```
+
+**scale.xml** Anim 디렉토리 내부
+
+```xml
+<scale
+    android:pivotX="50%"
+    android:pivotY="50%"
+    android:fromXScale="1.0"
+    android:fromYScale="1.0"
+    android:toXScale="3.0"
+    android:toYScale="3.0"
+    android:duration="1500"/>
+<scale
+    android:startOffset="1500"
+    android:pivotX="50%"
+    android:pivotY="50%"
+    android:fromXScale="1.0"
+    android:fromYScale="1.0"
+    android:toXScale="0.3"
+    android:toYScale="0.3"
+    android:duration="1500"/>
+```
+
+**인터폴레이터**
+
+- accelerate_interpolator: 애니메이션 효과를 점점 빠르게
+- decelerate-interpolator: 애니메이션 효과를 점점 느리게
+- accelerate_decelerate_interpolator: 애니메이션 효과를 점점 빠르다가 느리게
+- anticipate_interpolator: 시작위치에서 조금 뒤로 당겼다가 시작하도록
+- overshoot_interpolator: 종료위치에서 조금 지나쳤다가 종료되도록
+
+트윈 애니메이션이 스레드 애니메이션보다 성능면 등이 더 좋다.
+
+**페이지 슬라이딩**
+
+![image-20210802122420558](../../assets/images/image-20210802122420558.png)
+
+`100%p` 오른쪽 끝
+
+`0%p` 왼쪽 끝
+
+**MainActivity.java**
+
+```java
+public class MainActivity extends AppCompatActivity {
+    LinearLayout page;
+    Animation translateLeft;
+    Animation translateRight;
+    Boolean isPageOpen = false;
+    private Button button;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        page = findViewById(R.id.page);
+        translateLeft = AnimationUtils.loadAnimation(this, R.anim.translate_left);
+        translateRight = AnimationUtils.loadAnimation(this, R.anim.translate_right);
+        SlidingAnimationListener listener = new SlidingAnimationListener();
+        translateLeft.setAnimationListener(listener);
+        translateRight.setAnimationListener(listener);
+        button = findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isPageOpen) {
+                    page.startAnimation(translateRight);
+                    button.setText("열기");
+                } else {
+                    button.setText("닫기");
+                    page.setVisibility(View.VISIBLE);
+                    page.startAnimation(translateLeft);
+                }
+            }
+        });
+    }
+
+    class SlidingAnimationListener implements Animation.AnimationListener {
+        @Override
+        public void onAnimationStart(Animation animation) {
+        }
+
+        @Override
+        public void onAnimationEnd(Animation animation) {
+            if (isPageOpen) {
+                page.setVisibility(View.INVISIBLE);
+                isPageOpen = false;
+           } else {
+                isPageOpen = true;
+            }
+        }
+
+        @Override
+        public void onAnimationRepeat(Animation animation) {
+        }
+    }
+}
+```
+
+**translate_left.xml**
+
+```xml
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <translate
+        android:fromXDelta="100%p"
+        android:toXDelta="0%p"
+        android:duration="1500"/>
+</set>
+```
+
+**translate_right.xml**
+
+```xml
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <translate
+        android:fromXDelta="0%p"
+        android:toXDelta="100%p"
+        android:duration="1500"/>
+</set>
+```
+
+## **스플래시**
+
+layout 을 만들어 setContentView 해도 되고 테마로 설정해도 된다.
+
+**splash_base.xml:** drawable 내부 새 xml
+
+```xml
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient
+        android:startColor="#FF3E50B4"
+        android:centerColor="#FF7288DB"
+        android:endColor="#FF7288DB"
+        android:angle="90"
+        android:centerY="0.5"/>
+    <corners android:radius="0dp"/>
+</shape>
+```
+
+**splash_background.xml:** drawable 내부 새 xml
+
+```xml
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/splash_base"/>
+    <item android:top="210dp"
+        android:drawable="@drawable/ic_launcher_foreground"
+        android:gravity="center">
+    </item>
+</layer-list>
+```
+
+**themes.xml:** values 폴더 내부
+
+```xml
+<style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+    <item name="android:windowBackground">@drawable/splash_background</item>
+</style>
+```
+
+**SplashActivity.java**
+
+```java
+public class SplashActivity extends AppCompatActivity {
+    Handler handler = new Handler();
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        }, 1000);
+    }
+}
+```
+
+**Manifest**
+
+```
+<activity android:name=".SplashActivity"
+    android:theme="@style/SplashTheme">
+    <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+
+        <category android:name="android.intent.category.LAUNCHER" />
+    </intent-filter>
+</activity>
+```
+
+초기 화면을 SplashActivity 로 변경 후 테마를 SplashTheme 으로 변경
+
+**정리**
+
+```java
+public class MainActivity extends AppCompatActivity {
+    private Animation translateUp;
+    private Animation translateDown;
+    LinearLayout menuContainer;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        translateUp = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.translate_up);
+        translateDown = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.translate_down);
+        translateUp.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                menuContainer.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+        });
+
+        menuContainer = findViewById(R.id.menuContainer);
+        Button button = findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (menuContainer.getVisibility() == View.VISIBLE) {
+                    menuContainer.startAnimation(translateUp);
+                } else {
+                    menuContainer.setVisibility(View.VISIBLE);
+                    menuContainer.startAnimation(translateDown);
+                }
+            }
+        });
+    }
+}
+```
+
+강사쌤은 isShown 이라는 불린 값을 정의해서 사용했지만 getVisibility 와 View.VISIBLE 함수를 사용하는 것이 더 적절한 것 같아 수정해서 작성했습니다.
 
