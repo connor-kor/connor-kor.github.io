@@ -343,10 +343,215 @@ lazyNumber.add()
 
 코틀린 메뉴얼 사이트: <https://kotlinlang.org/>{:target="_blank"}
 
+# 1. Basic
+
+## I. BMI 계산기 앱
+
+**findViewById**
+
+```kotlin
+val editText: EditText = findViewById(R.id.editText)
+```
+
+**같은코드**
+
+```kotlin
+val editText = findViewById<EditText>(R.id.editText)
+```
+
+editText get: `editText.text.toString()` 	
+
 # 3-5. 틴더 앱
 
 1. 파이어베이스 로그인
 2. 파이어베이스 데이터베이스
+
+**파이어베이스 환경설정**
+
+파이어베이스: <https://firebase.google.com/?hl=ko>{:target="_blank"}
+
+**앱 등록**
+
+1. 패키지명 입력
+2. json 파일 app 폴더 내에 붙여넣기
+3. build.gradle (Project) 내에 붙여넣기
+4. build.gradle (App) 내에 붙여넣기
+
+![image-20210803000536123](../../../assets/images/image-20210803000536123.png)
+
+일반적인 경우 
+
+```
+classpath 'com.google.gms:google-services:4.3.8'
+```
+
+이 코드만 추가하면 된다.
+
+마찬가지로 build.gradle (App) 내에도 화면에 나오는 코드를 넣으면 된다.
+
+```
+id 'com.google.gms.google-services'
+
+dependencies {
+	implementation 'com.google.firebase:firebase-bom:28.3.0'
+}
+```
+
+두 코드를 각각 넣으면 된다.
+
+**구글로그인**
+
+메뉴얼: <https://firebase.google.com/docs/auth/android/google-signin>{:target="_blank"}
+
+1. SDK 추가
+2. Authentication 에서 구글로그인을 누르고 사용설정 - 프로젝트 지원 이메일을 선택 후 저장한다.
+3. GoogleSignInActivity.kt 클래스 파일을 받아 java 디렉토리에 저장
+
+**GoogleSignInActivity**
+
+```kotlin
+/**
+ * Demonstrate Firebase Authentication using a Google ID Token.
+ */
+class GoogleSignInActivity : Activity() {
+
+    // [START declare_auth]
+    private lateinit var auth: FirebaseAuth
+    // [END declare_auth]
+
+    private lateinit var googleSignInClient: GoogleSignInClient
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        /* 1. GoogleSignInOptions 객체를 구성할 때 requestIdToken을 호출합니다. */
+        // [START config_signin]
+        // Configure Google Sign In
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build()
+
+        googleSignInClient = GoogleSignIn.getClient(this, gso)
+        // [END config_signin]
+
+
+        /* 2. 다음과 같이 로그인 작업의 onCreate 메서드에서 FirebaseAuth 객체의 공유 인스턴스를 가져옵니다. */
+        // [START initialize_auth]
+        // Initialize Firebase Auth
+        auth = Firebase.auth
+        // [END initialize_auth]
+    }
+
+    /* 3. 활동을 초기화할 때 사용자가 현재 로그인되어 있는지 확인합니다. */
+    // [START on_start_check_user]
+    override fun onStart() {
+        super.onStart()
+        // Check if user is signed in (non-null) and update UI accordingly.
+        val currentUser = auth.currentUser
+        updateUI(currentUser)
+    }
+    // [END on_start_check_user]
+
+    // [START onactivityresult]
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            try {
+                // Google Sign In was successful, authenticate with Firebase
+                val account = task.getResult(ApiException::class.java)!!
+                Log.d(TAG, "firebaseAuthWithGoogle:" + account.id)
+                firebaseAuthWithGoogle(account.idToken!!)
+            } catch (e: ApiException) {
+                // Google Sign In failed, update UI appropriately
+                Log.w(TAG, "Google sign in failed", e)
+            }
+        }
+    }
+    // [END onactivityresult]
+
+    /*
+    * 4. 사용자가 정상적으로 로그인하면 GoogleSignInAccount 객체에서 ID 토큰을
+    * 가져와서 Firebase 사용자 인증 정보로 교환하고 해당 정보를 사용해 Firebase에 인증합니다.
+    */
+    // [START auth_with_google]
+    private fun firebaseAuthWithGoogle(idToken: String) {
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        auth.signInWithCredential(credential)
+                .addOnCompleteListener(this) { task ->
+                    if (task.isSuccessful) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d(TAG, "signInWithCredential:success")
+                        val user = auth.currentUser
+                        updateUI(user)
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w(TAG, "signInWithCredential:failure", task.exception)
+                        updateUI(null)
+                    }
+                }
+    }
+    // [END auth_with_google]
+
+    // [START signin]
+    private fun signIn() {
+        val signInIntent = googleSignInClient.signInIntent
+        startActivityForResult(signInIntent, RC_SIGN_IN)
+    }
+    // [END signin]
+
+    private fun updateUI(user: FirebaseUser?) {
+    }
+
+    companion object {
+        private const val TAG = "GoogleActivity"
+        private const val RC_SIGN_IN = 9001
+    }
+}
+```
+
+**에러**
+
+`default_web_client_id` 값을 못찾는 경우 실행을 해보면 gradle 에 의해 자동으로 생성된다.
+
+**로그아웃**
+
+```kotlin
+Firebase.auth.signOut()
+```
+
+**계정데이터**
+
+```kotlin
+Firebase.auth.currentUser
+```
+
+**버튼**
+
+SignInButton 이라고 검색하면 버튼이 이미 만들어져 있다.
+
+```xml
+<com.google.android.gms.common.SignInButton
+    android:id="@+id/btn_googleSignIn"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+</com.google.android.gms.common.SignInButton>
+```
+
+**로그인**
+
+```kotlin
+signIn()
+```
+
+
 
 # 4-1. 유튜브 앱
 
