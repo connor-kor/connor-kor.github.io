@@ -1071,7 +1071,9 @@ inflater.inflate(R.layout.xml, view);
 
 ## 액티비티
 
-**Main 화면**
+**돌아올 때 데이터 받기**
+
+Main 화면
 
 ```java
 public class MainActivity extends AppCompatActivity {
