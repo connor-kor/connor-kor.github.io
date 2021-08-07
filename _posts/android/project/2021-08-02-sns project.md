@@ -561,3 +561,143 @@ Firebase.auth
 
 ### Realtime Database
 
+build.gradle(app) 에 추가
+
+```
+dependencies {
+    // Import the BoM for the Firebase platform
+    implementation platform('com.google.firebase:firebase-bom:28.3.0')
+
+    // Declare the dependency for the Realtime Database library
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation 'com.google.firebase:firebase-database-ktx'
+}
+```
+
+```
+implementation 'com.google.firebase:firebase-database-ktx'
+```
+
+**쓰기**
+
+메뉴얼
+
+```kotlin
+// Write a message to the database
+val database = Firebase.database
+val myRef = database.getReference("message")
+
+myRef.setValue("Hello, World!")
+```
+
+**패스트캠퍼스**
+
+```kotlin
+    private fun handleSuccessLogin() {
+        if (auth.currentUser == null) {
+            Toast.makeText(this, "로그인에 실패했습니다.", Toast.LENGTH_SHORT).show()
+            return
+        }
+        val userId = auth.uid.orEmpty()
+        val database = Firebase.database.reference.child("Users").child(userId)
+        val user = mutableMapOf<String, Any>()
+        user["userId"] = userId
+        database.updateChildren(user)
+    }
+```
+
+**null 이 아닌 값 저장하기**
+
+1. orEmpty() 메소드로 null 일 경우 값을 비운다.
+2. let 으로 감싸서 null 이 아닐경우 값을 저장한다.
+
+**데이터 쓰기**
+
+updateUI 에 넣습니다.
+
+```kotlin
+private fun handleSuccessLogin() {
+    if (auth.currentUser == null) {
+        Toast.makeText(this, "로그인에 실패했습니다.", Toast.LENGTH_SHORT).show()
+        return
+    }
+    val userId = auth.uid.orEmpty()
+    val database = Firebase.database.reference.child("Users").child(userId)
+    val user = mutableMapOf<String, Any>()
+    user["userId"] = userId
+    database.updateChildren(user)
+}
+```
+
+**데이터 추가**
+
+```kotlin
+class LikeActivity : AppCompatActivity() {
+    private var auth: FirebaseAuth = Firebase.auth
+    private lateinit var userDB: DatabaseReference
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_like)
+
+        userDB = Firebase.database.reference.child("Users")
+        val currentUserDB = userDB.child(getCurrentUserID())
+        currentUserDB.addListenerForSingleValueEvent(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.child("name").value == null) {
+                    showNameInputPopup()
+                    return
+                }
+                // todo 유저정보를 갱신해라.
+            }
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
+    }
+
+    private fun showNameInputPopup() {
+        val editText = EditText(this)
+
+        AlertDialog.Builder(this)
+            .setTitle("이름을 입력해주세요.")
+            .setView(editText)
+            .setPositiveButton("저장") { _, _ ->
+                if (editText.text.isEmpty()) {
+                    showNameInputPopup()
+                } else {
+                    saveUserName(editText.text.toString())
+                }
+            }
+            .setCancelable(false)
+            .show()
+    }
+
+    private fun saveUserName(name: String) {
+        val userId = getCurrentUserID()
+        val currentUserDB = userDB.child(userId)
+        val user = mutableMapOf<String, Any>()
+        user["userId"] = userId
+        user["name"] = name
+        currentUserDB.updateChildren(user)
+    }
+
+    private fun getCurrentUserID(): String {
+        if (auth.currentUser == null) {
+            Toast.makeText(this, "로그인이 되어있지 않습니다.", Toast.LENGTH_SHORT).show()
+        }
+        return auth.currentUser?.uid.orEmpty()
+    }
+}
+```
+
+깃허브 CardStackView: <https://github.com/yuyakaido/CardStackView>{:target="_blank"}
+
+**사용방법**
+
+```
+dependencies {
+    implementation "com.yuyakaido.android:card-stack-view:2.3.4"
+}
+```
+
