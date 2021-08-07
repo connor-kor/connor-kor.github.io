@@ -19,9 +19,9 @@ val videoId = editText.text.substring(startIndex, endIndex)  // =5iZCU6mS_CY
 
 startIndex 포함, endIndex 미포함
 
-# 1. 유튜브 API
+## 1. 유튜브 API
 
-## I. 이미지링크
+**이미지링크**
 
 ![image-20210802223708389](../../../assets/images/image-20210802223708389.png)
 
@@ -193,6 +193,14 @@ class MainActivity : AppCompatActivity() {
 }
 ```
 
+---
+
+**참조**
+
+유튜브 API: <https://blog.naver.com/PostView.nhn?blogId=deathrock&logNo=221701778199>{:target="_blank"}
+
+## 2. 파이어베이스
+
 **Firebase 연결**
 
 1. 앱 등록
@@ -229,7 +237,7 @@ implementation platform('com.google.firebase:firebase-bom:28.3.0')
 
 다른 라이브러리: <https://firebase.google.com/docs/android/setup#available-libraries>{:target="_blank"}
 
-**구글로그인**
+### **구글 로그인**
 
 1> 앱 수준 build.gradle 파일 dependencies { 내부에 추가
 
@@ -494,20 +502,62 @@ class GoogleSignInActivity : Activity() {
 }
 ```
 
+**FirebaseAuth 객체 vs FirebaseUser 객체**
 
+FirebaseAuth 객체
 
+getInstance() 메소드로 인스턴스를 반환한 후 로그인하고 currentUser() 메소드를 사용하여 로그인정보를 담고있는 FirebaseUser 객체를 얻습니다.
 
+First, obtain an instance of this class by calling `getInstance()`.
 
+Then, sign up or sign in a user with one of the following methods:
 
+Finally, call `getCurrentUser()` to get a `FirebaseUser` object, which contains information about the signed-in user.
 
+이것은 Intent 로 객체를 넘겨줄 필요 없이 어디서든 얻을 수 있습니다.
 
+```kotlin
+var user = FirebaseAuth.getInstance().currentUser
+val name = findViewById<TextView>(R.id.name)
+val email = findViewById<TextView>(R.id.email)
 
+name.setText(user?.displayName)
+email.setText(user?.email)
+```
 
+메뉴얼: <https://firebase.google.com/docs/reference/android/com/google/firebase/auth/FirebaseAuth?authuser=2#nested-class-summary>{:target="_blank"}
 
+**로그아웃**
 
+```kotlin
+Firebase.auth.signOut()
+```
 
----
+**로그인확인**
 
-**참조**
+로그인이 되어있는지 확인 후 로그인되어있지 않다면 GoogleSignInActivity 화면으로 이동한다.
 
-유튜브 API: <https://blog.naver.com/PostView.nhn?blogId=deathrock&logNo=221701778199>{:target="_blank"}
+```kotlin
+override fun onStart() {
+    super.onStart()
+    val currentUser = Firebase.auth.currentUser
+    updateUI(currentUser)
+}
+
+private fun updateUI(currentUser: FirebaseUser?) {
+    if (currentUser == null) {
+        startActivity(Intent(this, GoogleSignInActivity::class.java))
+    }
+}
+}
+```
+
+```
+FirebaseAuth.getInstance()
+Firebase.auth
+```
+
+두 코드는 같은 코드인 것 같다.
+
+### Realtime Database
+
