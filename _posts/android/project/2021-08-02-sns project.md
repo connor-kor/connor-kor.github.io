@@ -3,6 +3,116 @@ title: SNS 프로젝트
 category: project
 ---
 
+## 1. 유튜브 API
+
+> Youtube Data API(v3)
+
+유튜브와 관련된 기본적인 API로, 동영상을 업로드하거나 재생목록을 관리하는 등의 가장 기본적인 기능 제공
+
+> Youtube Analytics API
+
+유튜브의 동영상 및 채널에 대한 시청 통계, 인기도 통계 등 검색
+
+> Youtube Live Streaming API
+
+유튜브 방송을 예약하고 , 라이브 스트림을 관리
+
+이중 기본 기능을 제공하지만 가장 중요한 것은 Data API다. Data API는 다음과 같은 리소스들의 기능을 다루고 있다. (각 리소스에 대한 설명은 [3.API 살펴보기](https://brunch.co.kr/@joypinkgom/54)를 참고한다.)
+
+> Channels
+
+채널의 설명, 대표 이미지, 조회 수, 구독자 수, 동영상 수
+
+카테고리에 맞는 채널 검색
+
+\> 특정 채널에 대한 정보 검색(내채널 조회, 채널이름 조회, 채널아이디 조회)
+
+\> 채널 메타데이터 업데이트
+
+> Playlists,  PlaylistItems
+
+재생목록의 제목, 설명, 썸네일 및 url
+
+메뉴얼: <https://brunch.co.kr/@joypinkgom/76>{:target="_blank"}
+
+\> 자신 또는 특정 사용자의 재생목록조회
+
+\> 재생목록 추가/수정/삭제
+
+\> 재생목록 정보 조회
+
+\> 재생목록에 리소스 추가
+
+\> 재생목록의 리소스 수정/삭제
+
+> Videos
+
+제목과 설명, 자막여부 및 조회 수, 좋아요 수, 자막 수
+
+동영상 업로드
+
+\> 동영상 목록 조회
+
+\> 동영상 업로드, 메타데이터 설정
+
+\> 동양상 메타데이터 업데이트
+
+\> 동영상 삭제
+
+\> 동영상 좋아요/싫어요 평가 추가/삭제
+
+> Search
+
+조회 수 순서대로 제목, 설명, 조회 수, 댓글 수, 좋아요 수, 업로드 일시
+
+\> 검색 조건에 해당하는 동영상/채널/재생목록 조회
+
+> Activities
+
+\> 특정 채널이나 사용자가 유튜브에서 실행한 작업의 정보(동영상 평가, 동영상 공유, 동영상을 즐겨찾기에 추가, 동영상에 댓글 달기, 동영상 업로드 등)를 조회
+
+> Captions
+
+\> 자막 목록 조회, 자막 삭제
+
+\> 자막 파일 등록, 업데이트, 다운로드
+
+> Comments
+
+\> 채널(토론) 또는 동영상에 달린 댓글목록 조회
+
+\> 댓글 추가/수정/삭제 
+
+\> 특정 댓글 스팸 처리
+
+> Subscriptions
+
+\> 특정 채널을 구독/삭제
+
+\> 구독 채널 목록 조회
+
+**시작하기**
+
+사용자 인증 정보에서 새 프로젝트를 만든다.
+
+프로젝트 만들기: <https://console.cloud.google.com/projectselector2/apis/credentials?hl=ko&pli=1&supportedpurview=project>{:target="_blank"}
+
+youtube api 라고 검색하고 시작한다.
+
+사용자 인증 정보 탭의 사용자 인증 정보 만들기를 클릭하고 서비스 계정을 클릭한다.
+
+
+
+
+
+
+
+
+
+
+
+## 썸네일
+
 **editText.text.**
 
 `substring()`
@@ -18,8 +128,6 @@ val videoId = editText.text.substring(startIndex, endIndex)  // =5iZCU6mS_CY
 ```
 
 startIndex 포함, endIndex 미포함
-
-## 1. 유튜브 API
 
 **이미지링크**
 
