@@ -359,7 +359,423 @@ val editText = findViewById<EditText>(R.id.editText)
 
 editText get: `editText.text.toString()` 	
 
-# 3-5. 틴더 앱
+# 3. Intermediate
+
+## -4. 도서리뷰 앱
+
+1. RecycleView
+2. View Binding
+3. Retrofit
+4. Glide 사용
+5. Android Room 사용: 계산기 앱
+6. Open API 사용
+
+**인터파크 API**
+
+인증키 얻는 법
+
+1. 마이북피니언
+2. 관리
+3. 오픈업(Open Up) 관리
+4. 인증키 복사
+
+API 메뉴얼: <http://book.interpark.com/blog/bookpinion/bookpinionOpenAPIInfo.rdo>{:target="_blank"}
+
+### 포스트맨
+
+오픈 API 의 데이터를 확인할 수 있는 플러그인
+
+포스트맨 플러그인: <https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop/related?hl=ko>{:target="_blank"}
+
+포스트맨 사용방법
+
+1. 링크를 입력
+2. params 를 눌러 key 와 value 입력
+3. send 클릭
+
+![image-20210807202726409](../../../assets/images/image-20210807202726409.png)
+
+### 레프토핏
+
+오픈 API 를 안드로이드에서 사용할 수 있게 도와주는 라이브러리
+
+레트로핏 라이브러리: <https://square.github.io/retrofit>{:target="_blank"}
+
+**인터파크 API 예시코드**
+
+api 패키지와 model 패키지를 만든다.
+
+**gradle**
+
+```
+/* 레트로핏 라이브러리 */
+implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+```
+
+**Manifest**
+
+```
+<uses-permission android:name="android.permission.INTERNET"/>
+```
+
+**MainActivity.kt**
+
+```kotlin
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://book.interpark.com")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        val bookService = retrofit.create(BookService::class.java)
+        bookService.getBestSellerBooks("C50B6045B636216741E3B0D9A190D41F611481F663174A1FD443DA17DD8B5FDC")
+            .enqueue(object: Callback<BestSellerDTO> {
+                override fun onResponse(
+                    call: Call<BestSellerDTO>,
+                    response: Response<BestSellerDTO>,
+                ) {
+                    // todo 성공처리
+                    if (response.isSuccessful.not()) {
+                        Log.e(TAG, "Not!! Success")
+                        return
+                    }
+                    response.body()?.let {
+                        Log.d(TAG, it.toString())
+                        it.books.forEach { book ->
+                            Log.d(TAG, book.toString())
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<BestSellerDTO>, t: Throwable) {
+                    // todo 실패처리
+                    Log.e(TAG, t.toString())
+                }
+            })
+    }
+    companion object {
+        private const val TAG = "MainActivity"
+    }
+}
+```
+
+**BookService.kt** 인터페이스
+
+```kotlin
+interface BookService {
+    @GET("/api/search.api?output=json")
+    fun getBooksByName(
+        @Query("key") apiKey: String,
+        @Query("query") Keyword: String
+    ): Call<SearchBookDTO>
+
+    @GET("/api/bestSeller.api?categoryId=100&output=json")
+    fun getBestSellerBooks(
+        @Query("key") apiKey: String
+    ): Call<BestSellerDTO>
+}
+```
+
+**SearchBookDTO.kt**
+
+```kotlin
+data class SearchBookDTO(
+    @SerializedName("title") val title: String,
+    @SerializedName("item") val books: List<Book>
+)
+```
+
+**BestSellerDTO.kt**
+
+```kotlin
+data class BestSellerDTO(
+    @SerializedName("title") val title: String,
+    @SerializedName("item") val books: List<Book>
+)
+```
+
+**Book.kt**
+
+```kotlin
+data class Book(
+    @SerializedName("itemId") val id: Long,
+    @SerializedName("title") val title: String,
+    @SerializedName("description") val description: String,
+    @SerializedName("coverSmallUrl") val coverSmallUrl: String
+)
+```
+
+### **리사이클러 뷰**
+
+스크롤 뷰는 미리 모든 데이터가 보여주기 때문에 데이터가 많다면 느려지거나 꺼질 위험이 있다.
+
+레이아웃매니저와 어댑터가 필요하다.
+
+리스트어댑터는 import 를 recyclerview.widget.ListAdapter 를 할 것
+
+**build.gradle(app)**
+
+```
+android {
+    viewBinding {
+        enabled = true
+    }
+}
+```
+
+**BookAdapter.kt**
+
+```kotlin
+class BookAdapter: ListAdapter<Book, BookAdapter.BookItemViewHolder>(diffUtil) {
+    inner class BookItemViewHolder(private val binding: ItemBookBinding): RecyclerView.ViewHolder(binding.root) {
+        fun bind(bookModel: Book) {
+            binding.titleTextView.text = bookModel.title
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookItemViewHolder {
+        return BookItemViewHolder(ItemBookBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+    }
+
+    override fun onBindViewHolder(holder: BookItemViewHolder, position: Int) {
+        holder.bind(currentList[position])
+    }
+
+    companion object {
+        val diffUtil = object: DiffUtil.ItemCallback<Book>() {
+            override fun areItemsTheSame(oldItem: Book, newItem: Book): Boolean {
+                return oldItem == newItem
+            }
+
+            override fun areContentsTheSame(oldItem: Book, newItem: Book): Boolean {
+                return oldItem.id == newItem.id
+            }
+        }
+    }
+}
+```
+
+**MainActivity.kt**
+
+onCreate 내부
+
+```kotlin
+binding = ActivityMainBinding.inflate(layoutInflater)
+setContentView(binding.root)
+adapter = BookAdapter()
+binding.bookRecyclerView.layoutManager = LinearLayoutManager(this)
+binding.bookRecyclerView.adapter = adapter
+```
+
+onResponse 내부
+
+```kotlin
+adapter.submitList(it.books)
+```
+
+**전체코드**
+
+```kotlin
+class MainActivity : AppCompatActivity() {
+    private lateinit var adapter: BookAdapter
+    private  lateinit var binding: ActivityMainBinding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        initBookRecyclerView() 
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://book.interpark.com")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        val bookService = retrofit.create(BookService::class.java)
+        bookService.getBestSellerBooks("C50B6045B636216741E3B0D9A190D41F611481F663174A1FD443DA17DD8B5FDC")
+            .enqueue(object: Callback<BestSellerDTO> {
+                override fun onResponse(
+                    call: Call<BestSellerDTO>,
+                    response: Response<BestSellerDTO>,
+                ) {
+                    // todo 성공처리
+                    if (response.isSuccessful.not()) {
+                        Log.e(TAG, "Not!! Success")
+                        return
+                    }
+                    response.body()?.let {
+                        Log.d(TAG, it.toString())
+                        it.books.forEach { book ->
+                            Log.d(TAG, book.toString())
+                        }
+                        adapter.submitList(it.books)
+                    }
+                }
+
+                override fun onFailure(call: Call<BestSellerDTO>, t: Throwable) {
+                    // todo 실패처리
+                    Log.e(TAG, t.toString())
+                }
+            })
+    }
+
+    fun initBookRecyclerView() {
+        adapter = BookAdapter()
+        binding.bookRecyclerView.layoutManager = LinearLayoutManager(this)
+        binding.bookRecyclerView.adapter = adapter
+    }
+
+    companion object {
+        private const val TAG = "MainActivity"
+    }
+}
+```
+
+**Glide**
+
+이미지 URL 을 이미지로 받아와주는 라이브러리
+
+```
+dependencies {
+  implementation 'com.github.bumptech.glide:glide:4.12.0'
+}
+```
+
+링크: <https://github.com/bumptech/glide>{:target="_blank"}
+
+**최종**
+
+![image-20210807230655414](../../../assets/images/image-20210807230655414.png)
+
+**background_gray_stroke_radius_16** drawable.xml
+
+```xml
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <stroke
+        android:width="1dp"
+        android:color="@color/gray">
+    </stroke>
+    <corners android:radius="16dp"/>
+</shape>
+```
+
+**Manifest**
+
+http 통신을 허용한다.
+
+```
+android:usesCleartextTraffic="true"
+```
+
+**BookAdapter.kt**
+
+bind 함수에 추가한다.
+
+```kotlin
+fun bind(bookModel: Book) {
+    binding.titleTextView.text = bookModel.title
+    binding.descriptionTextView.text = bookModel.description
+    Glide
+        .with(binding.coverImageView.context)
+        .load(bookModel.coverSmallUrl)
+        .into(binding.coverImageView)
+}
+```
+
+**item_book.xml**
+
+```xml
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/coverImageView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@drawable/background_gray_stroke_radius_16">
+    </ImageView>
+
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:ellipsize="end"
+        android:lines="1"
+        android:text="안드로이드 마스터하기"
+        android:textSize="16dp"
+        app:layout_constraintStart_toEndOf="@id/coverImageView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+    </TextView>
+
+    <TextView
+        android:id="@+id/descriptionTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:ellipsize="end"
+        android:maxLines="3"
+        android:textSize="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/coverImageView"
+        app:layout_constraintTop_toBottomOf="@id/titleTextView">
+    </TextView>
+</androidx.constraintlayout.widget.ConstraintLayout>
+```
+
+**전체코드** BookAdapter.kt
+
+```kotlin
+class BookAdapter: ListAdapter<Book, BookAdapter.BookItemViewHolder>(diffUtil) {
+    inner class BookItemViewHolder(private val binding: ItemBookBinding): RecyclerView.ViewHolder(binding.root) {
+        fun bind(bookModel: Book) {
+            binding.titleTextView.text = bookModel.title
+            binding.descriptionTextView.text = bookModel.description
+            Glide
+                .with(binding.coverImageView.context)
+                .load(bookModel.coverSmallUrl)
+                .into(binding.coverImageView)
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookItemViewHolder {
+        return BookItemViewHolder(ItemBookBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+    }
+
+    override fun onBindViewHolder(holder: BookItemViewHolder, position: Int) {
+        holder.bind(currentList[position])
+    }
+
+    companion object {
+        val diffUtil = object: DiffUtil.ItemCallback<Book>() {
+            override fun areItemsTheSame(oldItem: Book, newItem: Book): Boolean {
+                return oldItem == newItem
+            }
+
+            override fun areContentsTheSame(oldItem: Book, newItem: Book): Boolean {
+                return oldItem.id == newItem.id
+            }
+        }
+    }
+}
+```
+
+## -5. 틴더 앱
 
 1. 파이어베이스 로그인
 2. 파이어베이스 데이터베이스
@@ -975,14 +1391,16 @@ ExoPlayer: 구글에서 만든 라이브러리. 내장되어 있지 않고 오�
 
 메뉴얼: <https://exoplayer.dev/>{:target="_blank"}
 
-# 5-1 Todo 앱
+# 5. Advanced
+
+## -1. Todo 앱
 
 1. MVP, MVVM, 구글아키텍쳐
 2. DI 소개, Koin 사용
 3. 시나리오 기반 TDD 코드 작성
 4. ToDo 리스트, 상세화면 구현
 
-# 5-4 SNS 앱
+## -4. SNS 앱
 
 중고거래 앱의 개선
 
