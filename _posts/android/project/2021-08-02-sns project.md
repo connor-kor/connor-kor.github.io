@@ -5,6 +5,8 @@ category: project
 
 ## 1. 유튜브 API
 
+## API
+
 > Youtube Data API(v3)
 
 유튜브와 관련된 기본적인 API로, 동영상을 업로드하거나 재생목록을 관리하는 등의 가장 기본적인 기능 제공
@@ -100,16 +102,6 @@ category: project
 youtube api 라고 검색하고 시작한다.
 
 사용자 인증 정보 탭의 사용자 인증 정보 만들기를 클릭하고 서비스 계정을 클릭한다.
-
-
-
-
-
-
-
-
-
-
 
 ## 썸네일
 
@@ -806,6 +798,101 @@ class LikeActivity : AppCompatActivity() {
 ```
 dependencies {
     implementation "com.yuyakaido.android:card-stack-view:2.3.4"
+}
+```
+
+
+
+**리사이클러 뷰 요약**
+
+1. 리사이클러 뷰 추가
+2. new Layout 생성
+3. new 데이터 클래스 생성
+4. new Adapter 클래스 생성
+5. 메인클래스 추가
+
+**ListAdapter**
+
+Lia: ListAdapter<데이터, 데이터ItemViewHolder>(diffUtil)
+
+**데이터ItemViewHolder**
+
+inner
+
+(private val binding) Rec . biding.root
+
+fun bind(데이터: 데이터) {
+
+binding.
+
+**onCreateViewHolder**
+
+return 데이터 Item Layout parent.context, parent, false
+
+**onBindViewHolder**
+
+```kotlin
+holder.bind(currentList[position])
+```
+
+holder. current [position
+
+**diffUtil** (cdoD)
+
+companion {
+
+val diff = object: D . <데이터>() { -> implement
+
+**areItemsTheSame**
+
+```kotlin
+return oldItem == newItem
+```
+
+**메인 클래스**
+
+```kotlin
+binding = 레이아웃Binding.inflate(layoutInflater)
+adapter = 어댑터
+setContentView(binding.root)
+binding.리사이클러뷰.layoutManager = LinearLayoutManager(this)
+binding.recyclerView.adapter = adapter
+```
+
+1. 레이아웃
+2. binding 후 lateinit
+3. 리사이클러뷰
+4. 어댑터
+
+**완성된 예제**
+
+```kotlin
+class MainActivity : AppCompatActivity() {
+    private lateinit var adapter: YoutubeAdapter
+    private lateinit var binding: ActivityMainBinding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        adapter = YoutubeAdapter()
+        setContentView(binding.root)
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.adapter = adapter
+
+        var list = mutableListOf(
+            Video("id1", "title1", "url1", "thumnail1"),
+            Video("id2", "title2", "url2", "thumnail2")
+        )
+        adapter.submitList(list)
+
+        val editText = findViewById<EditText>(R.id.editText)
+        val button = findViewById<Button>(R.id.button)
+        button.setOnClickListener{
+            list.add(Video("id1", editText.text.toString(), "url1", "thumnail1"))
+            adapter.notifyDataSetChanged()
+            editText.setText("")
+        }
+    }
 }
 ```
 

@@ -775,6 +775,18 @@ class BookAdapter: ListAdapter<Book, BookAdapter.BookItemViewHolder>(diffUtil) {
 }
 ```
 
+
+
+
+
+
+
+
+
+
+
+
+
 ## -5. 틴더 앱
 
 1. 파이어베이스 로그인
@@ -1050,9 +1062,7 @@ class LikeActivity : AppCompatActivity(), CardStackListener {
                     if (snapshot.child("name").value != null) {
                         name = snapshot.child("name").value.toString()
                     }
-
                 }
-
             }
 
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
