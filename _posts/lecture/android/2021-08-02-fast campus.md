@@ -408,7 +408,7 @@ api 패키지와 model 패키지를 만든다.
 **gradle**
 
 ```
-/* 레트로핏 라이브러리 */
+/* 레트로핏 */
 implementation 'com.squareup.retrofit2:retrofit:2.9.0'
 implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 ```
@@ -481,6 +481,8 @@ interface BookService {
 ```
 
 **SearchBookDTO.kt**
+
+> @SerializedName 는 꼭 없어도 됩니다.
 
 ```kotlin
 data class SearchBookDTO(
@@ -775,18 +777,6 @@ class BookAdapter: ListAdapter<Book, BookAdapter.BookItemViewHolder>(diffUtil) {
 }
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
 ## -5. 틴더 앱
 
 1. 파이어베이스 로그인
@@ -1020,7 +1010,7 @@ class LikeActivity : AppCompatActivity(), CardStackListener {
         userDB = Firebase.database.reference.child("Users")
         val currentUserDB = userDB.child(getCurrentUserID())
         currentUserDB.addListenerForSingleValueEvent(object: ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
+            override fun onDataChange(snapshot: DataSnapshot) {	
                 if (snapshot.child("name").value == null) {
                     showNameInputPopup()
                     return
@@ -1141,6 +1131,38 @@ class LikeActivity : AppCompatActivity(), CardStackListener {
     }
 }
 ```
+
+Q. addListenerForSingleValueEvent, ValueEventListener, onDataChange & addChildEventListener, ChildEventListener, onChildAdded?
+
+A. 파이어베이스에서 데이터를 읽는 세가지 방법입니다.
+
+- \- addListenerForSingleValueEvent: 한 번만 호출되고 즉시 삭제되는 콜백이 필요한 경우에 사용.
+
+\- 한 번 로드된 후 자주 변경되지 않거나 능동적으로 수신 대기할 필요가 없는 데이터에 유용
+
+\- 이 메소드는 한번 호출된 후 다시 호출되지 않는다.
+
+예) 이후에 변경되지 않는 UI 요소를 초기화할 때, 블로깅 앱에서 새 게시물을 작성하기 시작할 때 이 메소드로 사용자의 프로필을 로드
+
+- addChildEventListener: \- 목록을 다루는 애플리케이션은 단일 개체에 사용되는 값 이벤트보다는 하위 이벤트를 수신 대기해야 합니다.
+
+\- 하위 항목에 push() 메소드를 통해 새로 추가되거나, updateChildren() 메소드를 통해 업데이트 되는 경우가 그 예입니다.
+
+\- 이 메소드는 데이터베이스의 특정한 노드에 대한 변경을 수신 대기하는데 유용할 수 있습니다.
+
+- addValueEventListener() 메소드를 이용하여 DatabaseReference에 ValueEventListener를 추가
+
+ \- 경로의 전체 내용에 대한 변경 사항을 읽고 수신 대기합니다.
+
+
+
+출처: https://stack07142.tistory.com/282 [Hello World]
+
+출처: https://stack07142.tistory.com/282 [Hello World]
+
+
+
+출처: https://stack07142.tistory.com/282 [Hello World]
 
 **CardItemAdapter**
 
@@ -1343,9 +1365,7 @@ class LikeActivity : AppCompatActivity(), CardStackListener {
             Direction.Left -> like()
             Direction.Right -> dislike()
             else -> {
-
             }
-
         }
     }
 
@@ -1388,8 +1408,6 @@ class LikeActivity : AppCompatActivity(), CardStackListener {
     }
 }
 ```
-
-
 
 # 4-1. 유튜브 앱
 

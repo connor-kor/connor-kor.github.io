@@ -1,0 +1,22 @@
+---
+title: Git 사용법
+category: git
+---
+
+**새로운 레포지토리를 만든 경우**
+
+```
+git init
+git add .
+git commit -m 'first commit'
+git branch -M main
+git remote add origin https://github.com/dev-connor/레포지토리 이름.git
+git push -u origin main
+```
+
+**브랜치 가지치는 법**
+
+1. feature 브랜치를 만든다.
+2. 한가지를 변경 후 커밋한다.
+3. feature 로 이동한다.
+

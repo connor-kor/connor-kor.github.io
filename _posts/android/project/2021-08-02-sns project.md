@@ -5,7 +5,7 @@ category: project
 
 ## 1. 유튜브 API
 
-## API
+**API**
 
 > Youtube Data API(v3)
 
@@ -97,13 +97,120 @@ category: project
 
 사용자 인증 정보에서 새 프로젝트를 만든다.
 
-프로젝트 만들기: <https://console.cloud.google.com/projectselector2/apis/credentials?hl=ko&pli=1&supportedpurview=project>{:target="_blank"}
+
 
 youtube api 라고 검색하고 시작한다.
 
 사용자 인증 정보 탭의 사용자 인증 정보 만들기를 클릭하고 서비스 계정을 클릭한다.
 
-## 썸네일
+1. 프로젝트 만들기 및 Youtube api 사용 및 API 키 생성
+2. 레트로핏 라이브러리, 인터넷 권한 추가
+3. 포스트맨 참고하여 데이터클래스 생성
+4. 서비스 인터페이스 생성
+
+프로젝트 만들기: <https://console.cloud.google.com/projectselector2/apis/credentials?hl=ko&pli=1&supportedpurview=project>{:target="_blank"}
+
+**build.gradle(app)**
+
+```
+/* 레트로핏 */
+implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+```
+
+**서비스 인터페이스**
+
+```kotlin
+interface 데이터Service {
+    @GET("링크")
+    fun get데이터(
+        @Query("key") apiKey: String
+    ): Call<데이터>
+}
+```
+
+> 데이터클래스에서 @SerializedName 는 꼭 필요하지 않다.
+
+**메인액티비티**
+
+```kotlin
+/* 레트로핏: API 라이브러리 */
+val retrofit = Retrofit.Builder()
+    .baseUrl("주소")
+    .addConverterFactory(GsonConverterFactory.create())
+    .build()
+val 데이터Service = retrofit.create(데이터Service::class.java)
+데이터Service.get함수("키")
+    .enqueue(object: Callback<데이터> {
+        override fun onResponse(
+            call: Call<데이터>,
+            response: Response<데이터>
+        ) {
+            // todo 성공처리
+            if (response.isSuccessful.not()) {
+                Log.e("TAG", "Not!! Success")
+                return
+            }
+            response.body()?.let {
+                Log.d("TAG", it.toString())
+                it.객체.forEach {
+                    Log.d("TAG", it.toString())
+                }
+            }
+        }
+
+        override fun onFailure(call: Call<Youtube>, t: Throwable) {
+            // TODO("Not yet implemented")
+        }
+    })
+```
+
+
+
+
+
+Q. onStart 는 finish() 때 호출되나?
+
+A. 네
+
+**파이어베이스 계정삭제**
+
+```kotlin
+private fun deleteUser() {
+    // [START delete_user]
+    val user = auth.currentUser
+
+    if (user != null) {
+        user.delete()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("TAG", "User account deleted.")
+                }
+            }
+    }
+    // [END delete_user]
+}
+```
+
+**이전 로그인으로 자동로그인 하는 현상**
+
+구글로그인 버튼을 눌렀을 때 계정선택창이 뜨지않고 자동로그인 되는 현상을 막을 수 있다.
+
+```kotlin
+/* 자동로그인 해제 */
+val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+    .requestIdToken(getString(R.string.default_web_client_id))
+    .requestEmail()
+    .build()
+googleSignInClient = GoogleSignIn.getClient(this, gso)
+
+googleSignInClient.signOut()
+
+```
+
+
+
+**썸네일**
 
 **editText.text.**
 
@@ -150,6 +257,8 @@ class MainActivity : AppCompatActivity() {
 
 ![image-20210802225222474](../../../assets/images/image-20210802225222474.png)
 
+### glide
+
 **build.gradle**
 
 ```
@@ -189,6 +298,17 @@ class MainActivity : AppCompatActivity() {
     }
 }
 ```
+
+**리사이클러뷰에 넣는방법**
+
+```kotlin
+/* 글라이드: 이미지 URL 라이브러리 */
+Glide.with(binding.imageviewYoutubeVideo.context)
+    .load(item.snippet.thumbnails.maxres.url)
+    .into(binding.imageviewYoutubeVideo)
+```
+
+
 
 **오류수정 및 지우기버튼 추가**
 
@@ -328,6 +448,8 @@ id 'com.google.gms.google-services'
 
 dependencies { 내부
 
+> platform 과 괄호를 없애지 않고 그대로 복사 붙여넣기한다.
+
 ```
 /* 파이어베이스 SDK */
 implementation platform('com.google.firebase:firebase-bom:28.3.0')
@@ -337,12 +459,22 @@ implementation platform('com.google.firebase:firebase-bom:28.3.0')
 
 다른 라이브러리: <https://firebase.google.com/docs/android/setup#available-libraries>{:target="_blank"}
 
-### **구글 로그인**
+**구글 로그인**
 
 1> 앱 수준 build.gradle 파일 dependencies { 내부에 추가
 
+**위에서 firebase-bom 라이브러리를 추가했다면**
+
 ```
-/* 구글로그인 인증 */
+/* 구글로그인 */
+implementation 'com.google.firebase:firebase-auth-ktx'
+implementation 'com.google.android.gms:play-services-auth:19.2.0'
+```
+
+**아니라면**
+
+```
+/* 구글로그인 */
 // Import the BoM for the Firebase platform
 implementation platform('com.google.firebase:firebase-bom:28.2.1')
 // Declare the dependency for the Firebase Authentication library
@@ -369,6 +501,10 @@ keytool -list -v -keystore debug.keystore
 3> 파이어베이스 인증탭에서 구글로그인을 사용으로 설정하고 저장
 
 4> 다음 파일을 저장 후 패키지명 변경
+
+파일위치: <https://github.com/firebase/snippets-android/blob/03cf10de9e46f7ddbd621ae04ac2da1f590dd649/auth/app/src/main/java/com/google/firebase/quickstart/auth/kotlin/GoogleSignInActivity.kt#L33-L39>{:target="_blank"}
+
+메뉴얼: <https://firebase.google.com/docs/auth/android/google-signin?authuser=2>{:target="_blank"}
 
 ```kotlin
 /**
@@ -659,7 +795,34 @@ Firebase.auth
 
 두 코드는 같은 코드인 것 같다.
 
-### Realtime Database
+**로그인 정보 가져오기**
+
+```kotlin
+val user = Firebase.auth.currentUser
+user?.let {
+    Log.e("TAG", "displayName: " + user.displayName)
+    Log.e("TAG", "email: " + user.email)
+    Log.e("TAG", "uid: " + user.uid)
+    Log.e("TAG", "photoUrl: " + user.photoUrl)
+    Log.e("TAG", "isEmailVerified: " + user.isEmailVerified)
+    Log.e("TAG", "providerId: " + user.providerId)
+}
+```
+
+**결과**
+
+```kotlin
+E/TAG: displayName: 김현준
+    email: kor.jturtle@gmail.com
+    uid: lSBHEh4dbHZRRvueqajffNEqRcj1
+    photoUrl: https://lh3.googleusercontent.com/a-/AOh14GidAquTtiiyHQayhnj1JVC2Q1E0-NTNFfaqe-OQ=s96-c
+E/TAG: isEmailVerified: true
+    providerId: firebase
+```
+
+메뉴얼: <https://firebase.google.com/docs/auth/android/manage-users?hl=ko>{:target="_blank"}
+
+**Realtime Database**
 
 build.gradle(app) 에 추가
 
@@ -693,18 +856,22 @@ myRef.setValue("Hello, World!")
 **패스트캠퍼스**
 
 ```kotlin
-    private fun handleSuccessLogin() {
-        if (auth.currentUser == null) {
-            Toast.makeText(this, "로그인에 실패했습니다.", Toast.LENGTH_SHORT).show()
-            return
-        }
-        val userId = auth.uid.orEmpty()
-        val database = Firebase.database.reference.child("Users").child(userId)
-        val user = mutableMapOf<String, Any>()
-        user["userId"] = userId
-        database.updateChildren(user)
+private fun handleSuccessLogin() {
+    if (auth.currentUser == null) {
+        Toast.makeText(this, "로그인에 실패했습니다.", Toast.LENGTH_SHORT).show()
+        return
     }
+    val userId = auth.uid.orEmpty()
+    val database = Firebase.database.reference.child("Users").child(userId)
+    val user = mutableMapOf<String, Any>()
+    user["userId"] = userId
+    database.updateChildren(user)
+}
 ```
+
+>Firebase Database paths must not contain '.', '#', '$', '[', or ']'
+>
+>데이터베이스 경로에는 특수기호를 넣을 수 없다.
 
 **null 이 아닌 값 저장하기**
 
@@ -726,6 +893,21 @@ private fun handleSuccessLogin() {
     val user = mutableMapOf<String, Any>()
     user["userId"] = userId
     database.updateChildren(user)
+}
+```
+
+**예시**
+
+```kotlin
+private fun saveLoginInfo(user: FirebaseUser?) {
+    user?.let {
+        val database = Firebase.database.reference.child("Users").child(user.uid)
+        val userInfo = mutableMapOf<String, Any>()
+        userInfo["name"] = user.displayName.toString()
+        userInfo["email"] = user.email.toString()
+        userInfo["photoUrl"] = user.photoUrl.toString()
+        database.updateChildren(userInfo)
+    }
 }
 ```
 
@@ -791,6 +973,12 @@ class LikeActivity : AppCompatActivity() {
 }
 ```
 
+Q. addListenerForSingleValueEvent, onDataChange?
+
+A. 
+
+
+
 깃허브 CardStackView: <https://github.com/yuyakaido/CardStackView>{:target="_blank"}
 
 **사용방법**
@@ -801,7 +989,141 @@ dependencies {
 }
 ```
 
+### 에러
 
+- 번호대로 데이터가 넣어지지 않는 경우
+
+**잘못 작성한 경우**
+
+```kotlin
+database = Firebase.database.reference.child(n.toString())
+button.setOnClickListener{
+    val user = mutableMapOf<String, Any>()
+    user["title"] = "title" + n.toString()
+    user["url"] = "url" + n.toString()
+    database.updateChildren(user)
+    n++
+}
+```
+
+**잘 작성한 경우**
+
+```kotlin
+button.setOnClickListener{
+    database = Firebase.database.reference.child(n.toString())
+    val user = mutableMapOf<String, Any>()
+    user["title"] = "title" + n.toString()
+    user["url"] = "url" + n.toString()
+    database.updateChildren(user)
+    n++
+}
+```
+
+> n 이 1씩 증가하는 경우 매번 database 에 새로넣어주어야 한다.
+
+- value 값이 자꾸 null 이 나오는 경우
+
+**잘못 작성한 경우**
+
+```kotlin
+val button = findViewById<Button>(R.id.button)
+button.setOnClickListener{
+    database = Firebase.database.reference.child(n.toString())
+    val user = mutableMapOf<String, Any>()
+    user["title"] = "title" + n.toString()
+    user["url"] = "url" + n.toString()
+    database.updateChildren(user)
+    n++
+}
+
+Firebase.database.reference.child(n.toString()).addChildEventListener(object: ChildEventListener {
+    override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+        val title = snapshot.child("title").value.toString()
+        val url = snapshot.child("url").value.toString()
+        Log.e("TAG", title)
+        Log.e("TAG", url)
+    }
+
+```
+
+> 데이터를 저장할 때 (updateChildren) 자식 (child) 를 하나 만들었다고 해서
+>
+> 불러올 때는 (addChildEventListener) 자식을 넣지 않고 reference 까지만 작성하도록 하면 null 이 나오지 않는다.
+
+**잘 작성한 경우**
+
+```kotlin
+val button = findViewById<Button>(R.id.button)
+button.setOnClickListener{
+    database = Firebase.database.reference.child(n.toString())
+    val user = mutableMapOf<String, Any>()
+    user["title"] = "title" + n.toString()
+    user["url"] = "url" + n.toString()
+    database.updateChildren(user)
+    n++
+}
+
+Firebase.database.reference.addChildEventListener(object: ChildEventListener {
+    override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+        val title = snapshot.child("title").value.toString()
+        val url = snapshot.child("url").value.toString()
+        Log.e(n.toString(), title)
+        Log.e("TAG", url)
+    }
+```
+
+**전체코드**
+
+```kotlin
+class MainActivity : AppCompatActivity() {
+    private lateinit var database: DatabaseReference
+    private var n = 0
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        val button = findViewById<Button>(R.id.button)
+        button.setOnClickListener{
+            database = Firebase.database.reference.child(n.toString())
+            val user = mutableMapOf<String, Any>()
+            user["title"] = "title" + n.toString()
+            user["url"] = "url" + n.toString()
+            database.updateChildren(user)
+            n++
+        }
+
+        Firebase.database.reference.addChildEventListener(object: ChildEventListener {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                val title = snapshot.child("title").value.toString()
+                val url = snapshot.child("url").value.toString()
+                Log.e("TAG", title)
+                Log.e("TAG", url)
+            }
+
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+                //TODO("Not yet implemented")
+            }
+
+            override fun onChildRemoved(snapshot: DataSnapshot) {
+                //TODO("Not yet implemented")
+            }
+
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+                //TODO("Not yet implemented")
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                //TODO("Not yet implemented")
+            }
+        })
+    }
+}
+```
+
+
+
+## 3. 리사이클러 뷰
 
 **리사이클러 뷰 요약**
 
@@ -811,6 +1133,8 @@ dependencies {
 4. new Adapter 클래스 생성
 5. 메인클래스 추가
 
+> 어댑터는 리스트객체, 레트로핏은 최상위객체를 입력합니다.
+
 **ListAdapter**
 
 Lia: ListAdapter<데이터, 데이터ItemViewHolder>(diffUtil)
@@ -819,7 +1143,7 @@ Lia: ListAdapter<데이터, 데이터ItemViewHolder>(diffUtil)
 
 inner
 
-(private val binding) Rec . biding.root
+(private val binding: Item) : Rec . binding.root
 
 fun bind(데이터: 데이터) {
 
@@ -856,7 +1180,7 @@ binding = 레이아웃Binding.inflate(layoutInflater)
 adapter = 어댑터
 setContentView(binding.root)
 binding.리사이클러뷰.layoutManager = LinearLayoutManager(this)
-binding.recyclerView.adapter = adapter
+binding.리사이클러뷰.adapter = adapter
 ```
 
 1. 레이아웃
@@ -865,6 +1189,40 @@ binding.recyclerView.adapter = adapter
 4. 어댑터
 
 **완성된 예제**
+
+**Adapter.kt**
+
+```kotlin
+class BookAdapter: ListAdapter<Book, BookAdapter.BookItemViewHolder>(diffUtil) {
+    inner class BookItemViewHolder(private val binding: ItemBookBinding): RecyclerView.ViewHolder(binding.root) {
+        fun bind(bookModel: Book) {
+            binding.titleTextView.text = bookModel.title
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookItemViewHolder {
+        return BookItemViewHolder(ItemBookBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+    }
+
+    override fun onBindViewHolder(holder: BookItemViewHolder, position: Int) {
+        holder.bind(currentList[position])
+    }
+
+    companion object {
+        val diffUtil = object: DiffUtil.ItemCallback<Book>() {
+            override fun areItemsTheSame(oldItem: Book, newItem: Book): Boolean {
+                return oldItem == newItem
+            }
+
+            override fun areContentsTheSame(oldItem: Book, newItem: Book): Boolean {
+                return oldItem.id == newItem.id
+            }
+        }
+    }
+}
+```
+
+**MainActivity.kt**
 
 ```kotlin
 class MainActivity : AppCompatActivity() {
@@ -878,21 +1236,152 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = adapter
-
-        var list = mutableListOf(
-            Video("id1", "title1", "url1", "thumnail1"),
-            Video("id2", "title2", "url2", "thumnail2")
-        )
-        adapter.submitList(list)
-
-        val editText = findViewById<EditText>(R.id.editText)
-        val button = findViewById<Button>(R.id.button)
-        button.setOnClickListener{
-            list.add(Video("id1", editText.text.toString(), "url1", "thumnail1"))
-            adapter.notifyDataSetChanged()
-            editText.setText("")
-        }
     }
 }
+```
+
+```kotlin
+var list = mutableListOf(
+    Video("id1", "title1", "url1", "thumnail1"),
+    Video("id2", "title2", "url2", "thumnail2")
+)
+adapter.submitList(list)
+
+val editText = findViewById<EditText>(R.id.editText)
+val button = findViewById<Button>(R.id.button)
+button.setOnClickListener{
+    list.add(Video("id1", editText.text.toString(), "url1", "thumnail1"))
+    adapter.notifyDataSetChanged()
+    editText.setText("")
+}
+```
+
+
+
+## 4. 코틀린 네이밍
+
+**xml**
+
+**id**
+
+WHAT\_WHERE_DESCRIPTION
+
+무엇이\_어디에_설명 으로 작성한다.
+
+예) 
+
+- tablayout_main : MainActivity의 TabLayout
+- imageview_menu_profile : 커스텀 MenuView의 프로필 이미지
+- textview_articledetail_title : ArticleDetailFragment의 title TextView
+- imageview_menu_profile
+- main_title_tv
+
+예외)
+
+mvp 아키텍처나 바인딩을 사용할 때에는 소문자 카멜
+
+- mainTitle
+- submitBtn
+
+메뉴얼: <https://junhyeok830.tistory.com/35>
+
+메뉴얼2: <https://jhy156456.tistory.com/entry/XML-%EB%84%A4%EC%9D%B4%EB%B0%8D%EB%A3%B0>
+
+**kotlin**
+
+**id**
+
+**변수 접두사 축약어**
+
+| **의미** | **접두어** | **예시**   |
+| -------- | ---------- | ---------- |
+| label    | lbl        | lblText    |
+| Button   | btn        | btnNext    |
+| Image    | img        | imgTitle   |
+| Table    | tbl        | tblStudent |
+| Dataset  | ds         | dsBook     |
+| Grid     | grd        | grdList    |
+| Combo    | cb         | cbCodebook |
+
+
+
+## 버튼으로 붙여넣기
+
+```kotlin
+/* 클립보드 붙여넣기 버튼 */
+var clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+imgPost.setOnClickListener {
+    if (!clipboard.hasPrimaryClip()) {
+        Toast.makeText(this, "복사한 URL 이 없습니다.", Toast.LENGTH_SHORT).show()
+    }
+    val pasteData = clipboard.primaryClip?.getItemAt(0)?.text as String
+    editId.setText(pasteData)
+}
+```
+
+**함수**
+
+함수는 이상하게 호출에 문제가 있다.
+
+```kotlin
+private fun paste(clipboard: ClipboardManager): String {
+    if (!clipboard.hasPrimaryClip()) {
+        Toast.makeText(this, "복사한 URL 이 없습니다.", Toast.LENGTH_SHORT).show()
+    } else {
+        val pasteData = clipboard.primaryClip?.getItemAt(0)?.text as String
+        return pasteData
+    }
+}
+```
+
+## 리사이클러뷰 내에서 화면전환
+
+**특정 버튼 클릭**
+
+```kotlin
+override fun onBindViewHolder(holder: YoutubeItemViewHolder, position: Int) {
+    holder.bind(currentList[position])
+
+    /* 유튜브연결 버튼 */
+    val imgVideo = holder.itemView.findViewById<ImageView>(R.id.imageview_youtube_video)
+    val url = getItem(position).url
+    imgVideo.setOnClickListener {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        startActivity(holder.itemView.context, intent, null)
+    }
+}
+```
+
+**뷰 전체 클릭**
+
+```kotlin
+override fun onBindViewHolder(holder: YoutubeItemViewHolder, position: Int) {
+    holder.bind(currentList[position])
+
+    /* 유튜브연결 버튼 */
+    val url = getItem(position).url
+    holder.itemView.setOnClickListener {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        startActivity(holder.itemView.context, intent, null)
+    }
+}
+```
+
+**위에만 테두리**
+
+```xml
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:botton="-2dp"
+        android:left="-2dp"
+        android:right="-2dp">
+        <shape>
+            <stroke
+                android:color="@color/gray"
+                android:width="1dp"/>
+            <solid android:color="@color/black"/>
+        </shape>
+    </item>
+</layer-list>
 ```
 
