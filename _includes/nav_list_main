@@ -15,13 +15,14 @@
 
         <!-- 1. 풀스택 -->
         <span class="nav__sub-title"> Full stack </span>
+        
             <!--ul 태그로 같은 카테고리들 모아둔 페이지들 나열-->
             <ul>
                 <!--category[1].size 로 해당 카테고리를 가진 글의 개수 표시--> 
                 {% for category in site.categories %}
-                    {% if category[0] == "fullstack-style" %}
+                    {% if category[0] == "fullstack-class" %}
                         <!-- 사이드바 출력 -->
-                        <li><a href="/categories/fullstack-style" class=""> 스타일가이드 ({{category[1].size}})</a></li>
+                        <li><a href="/categories/fullstack-class" class=""> 강의 ({{category[1].size}})</a></li>
                     {% endif %}
                 {% endfor %}
             </ul>
@@ -45,14 +46,7 @@
 
         <!-- 3. 강의 -->
         <span class="nav__sub-title"> Lecture </span>
-            <ul>
-                {% for category in site.categories %}
-                    {% if category[0] == "fullstack-lecture" %}
-                        <!-- 사이드바 출력 -->
-                        <li><a href="/categories/fullstack-lecture" class=""> 풀스택 ({{category[1].size}})</a></li>
-                    {% endif %}
-                {% endfor %}
-            </ul>
+    
             <ul>
                 {% for category in site.categories %}
                     {% if category[0] == "design-pattern" %}

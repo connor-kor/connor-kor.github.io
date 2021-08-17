@@ -430,7 +430,7 @@ class MainActivity : AppCompatActivity() {
 **프로젝트 수준 build.gradle**
 
 buildscript {
-    dependencies { 내부
+    dependencies 내부
 
 ```
 /* 파이어베이스 SDK */
@@ -439,14 +439,14 @@ classpath 'com.google.gms:google-services:4.3.8'
 
 **앱 수준 build.gradle**
 
-plugins { 내부
+plugins 내부
 
 ```
 /* 파이어베이스 SDK */
 id 'com.google.gms.google-services'
 ```
 
-dependencies { 내부
+dependencies 내부
 
 > platform 과 괄호를 없애지 않고 그대로 복사 붙여넣기한다.
 
@@ -824,18 +824,7 @@ E/TAG: isEmailVerified: true
 
 **Realtime Database**
 
-build.gradle(app) 에 추가
-
-```
-dependencies {
-    // Import the BoM for the Firebase platform
-    implementation platform('com.google.firebase:firebase-bom:28.3.0')
-
-    // Declare the dependency for the Realtime Database library
-    // When using the BoM, you don't specify versions in Firebase library dependencies
-    implementation 'com.google.firebase:firebase-database-ktx'
-}
-```
+build.gradle(app) dependencies 에 추가
 
 ```
 implementation 'com.google.firebase:firebase-database-ktx'
@@ -1130,7 +1119,7 @@ class MainActivity : AppCompatActivity() {
 1. 리사이클러 뷰 추가
 2. new Layout 생성
 3. new 데이터 클래스 생성
-4. new Adapter 클래스 생성
+4. new Adapter 클래스 생성 (기능RecyclerView.kt 로 저장할 것)
 5. 메인클래스 추가
 
 > 어댑터는 리스트객체, 레트로핏은 최상위객체를 입력합니다.
@@ -1255,6 +1244,47 @@ button.setOnClickListener{
     editText.setText("")
 }
 ```
+
+**프래그먼트 내부에 리사이클러뷰**
+
+```kotlin
+private fun loadDatabase(container: ViewGroup?) {
+    val adapter = YoutubeAdapter()
+    val videos = mutableListOf<Video>()
+    binding.youtubeRecyclerView.layoutManager = LinearLayoutManager(container?.context)
+    binding.youtubeRecyclerView.adapter = adapter
+    val database = Firebase.database.reference.child("영상")
+    database.addChildEventListener(object: ChildEventListener {
+        override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+            val title = snapshot.child("제목").value as String
+            val channelTitle = snapshot.child("채널이름").value as String
+            val thumbnailURL = snapshot.child("썸네일 URL").value as String
+            val url = snapshot.child("URL").value as String
+            videos.add(Video(title, channelTitle, thumbnailURL, url))
+            adapter.submitList(videos)
+            adapter.notifyDataSetChanged()
+        }
+
+        override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+            //TODO("Not yet implemented")
+        }
+
+        override fun onChildRemoved(snapshot: DataSnapshot) {
+            //TODO("Not yet implemented")
+        }
+
+        override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+            //TODO("Not yet implemented")
+        }
+
+        override fun onCancelled(error: DatabaseError) {
+            //TODO("Not yet implemented")
+        }
+    })
+}
+```
+
+
 
 
 
@@ -1383,5 +1413,197 @@ override fun onBindViewHolder(holder: YoutubeItemViewHolder, position: Int) {
         </shape>
     </item>
 </layer-list>
+```
+
+**뷰 바인딩**
+
+build.gradle(app)
+
+```
+android {
+        ...
+        viewBinding {
+            enabled = true
+        }
+    }
+```
+
+클래스
+
+```kotlin
+private lateinit var binding: 레이아웃Binding
+
+override fun onCreate(savedInstanceState: Bundle) {
+    super.onCreate(savedInstanceState)
+    binding = 레이아웃Binding.inflate(layoutInflater)
+    setContentView(binding.root)
+}
+```
+
+1. binding = 레이아웃.inflate(layout)
+2. binding 의 property 생성 후 `lateinit` 추가
+3. setContentView 에 binding.root 로 변경
+
+이제 binding.뷰아이디 로 레이아웃에 있는 뷰를 findViewById 없이 사용할 수 있다.
+
+메뉴얼: <https://developer.android.com/topic/libraries/view-binding?hl=ko>
+
+**프래그먼트 사용**
+
+프래그먼트
+
+```kotlin
+private var _binding: 레이아웃Binding? = null
+private val binding get() = _binding!!
+
+override fun onCreateView(
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
+): View? {
+    _binding = 레이아웃Binding.inflate(inflater, container, false)
+    return binding.root
+}
+
+override fun onDestroyView() {
+    super.onDestroyView()
+    _binding = null
+}
+```
+
+1. _binding = 프래그먼트Binding.inflate(inflater, container, false)
+2. _binding 의 property 생성 후 `? = null` 추가
+3. private val binding get() = _binding!! 선언
+4. onCreateView 내부에 return binding.root 추가
+
+**뷰모델 사용**
+
+프래그먼트 onActivityCreated 내부
+
+```kotlin
+binding.name.text = viewModel.name
+binding.button.setOnClickListener {
+    viewModel.userClicked() 
+}
+```
+
+**프래그먼트 액티비티에 연결**
+
+액티비티의 레이아웃을 프레임레이아웃으로 만든다.
+
+```kotlin
+supportFragmentManager.beginTransaction()
+            .add(R.id.fragmentLayout, ProfileFragment()).commit()
+```
+
+support.begin.add(R.id.아이디, 프래그먼트).commit
+
+> add 대신 replace 와 remove 를 사용할 수 있다.
+
+addToBackStack(null) 를 추가하면 백스택에 저장되어 뒤로가기 버튼을 누르면 이전 프래그먼트가 화면에 출력된다.
+
+**전체코드**
+
+MainActivity.kt
+
+```kotlin
+class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        supportFragmentManager.beginTransaction()
+            .add(R.id.frameLayout, ProfileFragment()).commit()
+    }
+}
+```
+
+ProfileFragment.kt
+
+```kotlin
+class ProfileFragment : Fragment() {
+    private var _binding: ProfileFragmentBinding? = null
+    private val binding get() = _binding!!
+    private lateinit var viewModel: ProfileViewModel
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View? {
+        _binding = ProfileFragmentBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        viewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
+        // TODO: Use the ViewModel
+        binding.textView.text = viewModel.name
+        binding.button.setOnClickListener {
+            viewModel.userClicked()
+            binding.textView.text = viewModel.name
+        }
+    }
+
+    companion object {
+        fun newInstance() = ProfileFragment()
+    }
+}
+```
+
+ProfileViewModel.kt
+
+```kotlin
+class ProfileViewModel : ViewModel() {
+    var name = "Hello world!!"
+
+    fun userClicked() {
+        name = "안녕 세상아!!"
+    }
+}
+```
+
+**뷰 모델**
+
+```
+/* 뷰 모델 */
+implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0-alpha02")
+implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.1.0")
+```
+
+버전확인: <https://developer.android.com/jetpack/androidx/releases/lifecycle?hl=ko#declaring_dependencies>
+
+**리사이클러뷰에서 스크롤 오버했을 때 이펙트**
+
+```xml
+overScrollMode="never"
+```
+
+파란색 그라데이션 이펙트를 지운다.
+
+Q. onCreateView 와 onViewCreated 차이점
+
+**navigation bar**
+
+build.gradle(app)
+
+```
+implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
+implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
+```
+
+
+
+버전확인: <https://developer.android.com/jetpack/androidx/releases/navigation?hl=ko>
+
+## 바텀네비게이션 뷰
+
+리플효과 제거: xml 에 다음과 같은 코드를 추가한다.
+
+```xml
+app:itemBackground="@color/white"
 ```
 
