@@ -3,7 +3,7 @@ title: SNS 프로젝트
 category: project
 ---
 
-## 1. 유튜브 API
+## 유튜브 API
 
 **API**
 
@@ -165,10 +165,6 @@ val 데이터Service = retrofit.create(데이터Service::class.java)
     })
 ```
 
-
-
-
-
 Q. onStart 는 finish() 때 호출되나?
 
 A. 네
@@ -308,8 +304,6 @@ Glide.with(binding.imageviewYoutubeVideo.context)
     .into(binding.imageviewYoutubeVideo)
 ```
 
-
-
 **오류수정 및 지우기버튼 추가**
 
 유튜브 URL 에서 특수문자 & 가 없는 경우도 있어 앱이 비정상 종료 되었다. if 문으로 예외처리 했다.
@@ -419,7 +413,7 @@ class MainActivity : AppCompatActivity() {
 
 유튜브 API: <https://blog.naver.com/PostView.nhn?blogId=deathrock&logNo=221701778199>{:target="_blank"}
 
-## 2. 파이어베이스
+## 파이어베이스
 
 **Firebase 연결**
 
@@ -822,7 +816,7 @@ E/TAG: isEmailVerified: true
 
 메뉴얼: <https://firebase.google.com/docs/auth/android/manage-users?hl=ko>{:target="_blank"}
 
-**Realtime Database**
+### **Realtime Database**
 
 build.gradle(app) dependencies 에 추가
 
@@ -1112,7 +1106,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-## 3. 리사이클러 뷰
+## 리사이클러 뷰
 
 **리사이클러 뷰 요약**
 
@@ -1284,11 +1278,17 @@ private fun loadDatabase(container: ViewGroup?) {
 }
 ```
 
+**그리드 레이아웃 사용**
 
+ProfileFragment.kt
 
+LinearLayoutManager 를 GridLayoutManager 로 바꾼 후 몇 줄에 걸쳐 보여줄 것인지 설정하면 된다.
 
+```kotlin
+binding.recyclerViewProfile.layoutManager = GridLayoutManager(container.context, 3)
+```
 
-## 4. 코틀린 네이밍
+## 코틀린 네이밍
 
 **xml**
 
@@ -1606,4 +1606,301 @@ implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
 ```xml
 app:itemBackground="@color/white"
 ```
+
+## 구글로그인
+
+**버튼 사이즈**
+
+buttonSize = "standard", "wide", "icon_only"
+
+![image-20210821161152972](../../../assets/images/image-20210821161152972.png)
+
+**글자변경**
+
+휴대폰의 언어가 영어라면 Sign in with Google 이라고 표시되며
+
+한국어라면 Google 계정으로 로그인 이라고 표시되는 등 
+
+자동으로 언어에 맞게 변경된다.
+
+## 툴바
+
+![image-20210821201915211](../../../assets/images/image-20210821201915211.png)
+
+**전체코드**
+
+뷰 바인딩을 사용하였으므로 사용하지 않으려면 findViewById 를 써주세요.
+
+**툴바**
+
+```xml
+<androidx.appcompat.widget.Toolbar
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark" >
+    </androidx.appcompat.widget.Toolbar>
+```
+
+**코틀린**
+
+```kotlin
+class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        setSupportActionBar(binding.toolBar)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.item_home -> binding.textView.setText("home")  // id 가 검색되지 않는다면 메뉴.xml 에서 id 를 설정하지 않아서이다.
+            R.id.item_like -> binding.textView.setText("like")
+            R.id.item_search -> binding.textView.setText("search")
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.toolbar, menu)
+        return true
+    }
+}
+```
+
+**메뉴**
+
+```xml
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/item_home"
+        android:icon="@drawable/home"
+        android:title="home"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/item_like"
+        android:icon="@drawable/like"
+        android:title="like"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/item_search"
+        android:icon="@drawable/search"
+        android:title="search"
+        app:showAsAction="always"/>
+</menu>
+```
+
+showAsAction 값
+
+- always: 항상 툴바 액션으로
+- never: 항상 오버플로어 메뉴에 포함되게
+- ifRoom: 공간이 있다면 액션, 없다면 오버플로우 메뉴에 표시
+- withText: 공간이 있을 경우 title 과 같이 표시
+
+**theme**
+
+```xml
+<style name="Theme.11MyToolBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">@color/white</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <!-- Customize your theme here. -->
+    </style>
+```
+
+Q. 툴바와 액션바의 차이점은?
+
+A. 툴바는 안드로이드 5.0 (API Level 21) 부터 추가된 위젯으로 앱바를 만들 때 사용한다.
+
+안드로이드 버전에 따라 다르게 동작하는 액션바 대신 툴바를 사용하도록 하자.
+
+툴바를 사용할 때는 NoActionBar 를 하여 사용하고 액비비티에서 툴바를 View 위젯으로 사용한다.
+
+**상태창 색 변경**
+
+상태창 배경 색: statusBarColor
+
+상태창 글자 색
+
+```xml
+<item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+```
+
+**액션바 제거** 
+
+```xml
+<style name="Theme.11MyToolBar" parent="Theme.AppCompat.Light.NoActionBar">
+```
+
+```xml
+<androidx.appcompat.widget.Toolbar
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    android:id="@+id/toolBar"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="?attr/colorPrimary"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark" />
+```
+
+**툴바 연결:** 액티비티에서만 가능합니다. 
+
+```kotlin
+setSupportActionBar(binding.toolBar)
+```
+
+**버튼 추가**
+
+res 에 menu 폴더를 추가하고 레이아웃에 item 으로 항목을 추가한 후 코틀린파일에 다음과 같은 코드를 추가한다.
+
+```kotlin
+override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    menuInflater.inflate(R.menu.option, menu)
+    return true
+}
+```
+
+메뉴얼: <https://developer.android.com/guide/topics/resources/menu-resource?hl=ko>
+
+**버튼 클릭**
+
+```kotlin
+override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    when (item.itemId) {
+        R.id.item_home -> binding.textView.setText("home")
+        R.id.item_like -> binding.textView.setText("like")
+        R.id.item_search -> binding.textView.setText("search")
+    }
+    return super.onOptionsItemSelected(item)
+}
+```
+
+![image-20210821205704027](../../../assets/images/image-20210821205704027.png)
+
+**타이틀 변경**
+
+```kotlin
+override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    when (item.itemId) {
+        R.id.item_home -> {
+            binding.maxZenith.visibility = View.INVISIBLE
+            binding.name.visibility = View.VISIBLE
+            binding.name.setText("사용자")
+        }
+        R.id.item_like -> {
+            binding.name.visibility = View.INVISIBLE
+            binding.maxZenith.visibility = View.VISIBLE
+            binding.maxZenith.setImageResource(R.mipmap.max_zenith)
+        }
+        R.id.item_search -> binding.textView.setText("search")
+    }
+    return super.onOptionsItemSelected(item)
+}
+```
+
+**내비게이션 바 선택에 따라 툴바 변경**
+
+**프래그먼트에서 변경**
+
+onCreateView
+
+```kotlin
+setHasOptionsMenu(true)
+```
+
+함수
+
+```kotlin
+override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+    menu.clear()
+    inflater.inflate(R.menu.profile_toolbar, menu)
+}
+```
+
+## 인텐트
+
+**데이터 넘겨주기**
+
+보통 버튼에 넣는다.
+
+```kotlin
+val intent = Intent(this, 레이아웃Activity::class.java)
+intent.putExtra("데이터", 데이터)
+startActivity(intent)
+```
+
+**데이터 넘겨받기**
+
+```kotlin
+intent.getSerializableExtra("데이터")
+```
+
+## 프래그먼트
+
+프래그먼트 내부에서 프래그먼트 바꾸기
+
+```kotlin
+parentFragmentManager.beginTransaction().replace(R.id.nav_host_fragment_activity_main, HomeFragment()).commit()
+```
+
+**프래그먼트 데이터 넘겨주기** 
+
+```kotlin
+private fun setDataAtFragment(fragment: Fragment, data: String) {
+    val bundle = Bundle()
+    bundle.putString("data", data)
+    fragment.arguments = bundle
+    setFragment(fragment)
+}
+
+private fun setFragment(fragment: Fragment) {
+    val transation = parentFragmentManager.beginTransaction()
+    transation.replace(R.id.nav_host_fragment_activity_main, fragment)
+    transation.commit()
+}
+```
+
+## 뒤로가기 버튼
+
+`onBackPressed` 를 오버라이드해서 리턴을 지우면 뒤로가기 버튼을 막는다.
+
+**두번 눌렀을 때 종료**
+
+2.5 초 이내에 뒤로가기 버튼을 두 번 누르면 종료된다.
+
+```kotlin
+/* 뒤로가기 버튼 */
+override fun onBackPressed() {
+    Toast.makeText(this, "한 번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
+    if (System.currentTimeMillis() > backKeyPressedTime + 2500) {
+        backKeyPressedTime = System.currentTimeMillis()
+    } else {
+        finishAffinity()
+    }
+}
+```
+
+원리: 초기 값 backKeyPressedTime = 0 이다.
+
+처음 눌렀을 때 시간에서 2.5 초 후가 현재시간보다 작으면 (2.5초 이내에 눌렀다.) 종료되고
+
+컸을 때는 그 시간을 backKeyPressedTime 에 저장하고 다시 뒤로가기 버튼을 대기한다.
 

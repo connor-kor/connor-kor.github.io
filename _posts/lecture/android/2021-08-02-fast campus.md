@@ -740,6 +740,13 @@ fun bind(bookModel: Book) {
 </androidx.constraintlayout.widget.ConstraintLayout>
 ```
 
+**한 줄에 표시되고 넘으면 ... 붙이기**
+
+```xml
+android:lines="1"
+android:ellipsize="end"
+```
+
 **전체코드** BookAdapter.kt
 
 ```kotlin
