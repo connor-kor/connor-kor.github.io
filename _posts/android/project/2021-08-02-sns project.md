@@ -1646,6 +1646,8 @@ buttonSize = "standard", "wide", "icon_only"
     </androidx.appcompat.widget.Toolbar>
 ```
 
+> 툴바의 버튼이나 글자가 보이지 않을 경우 테마 (theme) 를 확인해본다.
+
 **코틀린**
 
 ```kotlin
@@ -1903,4 +1905,14 @@ override fun onBackPressed() {
 처음 눌렀을 때 시간에서 2.5 초 후가 현재시간보다 작으면 (2.5초 이내에 눌렀다.) 종료되고
 
 컸을 때는 그 시간을 backKeyPressedTime 에 저장하고 다시 뒤로가기 버튼을 대기한다.
+
+## Circle image view
+
+build.gradle(app)
+
+```
+implementation 'de.hdodenhof:circleimageview:3.1.0'
+```
+
+메뉴얼: <https://github.com/hdodenhof/CircleImageView>
 
