@@ -48,12 +48,11 @@ category: algorithm
 ```java
 public class Main {
 	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		int n = sc.nextInt();
+		int n = 10;
 		int[] arr = new int[n];
 
 		for (int i = 0; i < n; i++) {
-			arr[i] = sc.nextInt();
+			arr[i] = (int) (Math.random() * 50);
 		}
 
 		for (int i = 0; i < n - 1; i++) {
@@ -110,12 +109,11 @@ public class Main {
 ```java
 public class Main {
 	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		int n = sc.nextInt();
+		int n = 10;
 		int[] arr = new int[n];
 
 		for (int i = 0; i < n; i++) {
-			arr[i] = sc.nextInt();
+			arr[i] = (int) (Math.random() * 50);
 		}
 
 		for (int i = 0; i < n - 1; i++) {
