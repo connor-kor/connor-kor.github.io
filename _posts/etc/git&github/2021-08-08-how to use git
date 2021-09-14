@@ -20,3 +20,13 @@ git push -u origin main
 2. 한가지를 변경 후 커밋한다.
 3. feature 로 이동한다.
 
+## 명령어
+
+`git -version`
+
+`git config --list`
+
+`git menual`
+
+윈도우 커맨드 추천: cmder
+
