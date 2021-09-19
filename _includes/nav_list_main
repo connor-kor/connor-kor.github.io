@@ -13,6 +13,20 @@
       <li>
         <!--span 태그로 카테고리들을 크게 분류 ex) C/C++/C#-->
 
+                <!-- 1. 알고리즘 -->
+        <span class="nav__sub-title"> Algorithm </span>
+        
+            <!--ul 태그로 같은 카테고리들 모아둔 페이지들 나열-->
+            <ul>
+                <!--category[1].size 로 해당 카테고리를 가진 글의 개수 표시--> 
+                {% for category in site.categories %}
+                    {% if category[0] == "java" %}
+                        <!-- 사이드바 출력 -->
+                        <li><a href="/categories/java" class=""> 자바 ({{category[1].size}})</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+
         <!-- 1. 풀스택 -->
         <span class="nav__sub-title"> Full stack </span>
         
