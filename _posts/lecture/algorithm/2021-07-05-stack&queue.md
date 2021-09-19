@@ -117,6 +117,37 @@ moves 배열 각 원소들의 값은 1 이상이며 board 배열의 가로 크�
 4
 ```
 
+**최적화 코드**
+
+```java
+class Solution {
+	public int solution(int[][] board, int[] moves) {
+		Stack<Integer> stack = new Stack<>();
+		stack.push(0);
+		int count = 0;
+
+		pick: for (int move : moves) {
+			int col = 0;
+			int row = move - 1;
+
+			while (board[col][row] == 0) {
+				col++;
+				if (col == board.length) continue pick;
+			}
+
+			int pick = board[col][row];
+			if (stack.lastElement() == pick) {
+				stack.pop();
+				count += 2;
+			} else stack.push(pick);
+
+			board[col][row] = 0;
+		}
+		return count;
+	}
+}
+```
+
 **코드**
 
 ```java
