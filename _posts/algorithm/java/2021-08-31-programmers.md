@@ -169,9 +169,9 @@ class Solution {
 		return count;
 	}
 
-	private boolean isPrime(int number) {
-		for (int i = 2; i <= Math.sqrt(number); i++) {
-			if (number % i == 0) return false;
+	private boolean isPrime(int num) {
+		for (int i = 2; i <= Math.sqrt(num); i++) {
+			if (num % i == 0) return false;
 		}
 		return true;
 	}
@@ -384,6 +384,8 @@ class Solution {
 
 **좋은코드**  
 
+25줄
+
 ```java
 class Solution {
     public int solution(int n, int[] lost, int[] reserve) {
@@ -412,85 +414,80 @@ class Solution {
 }
 ```
 
+**여분을 도둑맞은학생 저장 코드** 
+
+32줄
+
+```java
+class Solution {
+    public int solution(int n, int[] lost, int[] reserve) {
+        int lostCount = lost.length;
+        int loIdx = 0;
+        int reIdx = 0;
+        Arrays.sort(lost);
+        Arrays.sort(reserve);
+
+        while (loIdx < lost.length && reIdx < reserve.length) {
+        	if (lost[loIdx] > reserve[reIdx]) reIdx++;
+        	else if (lost[loIdx] < reserve[reIdx]) loIdx++;
+        	else {
+        		lost[loIdx] = reserve[reIdx] = -1;
+        		loIdx++;
+        		reIdx++;
+        		lostCount--;
+        	}
+        }
+        
+        loIdx = 0;
+        reIdx = 0;
+        while (loIdx < lost.length && reIdx < reserve.length) {
+        	if (Math.abs(lost[loIdx] - reserve[reIdx]) == 1) {
+        		lostCount--;
+        		loIdx++;
+        		reIdx++;
+        	} else if (lost[loIdx] > reserve[reIdx]) reIdx++;
+        	else loIdx++;
+        }
+        return n - lostCount;
+    }
+}
+```
+
 **while 문 한개로 작성한 코드** 
+
+31줄
 
 ```java
 class Solution {
 	public int solution(int n, int[] lost, int[] reserve) {
 		int lostCount = lost.length;
-		int lostIdx = 0;
-		int reserveIdx = 0;
+		int loIdx = 0;
+		int reIdx = 0;
 		Arrays.sort(lost);
 		Arrays.sort(reserve);
 
-		while (lostIdx < lost.length && reserveIdx < reserve.length) {
-			if (lostIdx + 1 < lost.length && lost[lostIdx + 1] == reserve[reserveIdx]) {
+		while (loIdx < lost.length && reIdx < reserve.length) {
+			if (loIdx + 1 < lost.length && lost[loIdx + 1] == reserve[reIdx]) {
 				lostCount--;
-				lostIdx += 2;
-				reserveIdx++;
-			} else if (reserveIdx + 1 < reserve.length && lost[lostIdx] == reserve[reserveIdx + 1]) {
+				loIdx += 2;
+				reIdx++;
+			} else if (reIdx + 1 < reserve.length && lost[loIdx] == reserve[reIdx + 1]) {
 				lostCount--;
-				lostIdx++;
-				reserveIdx += 2;
-			} else if (lost[lostIdx] == reserve[reserveIdx]) {
+				loIdx++;
+				reIdx += 2;
+			} else if (lost[loIdx] == reserve[reIdx]) {
 				lostCount--;
-				lostIdx++;
-				reserveIdx++;
-			} else if (Math.abs(lost[lostIdx] - reserve[reserveIdx]) == 1) {
+				loIdx++;
+				reIdx++;
+			} else if (Math.abs(lost[loIdx] - reserve[reIdx]) == 1) {
 				lostCount--;
-				lostIdx++;
-				reserveIdx++;
-			} else if (lost[lostIdx] > reserve[reserveIdx]) reserveIdx++;
-			else lostIdx++;
+				loIdx++;
+				reIdx++;
+			} else if (lost[loIdx] > reserve[reIdx]) reIdx++;
+			else loIdx++;
 		}
 		return n - lostCount;
 	}
-}
-```
-
-**여분을 도둑맞은학생 저장 코드** 
-
-```java
-class Solution {
-    public int solution(int n, int[] lost, int[] reserve) {
-    	ArrayList<Integer> extraStolen = new ArrayList<>();
-        int lostCount = lost.length;
-        int lostIdx = 0;
-        int reserveIdx = 0;
-        Arrays.sort(lost);
-        Arrays.sort(reserve);
-
-        while (lostIdx < lost.length && reserveIdx < reserve.length) {
-        	if (lost[lostIdx] > reserve[reserveIdx]) reserveIdx++;
-        	else if (lost[lostIdx] < reserve[reserveIdx]) lostIdx++;
-        	else {
-        		extraStolen.add(lost[lostIdx]);
-        		lostIdx++;
-        		reserveIdx++;
-        		lostCount--;
-        	}
-        }
-        
-        lostIdx = 0;
-        reserveIdx = 0;
-        while (lostIdx < lost.length && reserveIdx < reserve.length) {
-        	if (extraStolen.contains(lost[lostIdx])) {
-        		lostIdx++;
-        		continue;
-        	} else if (extraStolen.contains(reserve[reserveIdx])) {
-        		reserveIdx++;
-        		continue;
-        	}
-        	
-        	if (Math.abs(lost[lostIdx] - reserve[reserveIdx]) == 1) {
-        		lostCount--;
-        		lostIdx++;
-        		reserveIdx++;
-        	} else if (lost[lostIdx] > reserve[reserveIdx]) reserveIdx++;
-        	else lostIdx++;
-        }
-        return n - lostCount;
-    }
 }
 ```
 
@@ -525,8 +522,603 @@ class Solution {
 }
 ```
 
+Q. stream() 이란?
+
+A. 
+
 **HashSet vs TreeSet**
 
 Q. TreeSet 은 HashSet 과 다르게 정렬된다?
 
 A. 
+
+## 9. 폰켓몬
+
+date 9.20
+
+**문제 설명**
+
+당신은 폰켓몬을 잡기 위한 오랜 여행 끝에, 홍 박사님의 연구실에 도착했습니다. 홍 박사님은 당신에게 자신의 연구실에 있는 총 N 마리의 폰켓몬 중에서 N/2마리를 가져가도 좋다고 했습니다.
+홍 박사님 연구실의 폰켓몬은 종류에 따라 번호를 붙여 구분합니다. 따라서 같은 종류의 폰켓몬은 같은 번호를 가지고 있습니다. 예를 들어 연구실에 총 4마리의 폰켓몬이 있고, 각 폰켓몬의 종류 번호가 [3번, 1번, 2번, 3번]이라면 이는 3번 폰켓몬 두 마리, 1번 폰켓몬 한 마리, 2번 폰켓몬 한 마리가 있음을 나타냅니다. 이때, 4마리의 폰켓몬 중 2마리를 고르는 방법은 다음과 같이 6가지가 있습니다.
+
+1. 첫 번째(3번), 두 번째(1번) 폰켓몬을 선택
+2. 첫 번째(3번), 세 번째(2번) 폰켓몬을 선택
+3. 첫 번째(3번), 네 번째(3번) 폰켓몬을 선택
+4. 두 번째(1번), 세 번째(2번) 폰켓몬을 선택
+5. 두 번째(1번), 네 번째(3번) 폰켓몬을 선택
+6. 세 번째(2번), 네 번째(3번) 폰켓몬을 선택
+
+이때, 첫 번째(3번) 폰켓몬과 네 번째(3번) 폰켓몬을 선택하는 방법은 한 종류(3번 폰켓몬 두 마리)의 폰켓몬만 가질 수 있지만, 다른 방법들은 모두 두 종류의 폰켓몬을 가질 수 있습니다. 따라서 위 예시에서 가질 수 있는 폰켓몬 종류 수의 최댓값은 2가 됩니다.
+당신은 최대한 다양한 종류의 폰켓몬을 가지길 원하기 때문에, 최대한 많은 종류의 폰켓몬을 포함해서 N/2마리를 선택하려 합니다. N마리 폰켓몬의 종류 번호가 담긴 배열 nums가 매개변수로 주어질 때, N/2마리의 폰켓몬을 선택하는 방법 중, 가장 많은 종류의 폰켓몬을 선택하는 방법을 찾아, 그때의 폰켓몬 종류 번호의 개수를 return 하도록 solution 함수를 완성해주세요.
+
+**입출력 예**
+
+| nums          | result |
+| ------------- | ------ |
+| [3,1,2,3]     | 2      |
+| [3,3,3,2,2,4] | 3      |
+| [3,3,3,2,2,2] | 2      |
+
+**코드**
+
+```java
+class Solution {
+    public int solution(int[] nums) {
+    	HashSet<Integer> set = new HashSet<>();
+    	
+    	for (int i : nums) {
+    		set.add(i);
+    		if (set.size() == nums.length / 2) break;
+		}
+        return set.size();
+    }
+}
+```
+
+## 10. 완주하지 못한 선수
+
+**문제 설명**
+
+수많은 마라톤 선수들이 마라톤에 참여하였습니다. 단 한 명의 선수를 제외하고는 모든 선수가 마라톤을 완주하였습니다.
+
+마라톤에 참여한 선수들의 이름이 담긴 배열 participant와 완주한 선수들의 이름이 담긴 배열 completion이 주어질 때, 완주하지 못한 선수의 이름을 return 하도록 solution 함수를 작성해주세요.
+
+**입출력 예**
+
+| participant                                       | completion                               | return   |
+| ------------------------------------------------- | ---------------------------------------- | -------- |
+| ["leo", "kiki", "eden"]                           | ["eden", "kiki"]                         | "leo"    |
+| ["marina", "josipa", "nikola", "vinko", "filipa"] | ["josipa", "filipa", "marina", "nikola"] | "vinko"  |
+| ["mislav", "stanko", "mislav", "ana"]             | ["stanko", "ana", "mislav"]              | "mislav" |
+
+**코드**
+
+```java
+class Solution {
+    public String solution(String[] participant, String[] completion) {
+    	Arrays.sort(participant);
+    	Arrays.sort(completion);
+    	int i;
+    	
+    	for (i = 0; i < completion.length; i++) {
+			if (!participant[i].equals(completion[i])) return participant[i]; 
+		}
+        return participant[i];
+    }
+}
+```
+
+**Map 풀이**
+
+```java
+class Solution {
+    public String solution(String[] participant, String[] completion) {
+        String answer = "";
+        HashMap<String, Integer> hm = new HashMap<>();
+        for (String player : participant) hm.put(player, hm.getOrDefault(player, 0) + 1);
+        for (String player : completion) hm.put(player, hm.get(player) - 1);
+
+        for (String key : hm.keySet()) {
+            if (hm.get(key) != 0){
+                answer = key;
+            }
+        }
+        return answer;
+    }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 다른사람의 코드
+
+### 실패율
+
+Y
+
+```java
+package level1;
+
+import java.util.Arrays;
+
+public class ProAlgoPract_실패율 {
+
+   public static void main(String[] args) {
+      
+      int N = 4;      // 스테이지 수
+      
+      int [] stages = { 4,4,4,4,4 };
+      
+      int [] result = new int [ N ];
+   
+      // stages.length == 사용자 수.
+      // result.length == 스테이지 수
+      
+      //  사용자들이 위치한 스테이지 정보
+      //    stages[ i ] -> 1명의 유저가 도달한 스테이지 값.
+      
+      //System.out.println(Arrays.toString(stages));
+      
+      result = solution( N, stages );
+      
+      System.out.println("실행결과 : " + Arrays.toString(result) );
+      
+   }
+
+   public static int[] solution(int N, int[] stages) {
+      
+      
+      int [] answer = new int [ N ] ; 
+      
+      double [][] solve = new double [ N+1 ][3];
+   
+      // solve [0]은 버려 ~
+      
+      // solve [1][0]      solve[1][1]      solve[1][2]
+      //    막힌 사용자      도달한 사용자    1 스테이지
+      
+      // solve [2][0]      solve[2][1]      solve[2][2]
+      //    막힌 사용자      도달한 사용자    2 스테이지
+      
+      //   ..........................................
+      //   ..........................................
+      
+      // solve [N][0]      solve[N][1]      solve[N][2]
+      //    막힌 사용자      도달한 사용자    N 스테이지
+      
+      
+      //    stages[i]의 값은 그 값의 스테이지에서 막힌 사용자를 의미.
+      //   그 스테이지에 도달한 사용자도 될 수 있지만,
+      //   stages[i]의 값이 더 큰 사용자도 그 스테이지에 도달했었음.
+      
+      // 해당 스테이지 실패율 = 해당 스테이지 막힌 사용자 수 / 해당 스테이지 도달 사용자 수
+      
+      //   스테이지에 막힌 사용자 수 증가.
+      for ( int i = 0 ; i < stages.length; i++ ) {
+         // N 
+         if ( stages[i] > N )      //  N번 스테이지까지의 실패율을 구하는 것이므로, 
+            continue;            //   더 큰 스테이지의 막힌 사용자 수는 구할 필요 없음
+      
+         // stages[i]의 값이 stage보다 같거나 높으면 도달한 사용자 수 증가
+         // 같을 때는 막힌 사용자 수도 같이 증가.
+         
+         //stages [i] = 2
+         else 
+            solve[ stages[i] ][0]++;
+         
+      }
+      
+      solve[1][1] = stages.length;   // 1스테이지 도달한 사용자 수 == 사용자 수 ( 초기값 )
+      
+      // 스테이지 값 주입.
+      
+      for ( int i = 1; i <= N; i++) {
+         solve[i][2] = i;
+      }
+      
+      
+      
+      // 도달한 사용자 수 구하는 과정.
+      for ( int i = 2; i < solve.length; i++ ) {
+         solve[i][1] = solve[i-1][1] - solve[i-1][0];
+      }
+      
+      
+      double [] failarr = new double [ N+1 ]; // 실패율 값 저장하는 곳.
+      
+      // 0 ~ N번 인덱스.
+      // 0번 인덱스는 그냥 제외.
+      // 1~N 스테이지
+      // 1번 인덱스는 1 스테이지 실패율 저장.
+      // 2번 인덱스는 2 스테이지 실패율 저장.
+      // 3번 인덱스는 3 스테이지 실패율 저장.
+      // ................
+      // N번 인덱스는 N 스테이지 실패율 저장.
+      
+      //   1 스테이지의 실패율
+      //    1 스테이지 막힌 사람 수 / 1 스테이지 도달 사람 수
+      
+      failarr[1] = solve[1][0] / solve[1][1];         
+      
+      for ( int i = 1; i < failarr.length; i++ ) {
+         // **** 중요 ****
+         // 도달한 사람 수가 0이면 실패율이 0이다.
+         if ( solve[i][1] == 0 ) {
+            failarr[i] = 0;
+            continue;
+         }
+         
+         // 실패율 = 막힌 사람 수 / 도달한 사람 수
+         failarr[i] = solve[i][0] / solve[i][1];
+      }
+      
+      System.out.println( "스테이지에 따른 실패율 배열 : " + Arrays.toString( failarr ) );
+      
+      
+      int max_index = 1;
+      
+      // 최종 리턴할 배열
+      for ( int k = 0 ; k < answer.length; k++) {
+         
+         for ( int i = 2; i < failarr.length; i++ ) {
+         
+               if ( failarr[max_index] < failarr[i] ) {
+                  max_index = i;
+               }   
+               else if ( failarr[max_index] == failarr[i]) {
+                  
+               }
+         }
+         if ( k == answer.length - 1 && failarr [ failarr.length-1 ] == 0 ) {
+            max_index = failarr.length-1;
+         }
+      
+         
+         // 최대값 찾아서 그 값이 아닌 인덱스 값을 가져와야 함. 
+         answer[k] = max_index;
+         failarr[max_index] = -1;
+         System.out.println(  "스테이지에 따른 실패율 배열 : " + Arrays.toString(failarr));
+         max_index = 1;
+      }
+         
+   
+      System.out.println( "스테이지 내림차순 배열 : " + Arrays.toString( answer ) );   
+      
+      return answer;
+   }
+
+}
+```
+
+### 2016년
+
+M
+
+```java
+class Solution {
+  public String solution(int a, int b) {
+      String answer = "";
+
+      int[] c = {31,29,31,30,31,30,31,31,30,31,30,31};
+      String[] MM ={"FRI","SAT","SUN","MON","TUE","WED","THU"};
+      int Adate = 0;
+      for(int i = 0 ; i< a-1; i++){
+          Adate += c[i];
+      }
+      Adate += b-1;
+      answer = MM[Adate %7];
+
+      return answer;
+  }
+}
+```
+
+### 3진법 뒤집기
+
+Y
+
+```java
+package level1;
+
+import java.util.*;
+
+public class Solution {
+
+   public static void main(String[] args) {
+      
+      int a = solution(125);
+      System.out.println();
+      System.out.println("10진법 = "+a);
+   }
+   
+    public static int solution(int n) {
+          int temp = n;
+         int count = 1;
+         
+         while(temp >= 3) {
+            temp = temp / 3;
+            count++;
+         }
+          int[] arr = new int[count];
+          int[] arrReverse = new int [count];
+           
+          int i = count;
+          int temp1 = n;
+          
+          
+          while (i > 0) {
+             arr[i-1] = temp1 % 3;
+             temp1 = temp1 / 3;
+             i--;
+          }
+          System.out.println("3진법 : " + Arrays.toString(arr));
+     
+
+          i = count;
+          
+          while( i > 0 ) {
+             arrReverse[ count-i ] = n % 3;
+             n = n / 3;
+             i--;
+          }
+          
+          System.out.println("3진법 반전 : " +Arrays.toString(arrReverse));
+          
+          
+          int answer = 0;
+          // j = 0 1 2 3
+          // answer += math.pow(3,3) * arrReverse[0]
+          // answer += math.pow(3,2) * arrReverse[1]
+          // answer += math.pow(3,1) * arrReverse[2]
+          // answer += math.pow(3,0) * arrReverse[3]
+          
+          // j = 0 1 2 3 4
+          // answer += math.pow(3,4) * arrReverse[0]
+          // answer += math.pow(3,3) * arrReverse[1]
+          // answer += math.pow(3,2) * arrReverse[2]
+          // answer += math.pow(3,1) * arrReverse[3]
+          // answer += math.pow(3,0) * arrReverse[4]
+          
+          for ( int j = 0; j < count; j++) {
+             answer += Math.pow(3, count-j-1) * arrReverse[j];
+          }
+          
+          
+           return answer;
+       }
+}
+```
+
+J
+
+```java
+import java.util.Arrays;
+
+
+public class Solution {
+
+   public static void main(String[] args) {
+      // 3진법 뒤집기
+   int a;
+
+   a = solution(289);
+   
+   System.out.print("10진법 = " + a);
+      
+   }   // main
+   // 성공
+ public static int solution(int share) {   
+      int value1 = share;   // 처음 while문 대입
+      int value2 = share;   // 두번째 while문 대입
+       int rest; // 나머지
+      int answer = 0;
+      int count = 0;
+      
+      while (value1 != 0) {   // 배열방 갯수를 입력값에 따라 count로 채우기
+         value1 /= 3;
+         count++;
+      }
+      int array[] = new int[count];      //  나머지 값 채울 배열 선언.                        
+      int idx = 0; // 배열 방 0부터 채우기 시작하도록 초기화
+      
+      while (value2 != 0) {
+         
+         answer = value2 / 3;   // 몫의 값
+         rest = value2 % 3;   // 나머지 값
+         array[idx++] = rest; // 배열 0번방부터 차례로 나머지 대입
+         value2 = answer;   // 몫에 3을 나눈 값 다시 대입
+         
+      }   // while
+      
+      
+      System.out.println(Arrays.toString(array));   
+      // array[] 배열에 나머지가 잘 들어갔나 확인할 겸 출력.
+      
+      int x = count-1;   //   3^x인 지수x 선언. (배열 방 때문에 -1)
+      
+      for (int i = 0; i < array.length; i++) {
+         double result = Math.pow(3, x);         // 제곱근함수 사용, x가 각 방의 값에 3의 x제곱을 해줄 result 선언
+         answer += array[i]*result;
+         x--;
+      }
+      return answer;
+   }
+
+
+}   //class
+```
+
+### 키패드누르기
+
+K
+
+```java
+키패드 누르기
+
+import java.util.stream.IntStream;
+ 
+class Solution {
+    public String solution(int[] numbers, String hand) {
+        String answer = "";
+ 
+        
+        /*
+            1       2       3
+            4       5       6
+            7       8       9
+            *(10)  0(11)   #(12)
+        */
+        
+        int[] left = { 1, 4, 7 }; // 왼쪽 열
+        int[] right = { 3, 6, 9 }; // 오른쪽 열
+ 
+         // 왼손 오른손의 현재 위치
+        // * = 10, 0 = 11, # = 12
+        //LHand - 왼손 엄지가 처음에 위치해 있는 값, RHand - 오른손 엄지가 처음에 위치했는 값
+        int LHand = 10, RHand = 12;
+ 
+        for (int key : numbers) {
+            int k = key; 
+            
+            //Instream.of(left, right) - left, right 값에 대한 int 스트림 생성, of의 인자는 배열등도 가능
+            
+            /* 왼손이 눌러야 할 왼쪽 열 1, 4, 7 */
+            //IntStream.of(left).anyMatch(i -> i == k) - i 값이 left k값에 하나라도 있으면 참(1,4,7)
+            if (IntStream.of(left).anyMatch(i -> i == k)) {
+                answer += "L";
+                LHand = key;
+            /* 오른손이 눌러야 할 오른쪽 열 3, 6, 9 */
+            //IntStream.of(right).anyMatch(i -> i == k) - i 값이 right k값에 하나라도 있으면 참(1,4,7)
+            } else if (IntStream.of(right).anyMatch(i -> i == k)) {
+                answer += "R";
+                RHand = key;
+            /* 가운데 열 */
+            } else {
+ 
+                if (key == 0)
+                    key += 11;
+ 
+                //(눌러야 하는 숫자 - 손의 위치) / 3 + (눌러야 하는 숫자 - 손의 위치) % 3 의 절댓값
+
+                //만약 눌러야 할 키가 8이고 왼손의 위치가 1이면 
+                // (8-1)/3 + (8-1)%3 => 2+1 = 3
+                int leftDistance = (Math.abs(key - LHand)) / 3 + (Math.abs(key - LHand)) % 3;
+                
+                //만약 눌러야 할 키가 8이고 왼손의 위치가 6이면 
+                // (8-6)/3 + (8-6)%3 => 0+2 = 2
+                int rightDistance = (Math.abs(key - RHand)) / 3 + (Math.abs(key - RHand)) % 3;
+                
+                /* 오른손이 더 가까울 경우 */
+                // 왼손이 3   오른손이 2 
+                // 가운데 열의 8번은 오른손이 누르게 된다
+                if (leftDistance > rightDistance) {
+                    answer += "R";
+                    RHand = key;
+                    
+                /* 왼손이 더 가까울 경우 */
+                } else if (leftDistance < rightDistance) {
+                    answer += "L";
+                    LHand = key;
+                    
+                    
+                /* 두 엄지손가락의 거리가 같을 경우 */
+                    
+                //hand.toUpperCase().startsWith("L")
+                //비교대상문자열.startsWith("체크할 문자열")
+                } else {
+                //hand의 왼손(LHand), 오른손잡이(RHand)에 체크할문자열인 L 값으로 시작되는지 확인여부
+                //L이 확인되면 true로 리턴
+                    if (hand.toUpperCase().startsWith("L")) {
+                        answer += "L";
+                        LHand = key;
+                    } else {
+                //L이 확인되지 않으면 false로 리턴
+                        answer += "R";
+                        RHand = key;
+                    }
+                }
+            }
+        }
+ 
+        return answer;
+    }
+}
+```
+
+### 신규아이디
+
+K
+
+```java
+신규 아이디
+class Solution {
+    public String solution(String new_id) {
+        
+        // 1단계
+        //대문자를 소문자로 변환
+        String answer = new_id.toLowerCase(); 
+
+        //replaceAll(변환하고자 하는 대상이 되는 문자열,"변환할 문자 값")
+        
+        // 2단계
+        //아이디에 알파벳 소문자, 숫자, 빼기(-), 밑줄(_), 마침표(.)를 제외한 모든 문자를 제거
+        //[^-_.a-z0-9] - 정규표현식으로 a-z0-9 : 알파넷 소문자나 숫자
+        // -_. : 빼기 밑줄 마침표 / [] : 문자의 집합, 범위 / ^ : 문자열의 시작
+        answer = answer.replaceAll("[^-_.a-z0-9]", ""); 
+        
+        // 3단계
+        //아이디에 마침표(.)가 2번 이상 연속된 부분을 .로 변환
+        //[.]{2,}에서 정규표현식으로 {}는 횟수나 범위를 나타냄
+        answer = answer.replaceAll("[.]{2,}", "."); 
+        
+        // 4단계
+        //아이디에 마침표(.)가 처음이나 끝에 위치해 있으면 제거
+        //[.]|[.]$에서 $ : 문자열의 종료 -> [.] : 처음 . / [.]$ : 끝쪽 . 
+        answer = answer.replaceAll("[.]|[.]$", "");    
+        
+        // 5단계
+        // 
+        if (answer.equals("")) {    
+            answer += "a";
+        }
+
+        // 6단계
+        // 아이디의 길이가 16자 이상이면 
+        if (answer.length() >= 16) {     
+            // 0~15번째 자리의 문자를 제외한 16번째 이후의 문자들은 제거
+            answer = answer.substring(0, 15);
+            //문자열[.]$에 해당되는 대상이 있으면 제거
+            answer = answer.replaceAll("[.]$","");
+        }
+
+        // 7단계
+        // 아이디의 길이가 2자 이하이면
+        if (answer.length() <= 2) {  
+            //아이디의 길이가 3보다 작은 경우
+            while (answer.length() < 3) {
+                //아이디의 마지막 문자를 3자 될 때까지 반복해서 끝에 붙임
+                answer += answer.charAt(answer.length()-1);
+            }
+        }
+
+        return answer;
+    }
+}
+```
+
