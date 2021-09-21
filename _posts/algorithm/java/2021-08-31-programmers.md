@@ -183,30 +183,28 @@ class Solution {
 ```java
 class Solution {
 	public int solution(int[] nums) {
-		ArrayList primes = new ArrayList();
-		ArrayList nonPrimes = new ArrayList();
+		HashMap<Integer, Boolean> primes = new HashMap<>();
 		int count = 0;
 
 		for (int i = 0; i < nums.length - 2; i++) {
 			for (int j = i + 1; j < nums.length - 1; j++) {
 				for (int k = j + 1; k < nums.length; k++) {
 					int sum = nums[i] + nums[j] + nums[k];
-		
-					if (primes.contains(sum)) count++;
-					else if (nonPrimes.contains(sum)) {}
+					
+					if (primes.containsKey(sum)) count += primes.get(sum) ? 1 : 0;
 					else if (isPrime(sum)) {
 						count++;
-						primes.add(sum);
-					} else nonPrimes.add(sum);
+						primes.put(sum, true);
+					} else primes.put(sum, false);
 				}
 			}
 		}
 		return count;
 	}
 
-	private boolean isPrime(int number) {
-		for (int i = 2; i <= Math.sqrt(number); i++) {
-			if (number % i == 0) return false;
+	private boolean isPrime(int num) {
+		for (int i = 2; i <= Math.sqrt(num); i++) {
+			if (num % i == 0) return false;
 		}
 		return true;
 	}
@@ -627,6 +625,188 @@ class Solution {
     }
 }
 ```
+
+## 11. K번째수
+
+2점
+
+**문제 설명**
+
+배열 array의 i번째 숫자부터 j번째 숫자까지 자르고 정렬했을 때, k번째에 있는 수를 구하려 합니다.
+
+예를 들어 array가 [1, 5, 2, 6, 3, 7, 4], i = 2, j = 5, k = 3이라면
+
+1. array의 2번째부터 5번째까지 자르면 [5, 2, 6, 3]입니다.
+2. 1에서 나온 배열을 정렬하면 [2, 3, 5, 6]입니다.
+3. 2에서 나온 배열의 3번째 숫자는 5입니다.
+
+배열 array, [i, j, k]를 원소로 가진 2차원 배열 commands가 매개변수로 주어질 때, commands의 모든 원소에 대해 앞서 설명한 연산을 적용했을 때 나온 결과를 배열에 담아 return 하도록 solution 함수를 작성해주세요.
+
+**입출력 예**
+
+| array                 | commands                          | return    |
+| --------------------- | --------------------------------- | --------- |
+| [1, 5, 2, 6, 3, 7, 4] | [[2, 5, 3], [4, 4, 1], [1, 7, 3]] | [5, 6, 3] |
+
+**copyOfRange 함수 코드**
+
+```java
+public class Solution {
+	public int[] solution(int[] array, int[][] commands) {
+		int[] answer = new int[commands.length];
+		int idx = 0;
+
+		for (int[] c : commands) {
+			int st = c[0] - 1;
+			int end = c[1];
+			int k = c[2] - 1;
+			int[] slice = Arrays.copyOfRange(array, st, end);
+			Arrays.sort(slice);
+			answer[idx++] = slice[k];
+		}
+		return answer;
+	}
+}
+```
+
+**배열복제 구현 코드** 
+
+```java
+public class Solution {
+	public int[] solution(int[] array, int[][] commands) {
+		int[] answer = new int[commands.length];
+		
+		for (int i = 0; i < answer.length; i++) {
+			int st = commands[i][0];
+			int end = commands[i][1];
+			int k = commands[i][2];
+			int[] slice = new int[end - st + 1];
+			
+			for (int j = 0; j < slice.length; j++) {
+				slice[j] = array[st - 1 + j];
+			}
+			Arrays.sort(slice);
+			answer[i] = slice[k - 1];
+		}
+		return answer;
+	}
+}
+```
+
+## 12. 예산
+
+작성일자 9.21
+
+8점
+
+**문제 설명**
+
+S사에서는 각 부서에 필요한 물품을 지원해 주기 위해 부서별로 물품을 구매하는데 필요한 금액을 조사했습니다. 그러나, 전체 예산이 정해져 있기 때문에 모든 부서의 물품을 구매해 줄 수는 없습니다. 그래서 최대한 많은 부서의 물품을 구매해 줄 수 있도록 하려고 합니다.
+
+물품을 구매해 줄 때는 각 부서가 신청한 금액만큼을 모두 지원해 줘야 합니다. 예를 들어 1,000원을 신청한 부서에는 정확히 1,000원을 지원해야 하며, 1,000원보다 적은 금액을 지원해 줄 수는 없습니다.
+
+부서별로 신청한 금액이 들어있는 배열 d와 예산 budget이 매개변수로 주어질 때, 최대 몇 개의 부서에 물품을 지원할 수 있는지 return 하도록 solution 함수를 완성해주세요.
+
+**입출력 예**
+
+| d           | budget | result |
+| ----------- | ------ | ------ |
+| [1,3,2,5,4] | 9      | 3      |
+| [2,2,3,3]   | 10     | 4      |
+
+> 예산이 남아도 된다.
+
+**개선된 코드** 
+
+```java
+class Solution {
+    public int solution(int[] d, int budget) {
+    	Arrays.sort(d);
+        int i;
+        
+        for (i = 0; i < d.length && budget - d[i] >= 0; i++) {
+			budget -= d[i];
+		}
+        return i;
+    }
+}
+```
+
+**sum 코드**
+
+```java
+class Solution {
+    public int solution(int[] d, int budget) {
+    	Arrays.sort(d);
+        int sum = 0;
+        int i;
+        
+        for (i = 0; i < d.length && sum + d[i] <= budget; i++) {
+			sum += d[i];
+		}
+        return i;
+    }
+}
+```
+
+## 13. 숫자 문자열과 영단어
+
+**문제 설명**
+
+네오와 프로도가 숫자놀이를 하고 있습니다. 네오가 프로도에게 숫자를 건넬 때 일부 자릿수를 영단어로 바꾼 카드를 건네주면 프로도는 원래 숫자를 찾는 게임입니다.
+
+다음은 숫자의 일부 자릿수를 영단어로 바꾸는 예시입니다.
+
+- 1478 → "one4seveneight"
+- 234567 → "23four5six7"
+- 10203 → "1zerotwozero3"
+
+이렇게 숫자의 일부 자릿수가 영단어로 바뀌어졌거나, 혹은 바뀌지 않고 그대로인 문자열 `s`가 매개변수로 주어집니다. `s`가 의미하는 원래 숫자를 return 하도록 solution 함수를 완성해주세요.
+
+참고로 각 숫자에 대응되는 영단어는 다음 표와 같습니다.
+
+| 숫자 | 영단어 |
+| ---- | ------ |
+| 0    | zero   |
+| 1    | one    |
+| 2    | two    |
+| 3    | three  |
+| 4    | four   |
+| 5    | five   |
+| 6    | six    |
+| 7    | seven  |
+| 8    | eight  |
+| 9    | nine   |
+
+**입출력 예**
+
+| s                    | result |
+| -------------------- | ------ |
+| `"one4seveneight"`   | 1478   |
+| `"23four5six7"`      | 234567 |
+| `"2three45sixseven"` | 234567 |
+| `"123"`              | 123    |
+
+6점
+
+```java
+class 숫자문자열과영단어 {
+    public int solution(String s) {
+        String[] nums = {"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
+        
+        for (int i = 0; i < nums.length; i++) {
+        	s = s.replaceAll(nums[i], String.valueOf(i));
+		}
+        return Integer.valueOf(s);
+    }
+}
+```
+
+Q. `Integer.valueOf` 와 `Integer.parseInt` 의 차이점?
+
+A. 
+
+## 14. 모의고사
 
 
 
