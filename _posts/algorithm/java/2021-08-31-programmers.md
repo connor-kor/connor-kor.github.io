@@ -1,4 +1,5 @@
 ---
+
 title: 프로그래머스
 category: java
 ---
@@ -13,16 +14,16 @@ class Solution {
         int count = 0;
         int zero = 0;
         
-        for (int lotto : lottos) {
-            for (int win_num : win_nums) {
-                if (lotto == win_num) count++;
+        for (int l : lottos) {
+            for (int w : win_nums) {
+                if (l == w) count++;
             }
-            if (lotto == 0) zero++;
+            if (l == 0) zero++;
         }
 
         int bottomRank = count == 0 ? 6 : 7 - count;
         int topRank = count + zero == 0 ? 6 : 7 - (count + zero);
-        return {topRank, bottomRank};
+        return new int[] {topRank, bottomRank};
     }
 }
 ```
@@ -499,7 +500,11 @@ class Solution {
 
 ArraysList -> 배열: arr.toArray()
 
-`sumArr.stream().mapToInt(i->i).toArray()` 
+`sumArr.stream().mapToInt(i->i).toArray()` 혹은
+
+`Integer[] intArr = top.stream().toArray(Integer[]::new)` 혹은
+
+`Integer[] intArr = list.toArray(new Integer[3])` 
 
 **코드**
 
@@ -807,6 +812,310 @@ Q. `Integer.valueOf` 와 `Integer.parseInt` 의 차이점?
 A. 
 
 ## 14. 모의고사
+
+7점
+
+**문제 설명**
+
+수포자는 수학을 포기한 사람의 준말입니다. 수포자 삼인방은 모의고사에 수학 문제를 전부 찍으려 합니다. 수포자는 1번 문제부터 마지막 문제까지 다음과 같이 찍습니다.
+
+1번 수포자가 찍는 방식: 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, ...
+2번 수포자가 찍는 방식: 2, 1, 2, 3, 2, 4, 2, 5, 2, 1, 2, 3, 2, 4, 2, 5, ...
+3번 수포자가 찍는 방식: 3, 3, 1, 1, 2, 2, 4, 4, 5, 5, 3, 3, 1, 1, 2, 2, 4, 4, 5, 5, ...
+
+1번 문제부터 마지막 문제까지의 정답이 순서대로 들은 배열 answers가 주어졌을 때, 가장 많은 문제를 맞힌 사람이 누구인지 배열에 담아 return 하도록 solution 함수를 작성해주세요.
+
+**입출력 예**
+
+| answers     | return  |
+| ----------- | ------- |
+| [1,2,3,4,5] | [1]     |
+| [1,3,2,4,2] | [1,2,3] |
+
+**Arrays.copyOf 코드**
+
+```java
+class Solution {
+    public int[] solution(int[] answers) {
+    	int[] answer = new int[3];
+        int[] counts = new int[3];
+        int[][] randoms = {
+        		{1, 2, 3, 4, 5},
+        		{2, 1, 2, 3, 2, 4, 2, 5},
+        		{3, 3, 1, 1, 2, 2, 4, 4, 5, 5}
+        };
+        int max = -1;
+        int idx = 1;
+        
+        for (int student = 0; student < counts.length; student++) {
+        	for (int quiz = 0; quiz < answers.length; quiz++) {
+				if (answers[quiz] == randoms[student][quiz % randoms[student].length]) counts[student]++;
+			}
+        	if (max < counts[student]) {
+        		max = counts[student];
+        		answer[0] = student + 1;
+        	} else if (max == counts[student]) answer[idx++] = student + 1; 
+		}
+        return Arrays.copyOf(answer, idx);
+    }
+}
+```
+
+**stream 코드**
+
+```java
+class Solution {
+    public int[] solution(int[] answers) {
+        ArrayList<Integer> topArr = new ArrayList<>();
+        int[] counts = new int[3];
+        int[][] randoms = {
+        		{1, 2, 3, 4, 5},
+        		{2, 1, 2, 3, 2, 4, 2, 5},
+        		{3, 3, 1, 1, 2, 2, 4, 4, 5, 5}
+        };
+        int max = -1;
+        
+        for (int student = 0; student < counts.length; student++) {
+        	for (int quiz = 0; quiz < answers.length; quiz++) {
+				if (answers[quiz] == randoms[student][quiz % randoms[student].length]) counts[student]++;
+			}
+        	if (max < counts[student]) {
+        		max = counts[student];
+        		topArr.clear();
+        		topArr.add(student + 1);
+        	} else if (max == counts[student]) topArr.add(student + 1); 
+		}
+        return topArr.stream().mapToInt(i->i).toArray();
+    }
+}
+```
+
+>  stream 을 사용한 코드보다 사용하지 않은 위의 코드가 훨씬 빠릅니다.
+
+## 15. 약수의 개수와 덧셈
+
+2점
+
+**문제 설명**
+
+두 정수 `left`와 `right`가 매개변수로 주어집니다. `left`부터 `right`까지의 모든 수들 중에서, 약수의 개수가 짝수인 수는 더하고, 약수의 개수가 홀수인 수는 뺀 수를 return 하도록 solution 함수를 완성해주세요.
+
+**입출력 예**
+
+| left | right | result |
+| ---- | ----- | ------ |
+| 13   | 17    | 43     |
+| 24   | 27    | 52     |
+
+**코드**
+
+```java
+public class Solution {
+    public int solution(int left, int right) {
+        int sum = 0;
+        
+        for (int i = left; i <= right; i++) {
+			sum += evenDivisor(i) ? i : -i;
+		}
+        return sum;
+    }
+
+	private boolean evenDivisor(int num) {
+		return Math.sqrt(num) != (int) Math.sqrt(num);
+	}
+}
+```
+
+## 16. 1주차_부족한 금액 계산하기
+
+**문제 설명**
+
+새로 생긴 놀이기구는 인기가 매우 많아 줄이 끊이질 않습니다. 이 놀이기구의 원래 이용료는 price원 인데, 놀이기구를 N 번 째 이용한다면 원래 이용료의 N배를 받기로 하였습니다. 즉, 처음 이용료가 100이었다면 2번째에는 200, 3번째에는 300으로 요금이 인상됩니다.
+놀이기구를 count번 타게 되면 현재 자신이 가지고 있는 금액에서 얼마가 모자라는지를 return 하도록 solution 함수를 완성하세요.
+단, 금액이 부족하지 않으면 0을 return 하세요.
+
+**입출력 예**
+
+| price | money | count | result |
+| ----- | ----- | ----- | ------ |
+| 3     | 20    | 4     | 10     |
+
+**코드**
+
+```java
+public class Solution {
+    public long solution(int price, int money, int count) {
+        long sum = 0;
+        
+        for (int i = 1; i <= count; i++) {
+			sum += i * price;
+		}
+        return sum > money ? sum - money : 0;
+    }
+}
+```
+
+> 해설: 1* 2500 + 2* 2500 + 3* 2500 + ... +2499* 2500 + 2500* 2500 > 21억이므로 sum 을 long 형으로 선언해야한다.
+
+**등차수열의 합 공식**
+
+
+
+## 17. 2주차_상호평가
+
+10점
+
+**문제 설명**
+
+대학 교수인 당신은, 상호평가를 통하여 학생들이 제출한 과제물에 학점을 부여하려고 합니다. 아래는 0번부터 4번까지 번호가 매겨진 5명의 학생들이 자신과 다른 학생의 과제를 평가한 점수표입니다.
+
+|          |             |            |        |        |        |
+| -------- | ----------- | ---------- | ------ | ------ | ------ |
+| No.      | **0**       | **1**      | **2**  | **3**  | **4**  |
+| **0**    | ~~**100**~~ | 90         | 98     | 88     | 65     |
+| **1**    | 50          | ~~**45**~~ | 99     | 85     | 77     |
+| **2**    | 47          | 88         | **95** | 80     | 67     |
+| **3**    | 61          | 57         | 100    | **80** | 65     |
+| **4**    | 24          | 90         | 94     | 75     | **65** |
+| **평균** | 45.5        | 81.25      | 97.2   | 81.6   | 67.8   |
+| **학점** | F           | B          | A      | B      | D      |
+
+위의 점수표에서, i행 j열의 값은 i번 학생이 평가한 j번 학생의 과제 점수입니다.
+
+- 0번 학생이 평가한 점수는 0번 `행` 에담긴 [100, 90, 98, 88, 65]입니다.
+  - 0번 학생은 자기 자신에게 100점, 1번 학생에게 90점, 2번 학생에게 98점, 3번 학생에게 88점, 4번 학생에게 65점을 부여했습니다.
+- 2번 학생이 평가한 점수는 2번 `행` 에담긴 [47, 88, 95, 80, 67]입니다.
+  - 2번 학생은 0번 학생에게 47점, 1번 학생에게 88점, 자기 자신에게 95점, 3번 학생에게 80점, 4번 학생에게 67점을 부여했습니다.
+
+당신은 각 학생들이 받은 점수의 평균을 구하여, 기준에 따라 학점을 부여하려고 합니다.
+만약, 학생들이 자기 자신을 평가한 점수가 **유일한 최고점** 또는 **유일한 최저점**이라면 그 점수는 제외하고 평균을 구합니다.
+
+- 0번 학생이 받은 점수는 0번`열` 에 담긴 [100, 50, 47, 61, 24]입니다. 자기 자신을 평가한 100점은 자신이 받은 점수 중에서 유일한 최고점이므로, 평균을 구할 때 제외합니다.
+  - 0번 학생의 평균 점수는 (50+47+61+24) / 4 = 45.5입니다.
+- 4번 학생이 받은 점수는 4번`열` 에 담긴 [65, 77, 67, 65,65]입니다. 자기 자신을 평가한 65점은 자신이 받은 점수 중에서 최저점이지만 같은 점수가 2개 더 있으므로, 유일한 최저점이 아닙니다. 따라서, 평균을 구할 때 제외하지 않습니다.
+  - 4번 학생의 평균 점수는 (65+77+67+65+65) / 5 = 67.8입니다.
+
+제외할 점수는 제외하고 평균을 구한 후, 아래 기준에 따라 학점을 부여합니다.
+
+| 평균                | 학점 |
+| ------------------- | ---- |
+| 90점 이상           | A    |
+| 80점 이상 90점 미만 | B    |
+| 70점 이상 80점 미만 | C    |
+| 50점 이상 70점 미만 | D    |
+| 50점 미만           | F    |
+
+학생들의 점수가 담긴 정수형 2차원 배열 scores가 매개변수로 주어집니다. 이때, 학생들의 학점을 구하여 하나의 문자열로 만들어서 return 하도록 solution 함수를 완성해주세요.
+
+**개선된 코드**
+
+```java
+public class Solution {
+    public String solution(int[][] scores) {
+        String answer = "";
+        double avg;
+        
+        for (int i = 0; i < scores.length; i++) {
+        	int sum = 0;
+        	int max = 0;
+        	int min = 100;
+        	
+        	for (int j = 0; j < scores.length; j++) {
+        		int score = scores[j][i];
+        		
+        		sum += score;
+        		if (i != j) {
+        			if (min > score) min = score;
+        			if (max < score) max = score;
+        		}
+			}
+        	avg = selfRating(scores[i][i], max, min) ? (double) sum / scores.length :
+        		(double) (sum - scores[i][i]) / (scores.length - 1);
+        	answer += getGrade(avg);
+		}
+        return answer;
+    }
+
+	private boolean selfRating(int mine, int max, int min) {
+		return mine > max || mine < min ? false : true;
+	}
+
+	public String getGrade(double avg) {
+		return avg >= 90 ? "A" : avg >= 80 ? "B" : avg >= 70 ? "C" : avg >= 50 ? "D" : "F";
+	}
+}
+```
+
+**StringBuilder 코드**
+
+```java
+class Solution {
+    public String solution(int[][] scores) {
+        StringBuilder builder = new StringBuilder();
+        for(int i=0; i<scores.length; i++) {
+            int max = 0;
+            int min = 101;
+            int sum = 0;
+            int divide = scores.length;
+            for(int j=0; j<scores.length; j++) {
+                int score = scores[j][i];
+                if(i != j) {
+                    if(score < min) {
+                        min = score;
+                    }
+                    if(score > max) {
+                        max = score;
+                    }
+                }
+                sum += score;
+            }
+            if(scores[i][i] < min || scores[i][i] > max) {
+                sum -= scores[i][i];
+                divide--;
+            }
+            double score = (double) sum / divide;
+            builder.append(score >= 90 ? "A" : score >= 80 ? "B" : score >= 70 ? "C" : score >= 50 ? "D" : "F" );
+        }
+        return builder.toString();
+    }
+}
+```
+
+## 18. 가운데 글자 가져오기
+
+1점
+
+**문제 설명**
+
+단어 s의 가운데 글자를 반환하는 함수, solution을 만들어 보세요. 단어의 길이가 짝수라면 가운데 두글자를 반환하면 됩니다.
+
+**재한사항**
+
+- s는 길이가 1 이상, 100이하인 스트링입니다.
+
+**입출력 예**
+
+| s       | return |
+| ------- | ------ |
+| "abcde" | "c"    |
+| "qwer"  | "we"   |
+
+**코드** 
+
+```java
+class Solution {
+    public String solution(String s) {
+        int half = s.length() / 2;
+        
+        return s.length() % 2 == 0 ? s.substring(half - 1, half + 1) :
+        s.charAt(half) + "";
+    }
+}
+```
+
+
+
+
 
 
 
