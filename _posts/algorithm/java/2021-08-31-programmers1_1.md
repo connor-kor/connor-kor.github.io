@@ -1,6 +1,6 @@
 ---
 
-title: 프로그래머스
+title: 프로그래머스 Lv1 - 1
 category: java
 ---
 
@@ -98,11 +98,11 @@ class Solution {
 
 ## 4. 내적
 
-1점
+1점*
 
 **문제 설명**
 
-길이가 같은 두 1차원 정수 배열 a, b가 매개변수로 주어집니다. a와 b의 [내적](https://en.wikipedia.org/wiki/Dot_product)을 return 하도록 solution 함수를 완성해주세요.
+길이가 같은 두 1차원 정수 배열 a, b가 매개변수로 주어집니다. a와 b의 [내적](https://en.wikipedia.org/wiki/Dot_product target="_blank") 을 return 하도록 solution 함수를 완성해주세요.
 
 이때, a와 b의 내적은 `a[0]*b[0] + a[1]*b[1] + ... + a[n-1]*b[n-1]` 입니다. (n은 a, b의 길이)
 
@@ -1221,7 +1221,7 @@ class Solution {
 > 프로그래머스에서 다른사람의 풀이를 봤는데 내가 짠 코드보다 더 좋은 코드는 없어보였다..
 
 ```java
-public class Solution {
+public class 다트게임_1차 {
     public int solution(String dartResult) {
         int n = 0;
         int[] scores = new int[3];
@@ -1291,33 +1291,9 @@ public class Solution {
 }
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## 다른사람의 코드
 
-### 실패율
+**실패율**
 
 Y
 
@@ -1475,7 +1451,7 @@ public class ProAlgoPract_실패율 {
 }
 ```
 
-### 2016년
+**2016년**
 
 M
 
@@ -1498,7 +1474,7 @@ class Solution {
 }
 ```
 
-### 3진법 뒤집기
+**3진법 뒤집기**
 
 Y
 
@@ -1633,7 +1609,7 @@ public class Solution {
 }   //class
 ```
 
-### 키패드누르기
+**키패드누르기**
 
 K
 
@@ -1730,7 +1706,7 @@ class Solution {
 }
 ```
 
-### 신규아이디
+**신규아이디**
 
 K
 
