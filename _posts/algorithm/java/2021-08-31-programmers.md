@@ -1093,12 +1093,23 @@ class Solution {
 
 - s는 길이가 1 이상, 100이하인 스트링입니다.
 
-**입출력 예**
+**입출력 예** 
 
 | s       | return |
 | ------- | ------ |
 | "abcde" | "c"    |
 | "qwer"  | "we"   |
+
+**개선된 코드**
+
+```java
+public class Solution {
+    public String solution(String s) {
+        int len = s.length();
+        return s.substring((len-1) / 2, (len+2) / 2);
+    }
+}
+```
 
 **코드** 
 
@@ -1112,6 +1123,8 @@ class Solution {
     }
 }
 ```
+
+    ## 19. \[1차] 다트게임
 
 
 
