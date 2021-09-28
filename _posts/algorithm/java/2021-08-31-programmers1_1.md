@@ -525,10 +525,6 @@ class Solution {
 }
 ```
 
-Q. stream() 이란?
-
-A. 
-
 **HashSet vs TreeSet**
 
 Q. TreeSet 은 HashSet 과 다르게 정렬된다?
