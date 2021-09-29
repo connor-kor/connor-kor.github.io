@@ -261,3 +261,5 @@ public class Solution {
 Arrays.sort(table, Collections.reverseOrder());
 ```
 
+## 6. 최소직사각형 (8주차)
+
