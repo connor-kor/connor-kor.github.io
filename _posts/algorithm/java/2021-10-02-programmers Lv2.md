@@ -1,5 +1,5 @@
 ---
-title: 프로그래머스 Lv2
+title: 프로그래머스 Lv1 2페이지
 category: java
 ---
 
@@ -105,19 +105,17 @@ public class Solution {
     public int solution(int n) {
         int count = 0;
         
-        for (int i = 2; i <= n; i++) {
+        for (int i = 2; i <= n; i++)
 			if (isPrime(i)) count++;
-		}
         return count;
     }
 
 	private boolean isPrime(int num) {
-		for (int i = 2; i <= Math.sqrt(num); i++) {
+		for (int i = 2; i <= Math.sqrt(num); i++)
 			if (num % i == 0) return false;
-		}
 		return true;
 	}
-}
+}	
 ```
 
 ## 4. 두 정수 사이의 합
@@ -311,8 +309,8 @@ Arrays.sort(table, Collections.reverseOrder());
 public class Solution {
     public int solution(int[][] sizes) {
         for (int[] size : sizes) if (size[0] < size[1]) rotate(size);
-        return Arrays.stream(sizes).max(Comparator.comparingInt(it -> it[0])).get()[0] *
-        		Arrays.stream(sizes).max(Comparator.comparingInt(it -> it[1])).get()[1];
+        return Arrays.stream(sizes).max(Comparator.comparingInt(it -> it[0])).get()[0]
+        		* Arrays.stream(sizes).max(Comparator.comparingInt(it -> it[1])).get()[1];
     }
 
 	private void rotate(int[] size) {
@@ -320,6 +318,111 @@ public class Solution {
 		size[0] = size[1];
 		size[1] = temp;
 	}
+}
+```
+
+배열이 가로세로가 바뀌었다면 다음과 같은 코드도 짤 수 있다.
+
+```java
+return Arrays.stream(sizes[0]).max().getAsInt()
+        * Arrays.stream(sizes[1]).max().getAsInt();
+```
+
+## 7. 수박수박수박수박수박수?
+
+작성날짜: 9.23
+
+**문제 설명**
+
+길이가 n이고, "수박수박수박수...."와 같은 패턴을 유지하는 문자열을 리턴하는 함수, solution을 완성하세요. 예를들어 n이 4이면 "수박수박"을 리턴하고 3이라면 "수박수"를 리턴하면 됩니다.
+
+**제한 조건**
+
+- n은 길이 10,000이하인 자연수입니다.
+
+**입출력 예**
+
+| n    | return     |
+| ---- | ---------- |
+| 3    | "수박수"   |
+| 4    | "수박수박" |
+
+**개선된 코드**
+
+```java
+class Solution {
+	public String solution(int n) {
+		StringBuffer str = new StringBuffer();
+
+		for (int i = 0; i < n/2; i++) str.append("수박");
+		if (n % 2 == 1) str.append("수");
+		return str.toString();
+	}
+}
+```
+
+**코드**
+
+```java
+class Solution {
+	public String solution(int n) {
+		StringBuffer str = new StringBuffer();
+
+		for (int i = 0; i < n; i++) str.append(i % 2 == 0 ? "수" : "박");
+		return str.toString();
+	}
+}
+```
+
+## 8. 문자열을 정수로 바꾸기
+
+작성날짜: 10/2	
+
+1점
+
+**문제 설명**
+
+문자열 s를 숫자로 변환한 결과를 반환하는 함수, solution을 완성하세요.
+
+**제한 조건**
+
+- s의 길이는 1 이상 5이하입니다.
+- s의 맨앞에는 부호(+, -)가 올 수 있습니다.
+- s는 부호와 숫자로만 이루어져있습니다.
+- s는 "0"으로 시작하지 않습니다.
+
+**입출력 예**
+
+예를들어 str이 "1234"이면 1234를 반환하고, "-1234"이면 -1234를 반환하면 됩니다.
+str은 부호(+,-)와 숫자로만 구성되어 있고, 잘못된 값이 입력되는 경우는 없습니다.
+
+> 함수를 사용하면 쉽게 풀 수 있지만 알고리즘을 연습하기위한 좋은 방법은 아닙니다.
+
+**함수사용 코딩**
+
+```java
+public class Solution {
+    public int solution(String s) {
+    	return Integer.parseInt(s);
+    }
+}
+```
+
+**parseInt 없는 코드**
+
+```java
+public class Solution {
+    public int solution(String s) {
+    	String absStr = s.matches("[+-].+") ? s.substring(1) : s;
+    	int figures = (int) Math.pow(10, absStr.length() - 1);
+    	int abs = 0;
+    	
+    	for (char c : absStr.toCharArray()) {
+    		abs += figures * (c - '0');
+    		figures /= 10;
+		}
+    	return s.startsWith("-") ? -abs : abs;
+    }
 }
 ```
 
