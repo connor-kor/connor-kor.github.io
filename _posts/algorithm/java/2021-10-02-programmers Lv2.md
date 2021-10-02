@@ -143,7 +143,7 @@ public class Solution {
 
 S n = n (a 1 + X) / 2
 
-$$S_n = \frac{a_1 + X}2$$
+$$S_n = \frac{n(a_1 + X)}2$$
 
 n: 항의 개수
 
