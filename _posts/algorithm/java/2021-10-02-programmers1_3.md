@@ -168,7 +168,9 @@ public class Solution {
 
 ## 5. 직업군 추천하기
 
-틀린문제
+푼날짜: 10/4
+
+5점
 
 **직업군 언어 점수**
 
@@ -190,7 +192,14 @@ public class Solution {
 ["PYTHON", "C++", "SQL"]
 ```
 
-**개선된 코드**
+**입출력 예**
+
+| table                                                        | languages                  | preference | result       |
+| ------------------------------------------------------------ | -------------------------- | ---------- | ------------ |
+| `["SI JAVA JAVASCRIPT SQL PYTHON C#", "CONTENTS JAVASCRIPT JAVA PYTHON SQL C++", "HARDWARE C C++ PYTHON JAVA JAVASCRIPT", "PORTAL JAVA JAVASCRIPT PYTHON KOTLIN PHP", "GAME C++ C# JAVASCRIPT C JAVA"]` | `["PYTHON", "C++", "SQL"]` | [7, 5, 5]  | `"HARDWARE"` |
+| `["SI JAVA JAVASCRIPT SQL PYTHON C#", "CONTENTS JAVASCRIPT JAVA PYTHON SQL C++", "HARDWARE C C++ PYTHON JAVA JAVASCRIPT", "PORTAL JAVA JAVASCRIPT PYTHON KOTLIN PHP", "GAME C++ C# JAVASCRIPT C JAVA"]` | `["JAVA", "JAVASCRIPT"]`   | [7, 5]     | `"PORTAL"`   |
+
+**코드**
 
 ```java
 public class Solution {
@@ -210,59 +219,17 @@ public class Solution {
         	for (String l : languages) {
         		for (int i = 1; i < job.length; i++) {
         			if (job[i].equals(l)) {
-        				sum += (6 - i) * preference[idx++];
+        				sum += (6 - i) * preference[idx];
         				break;
         			}
         		}
+                idx++;
 			}
         	if (max <= sum) {
         		max = sum;
         		answer = job[0];
         	}
 		}
-        return answer;
-    }
-}
-```
-
-**코드**
-
-```java
-public class Solution {
-    public String solution(String[] table, String[] languages, int[] preference) {
-        String answer = "";
-        int sum;
-        String[][] scores = new String[5][5];
-        int max = 0;
-        Arrays.sort(table, Collections.reverseOrder());
-        
-        for (int i = 0; i < table.length; i++) {
-			scores[i] = table[i].split(" ");
-		}
-
-        for (int i = 0; i < scores.length; i++) {
-        	sum = 0;
-        	
-        	for (int j = 0; j < languages.length; j++) {
-        		for (int k = 1; k < scores.length; k++) {
-        			if (languages[j].equals(scores[i][k])) {
-        				sum += (6 - k) * preference[j];
-        				break;
-        			}
-        		}
-        	}
-        	if (max <= sum) {
-        		max = sum;
-        		answer = scores[i][0];
-        	}
-        	System.out.println(sum);
-		}
-        
-        System.out.println(Arrays.toString(scores[0]));
-        System.out.println(Arrays.toString(scores[1]));
-        System.out.println(Arrays.toString(scores[2]));
-        System.out.println(Arrays.toString(scores[3]));
-        System.out.println(Arrays.toString(scores[4]));
         return answer;
     }
 }
@@ -425,4 +392,52 @@ public class Solution {
     }
 }
 ```
+
+## 9. 문자열 내림차순으로 배치하기
+
+작성날짜: 10/4
+
+2점
+
+**문제 설명**
+
+문자열 s에 나타나는 문자를 큰것부터 작은 순으로 정렬해 새로운 문자열을 리턴하는 함수, solution을 완성해주세요.
+s는 영문 대소문자로만 구성되어 있으며, 대문자는 소문자보다 작은 것으로 간주합니다.
+
+**제한 사항**
+
+- str은 길이 1 이상인 문자열입니다.
+
+**입출력 예**
+
+| s         | return    |
+| --------- | --------- |
+| "Zbcdefg" | "gfedcbZ" |
+
+**코드**
+
+```java
+public class Solution {
+    public String solution(String s) {
+        String[] arr = s.split("");
+        Arrays.sort(arr, Comparator.reverseOrder());
+        return arr.toString();
+    }
+}
+```
+
+
+
+```java
+public class Solution {
+    public String solution(String s) {
+        char[] arr = s.toCharArray();
+        Arrays.sort(arr);
+        StringBuffer answer = new StringBuffer(new String(arr));
+        return answer.reverse().toString();
+    }
+}
+```
+
+> char\[ ] 는 내림차순 정렬을 할 수가 없다.
 

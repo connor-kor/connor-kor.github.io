@@ -224,7 +224,6 @@ public class Main {
 			int time = sc.nextInt();
 			arr.add(new Time(time, i % 2 == 0 ? 's' : 'e'));
 		}
-		
 		Collections.sort(arr);
 		
 		for (Time obj : arr) {
@@ -253,6 +252,8 @@ class Time implements Comparable<Time> {
 ```
 
 ## 4. 최대 수입 스케줄
+
+작성날짜: 10/3
 
 Priority Queue 응용문제
 
@@ -293,5 +294,50 @@ Priority Queue 응용문제
 **코드**
 
 ```java
+class Solution {
+	int solution(int n, int[][] arr) {
+		Arrays.sort(arr, (o1, o2) -> o2[1] - o1[1]);
+		int max = arr[0][1];
+		PriorityQueue<Integer> q = new PriorityQueue<>(Comparator.reverseOrder());
+		int income = 0;
+		int idx = 0;
+
+		for (int i = max; i >= 1; i--) {
+		    for (; idx < arr.length; idx++) {
+		        if (arr[idx][1] == i) q.offer(arr[idx][0]); 
+		        else break;
+		    }
+		    if (!q.isEmpty()) income += q.poll();
+		}
+		return income;
+	}
+}
 ```
+
+> Queue 에서 poll() 은 꼭 isEmpty() 와 같이쓰도록 한다. 아니면 런타임에러가 난다.
+
+**입력코드**
+
+```java
+public class Main {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int n = sc.nextInt();
+		int[][] arr = new int[n][2];
+
+		for (int i = 0; i < n; i++) 
+		    for (int j = 0; j < 2; j++) 
+		        arr[i][j] = sc.nextInt();
+		
+		Solution s = new Solution();
+		System.out.println(s.solution(n, arr));
+	}
+}
+```
+
+**다익스트라 알고리즘**
+
+전제: 가중치 값이 음수가 되면 안된다.
+
+PriorityQueue 는 log n 만큼의 시간복잡도가 든다.
 

@@ -31,5 +31,11 @@ Organize imports 체크 (import 들 정리) 후 Apply and Close 클릭
 
 > 저장 시 자동으로 사용하지 않는 import 구문이 사라지는 것을 볼 수 있다.
 
+## 하이라이트
 
+**Matching brackets highlight 색 변경**
+
+Window - Preference 창 - Java 탭 - Editor
+
+Matching brackets highlight 를 변경한다.
 
