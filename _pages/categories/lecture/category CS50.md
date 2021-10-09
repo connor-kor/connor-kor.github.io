@@ -1,5 +1,5 @@
 ---
-title: "CS50"
+title: "컴퓨터과학50"
 layout: archive
 permalink: /categories/cs50
 author_profile: true

@@ -1,6 +1,6 @@
 ---
 title: 단축키 비교
-categories: hotkey
+categories: shortcut
 ---
 
 제가 쓰는 단축키 위주로 정리했습니다.
@@ -39,8 +39,6 @@ categories: hotkey
 | 커밋 (commit)                | ctrl + enter                                                 |                              |                                                              |                      |
 | 아랫줄 생성                  | shift + enter                                                | ctrl + enter (*)             | shift + enter                                                | ctrl + enter         |
 | 윗줄 생성                    | ctrl + shift + enter                                         | ctrl + shift + enter         | ctrl + alt + enter (*)<br />현재구문완성: ctrl + shift + enter | ctrl + shift + enter |
-| 줄의 가장 앞으로 커서이동    | home                                                         |                              |                                                              |                      |
-| 처음부터 커서까지 블록지정   | shift + home                                                 |                              |                                                              |                      |
 | 줄 이동                      | alt + ↑↓                                                     | alt + ↑↓                     | alt + shift + ↑↓ (*)<br />next method: alt + ↑↓              | ctrl + shift + ↑↓    |
 | 에디터 탭 이동               | ctrl + pageUp, down (*)<br />forward history, backward history 지우기 |                              | alt + ←→                                                     |                      |
 | 디자인코드 탭 이동           |                                                              |                              | alt + shift + ←→                                             |                      |

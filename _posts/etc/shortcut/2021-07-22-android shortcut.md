@@ -1,6 +1,6 @@
 ---
 title: 안드로이드 키워드
-category: hotkey
+category: shortcut
 ---
 
 **버튼**
