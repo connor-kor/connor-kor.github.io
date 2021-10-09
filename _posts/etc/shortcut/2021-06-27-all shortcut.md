@@ -65,10 +65,10 @@ categories: shortcut
 
 | Hotkey                             | Java: eclipse                                     | JavaScript: VScode | Android                            |
 | ---------------------------------- | ------------------------------------------------- | ------------------ | ---------------------------------- |
-| 새 클래스 생성                     | alt + C                                           |                    | alt + C                            |
-| 새 인터페이스 생성                 | alt + I                                           |                    |                                    |
-| 새 패키지 생성                     | alt + P                                           |                    |                                    |
-| 새 enum 생성                       | alt + E                                           |                    |                                    |
+| 새 클래스 생성 v                   | alt + C                                           |                    | alt + C                            |
+| 새 인터페이스 생성 v               | alt + I                                           |                    |                                    |
+| 새 패키지 생성 v                   | alt + P                                           |                    |                                    |
+| 새 enum 생성 v                     | alt + E                                           |                    |                                    |
 | 새 코틀린 생성                     |                                                   |                    | alt + K                            |
 | 새 레이아웃 생성 (layout XML file) |                                                   |                    | alt + L                            |
 | 새 액티비티 생성                   |                                                   |                    | alt + A                            |
@@ -77,11 +77,11 @@ categories: shortcut
 | 새 프래그먼트 생성                 |                                                   |                    | alt + F                            |
 | 새 프로젝트 생성                   |                                                   |                    | alt + P                            |
 | 새 디렉토리 생성                   |                                                   |                    | alt + D                            |
-| 생성자 생성                        | ctrl + T<br />quick hierarchy                     |                    |                                    |
-| getter setter 생성                 | ctrl + R                                          |                    |                                    |
+| 생성자 (Constructor) 생성 v        | alt + T                                           |                    |                                    |
+| getter setter 생성 v               | alt + G                                           |                    |                                    |
 | 오버라이딩 생성                    | ctrl + O (editing java source)<br />quick outline |                    |                                    |
 | 파라미터 확인                      | ctrl + P                                          |                    |                                    |
-| toString 생성                      | ctrl + shift + T<br />Open type                   |                    |                                    |
+| toString 생성 v                    | alt + S                                           |                    |                                    |
 | git add (add to index)             | ctrl + enter                                      |                    |                                    |
 | 연결된 괄호로 커서이동             | ctrl + insert                                     |                    |                                    |
 | 콘솔창으로 커서이동                | F10                                               |                    |                                    |
