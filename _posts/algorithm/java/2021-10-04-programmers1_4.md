@@ -159,5 +159,30 @@ public class Solution {
 
 > `String.chars()` 메서드는 char 스트림을 반환한다.
 
-## 5. 행렬의 덧셈
+## 5. 정수 내림차순 배치하기
+
+작성날짜: 10/10
+
+1점
+
+**문제 설명**
+
+함수 solution은 정수 n을 매개변수로 입력받습니다. n의 각 자릿수를 큰것부터 작은 순으로 정렬한 새로운 정수를 리턴해주세요. 예를들어 n이 118372면 873211을 리턴하면 됩니다.
+
+**입출력 예**
+
+| n      | return |
+| ------ | :----: |
+| 118372 | 873211 |
+
+```java
+class Solution {
+    public long solution(long n) {
+		char[] arr = String.valueOf(n).toCharArray();
+		Arrays.sort(arr);
+		String str = new StringBuilder(new String(arr)).reverse().toString();
+		return Long.parseLong(str);
+    }
+}
+```
 
