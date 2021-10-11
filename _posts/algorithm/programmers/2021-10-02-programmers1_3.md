@@ -1,6 +1,6 @@
 ---
 title: 프로그래머스 Lv1 2페이지
-category: java
+category: programmers
 ---
 
 ## 1. 같은 숫자는 싫어
@@ -23,22 +23,7 @@ category: java
 | [1,1,3,3,0,1,1] | [1,3,0,1] |
 | [4,4,4,3,3]     | [4,3]     |
 
-**숏코딩**
-
-```java
-public class Solution {
-    public int[] solution(int []arr) {
-    	ArrayList<Integer> list = new ArrayList<>(Arrays.asList(arr[0]));
-
-    	for (int i = 0; i < arr.length - 1; i++) {
-			if (arr[i] != arr[i + 1]) list.add(arr[i + 1]);
-		}
-        return list.stream().mapToInt(i -> i).toArray();
-    }
-}
-```
-
-**코드**
+**배열 코드**
 
 ```java
 public class Solution {
@@ -47,13 +32,32 @@ public class Solution {
         answer[0] = arr[0];
         int idx = 1;
 
-        for (int i = 0; i < arr.length - 1; i++) {
+        for (int i = 0; i < arr.length - 1; i++) 
 			if (arr[i] != arr[i + 1]) answer[idx++] = arr[i + 1];
-		}
+		
         return Arrays.copyOf(answer, idx);
     }
 }
 ```
+
+**리스트 코드**
+
+```java
+public class Solution {
+    public int[] solution(int []arr) {
+    	ArrayList<Integer> list = new ArrayList<>(Arrays.asList(arr[0]));
+
+    	for (int i = 0; i < arr.length - 1; i++) 
+			if (arr[i] != arr[i + 1]) list.add(arr[i + 1]);
+        
+        return list.stream().mapToInt(i -> i).toArray();
+    }
+}
+```
+
+> stream 에는 `distinct()` 라는 중복제거 메서드가 있다.
+>
+> `asList(arr)` 메서드로 바로 받으면 리스트와 배열이 연결되며 추가할 수 없기 때문에 `new ArrayList` 에 넣는다.
 
 ## 2. 문자열 다루기 기본
 
@@ -135,6 +139,21 @@ public class Solution {
 | 3    | 3    | 3      |
 | 5    | 3    | 12     |
 
+**코드**
+
+```java
+public class Solution {
+    public long solution(int a, int b) {
+        long sum = 0;
+        int min = a > b ? b : a;
+        int max = a > b ? a : b;
+        
+        for (int i = min; i <= max; i++) sum += i;
+        return sum;
+    }
+}
+```
+
 **숏코딩**
 
 등차수열의 합 공식: $$S_n = \frac{n(a_1 + X)}2$$
@@ -148,23 +167,12 @@ X: 마지막 항
 ```java
 public class Solution {
     public long solution(int a, int b) {
-        return (long) (Math.abs(b-a)+1)*(a+b)/2;
+        return (long) (abs(b-a)+1)*(a+b)/2;
     }
 }
 ```
 
-**코드**
-
-```java
-public class Solution {
-    public long solution(int a, int b) {
-        long sum = 0;
-        
-        for (int i = a > b ? b : a; i <= (a > b ? a : b); i++) sum += i;
-        return sum;
-    }
-}
-```
+> long 을 넣지않으면 계산결과가 21 억을 넘었을 때 원하지 않는 값이 리턴된다.
 
 ## 5. 직업군 추천하기
 
@@ -276,8 +284,29 @@ Arrays.sort(table, Collections.reverseOrder());
 public class Solution {
     public int solution(int[][] sizes) {
         for (int[] size : sizes) if (size[0] < size[1]) rotate(size);
-        return Arrays.stream(sizes).max(Comparator.comparingInt(it -> it[0])).get()[0]
-        		* Arrays.stream(sizes).max(Comparator.comparingInt(it -> it[1])).get()[1];
+        return Arrays.stream(sizes).max(Comparator.comparingInt(it -> it[0])).get()[0] *
+            Arrays.stream(sizes).max(Comparator.comparingInt(it -> it[1])).get()[1];
+    }
+
+	private void rotate(int[] size) {
+		int temp = size[0];
+		size[0] = size[1];
+		size[1] = temp;
+	}
+}
+```
+
+**람다식**
+
+```java
+import java.util.Arrays;
+import java.util.Comparator;
+
+public class Solution {
+    public int solution(int[][] sizes) {
+        for (int[] size : sizes) if (size[0] < size[1]) rotate(size);
+        return Arrays.stream(sizes).max((o1, o2) -> o1[0] - o2[0]).get()[0] *
+            Arrays.stream(sizes).max((o1, o2) -> o1[1] - o2[1]).get()[1];
     }
 
 	private void rotate(int[] size) {
@@ -433,7 +462,7 @@ public class Solution {
     public String solution(String s) {
         char[] arr = s.toCharArray();
         Arrays.sort(arr);
-        StringBuffer answer = new StringBuffer(new String(arr));
+        StringBuilder answer = new StringBuilder(new String(arr));
         return answer.reverse().toString();
     }
 }

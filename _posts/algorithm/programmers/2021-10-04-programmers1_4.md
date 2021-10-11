@@ -1,6 +1,6 @@
 ---
 title: 프로그래머스 Lv1 3페이지
-category: java
+category: programmers
 ---
 
 ## 1. 약수의 합
@@ -175,6 +175,8 @@ public class Solution {
 | ------ | :----: |
 | 118372 | 873211 |
 
+**코드**
+
 ```java
 class Solution {
     public long solution(long n) {
@@ -182,6 +184,19 @@ class Solution {
 		Arrays.sort(arr);
 		String str = new StringBuilder(new String(arr)).reverse().toString();
 		return Long.parseLong(str);
+    }
+}
+```
+
+**스트림** 
+
+```java
+class Solution {
+    static long sum = 0;
+    static int pow = 0;
+    public long solution(long n) {
+        String.valueOf(n).chars().sorted().forEach(it -> sum += (it - '0') * pow(10, pow++));
+        return sum;
     }
 }
 ```

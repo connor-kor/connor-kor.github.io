@@ -1,6 +1,6 @@
 ---
 title: 기타 알고리즘함수
-categories: java
+categories: algorithm
 ---
 
 # 출력

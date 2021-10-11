@@ -1,6 +1,6 @@
 ---
 title: 프로그래머스 Lv1 1페이지-2
-category: java
+category: programmers
 ---
 
 ## 1. 1주차_부족한 금액 계산하기
@@ -293,6 +293,8 @@ public class Solution {
 
 작성날짜: 10/10
 
+3점
+
 **문제 설명**
 
 카카오에 입사한 신입 개발자 `네오`는 "카카오계정개발팀"에 배치되어, 카카오 서비스에 가입하는 유저들의 아이디를 생성하는 업무를 담당하게 되었습니다. "네오"에게 주어진 첫 업무는 새로 가입하는 유저들이 카카오 아이디 규칙에 맞지 않는 아이디를 입력했을 때, 입력된 아이디와 유사하면서 규칙에 맞는 아이디를 추천해주는 프로그램을 개발하는 것입니다.
@@ -315,8 +317,6 @@ public class Solution {
      만약 제거 후 마침표(.)가 new_id의 끝에 위치한다면 끝에 위치한 마침표(.) 문자를 제거합니다.
 7단계 new_id의 길이가 2자 이하라면, new_id의 마지막 문자를 new_id의 길이가 3이 될 때까지 반복해서 끝에 붙입니다.
 ```
-
-
 
 ------
 
@@ -349,9 +349,75 @@ public class Solution {
 
 신규 유저가 입력한 아이디를 나타내는 new_id가 매개변수로 주어질 때, "네오"가 설계한 7단계의 처리 과정을 거친 후의 추천 아이디를 return 하도록 solution 함수를 완성해 주세요.
 
-코드
+**코드**
 
 ```java
-
+public class Solution {
+    public String solution(String new_id) {
+        new_id = new_id.toLowerCase().replaceAll("[^a-z0-9-_.]", "")
+            .replaceAll("[.]{2,}", ".").replaceAll("^[.]|[.]$", "");
+        if (new_id.isEmpty()) new_id = "a";
+        if (new_id.length() >= 16) {
+        	new_id = new_id.substring(0, 15);
+        	new_id = new_id.replaceAll("[.]$", "");
+        }
+        
+        while (new_id.length() <= 2) 
+            if (!new_id.isEmpty())
+                new_id += Character.toString(new_id.charAt(new_id.length() - 1));
+        return new_id;
+    }
+}
 ```
+
+**StringBuilder 코드**
+
+```java
+public class Solution {
+    public String solution(String new_id) {
+        new_id = new_id.toLowerCase().replaceAll("[^a-z0-9-_.]", "")
+            .replaceAll("[.]{2,}", ".").replaceAll("^[.]|[.]$", "");
+        
+        StringBuilder str = new StringBuilder(new_id);
+        if (str.isEmpty()) str.append("a");
+        if (str.length() >= 16) {
+        	str.setLength(15);
+        	if (str.lastIndexOf(".") == str.length() - 1) 
+                str.deleteCharAt(str.length() - 1);
+        }
+        while (str.length() <= 2) 
+            str.append(str.charAt(str.length() - 1));    
+        return new String(str);
+    }
+}
+```
+
+프로그래머스에서는 이상하게 str.isEmpty() 메서드를 읽지 못한다.
+
+
+
+**문자열 메서드 비교**
+
+| method       | String | StringBuilder | 반환   |
+| ------------ | ------ | ------------- | ------ |
+| chatAt       |        |               |        |
+| chars        |        |               |        |
+| indexOf      |        |               |        |
+| isEmpty      |        |               |        |
+| lastIndexOf  |        |               |        |
+| length       |        |               |        |
+| substring    |        |               | String |
+| toString     |        |               |        |
+| append       | X      |               | this   |
+| delete       | X      |               | this   |
+| deleteChatAt | X      |               | this   |
+| insert       | X      |               | this   |
+| replace      | X      | 다르다.       | this   |
+| reverse      | X      |               | this   |
+| setCharAt    | X      |               | void   |
+| setLength    | X      |               | void   |
+
+String: 찾아 바꾸기, 대소문자 변환에 유리. 
+
+append() 메서드에는 모든 인자가 들어올 수 있으며 `char[ ]` 배열마저 원하는만큼 잘라서 넣을 수 있다.
 

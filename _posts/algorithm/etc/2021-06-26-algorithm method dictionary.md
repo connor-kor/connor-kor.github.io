@@ -1,6 +1,6 @@
 ---
 title: 알고리즘함수 사전 (편집중..)
-category: java
+category: algorithm
 ---
 
 ## String 

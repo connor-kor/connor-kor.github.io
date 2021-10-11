@@ -39,3 +39,9 @@ Window - Preference 창 - Java 탭 - Editor
 
 Matching brackets highlight 를 변경한다.
 
+## 한글깨짐 UTF 설정
+
+window - preference 창 - general 탭 - workspace 에서
+
+Text file encoding 을 other 로 하고 UTF-8 로 설정한다.
+

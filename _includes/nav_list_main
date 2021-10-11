@@ -20,9 +20,29 @@
             <ul>
                 <!--category[1].size 로 해당 카테고리를 가진 글의 개수 표시-->
                 {% for category in site.categories %}
-                    {% if category[0] == "java" %}
+                    {% if category[0] == "programmers" %}
                         <!-- 사이드바 출력 -->
-                        <li><a href="/categories/java" class=""> 자바 ({{category[1].size}})</a></li>
+                        <li><a href="/categories/programmers" class=""> 프로그래머스 ({{category[1].size}})</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            <!--ul 태그로 같은 카테고리들 모아둔 페이지들 나열-->
+            <ul>
+                <!--category[1].size 로 해당 카테고리를 가진 글의 개수 표시-->
+                {% for category in site.categories %}
+                    {% if category[0] == "baekjoon" %}
+                        <!-- 사이드바 출력 -->
+                        <li><a href="/categories/baekjoon" class=""> 백준 ({{category[1].size}})</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            <!--ul 태그로 같은 카테고리들 모아둔 페이지들 나열-->
+            <ul>
+                <!--category[1].size 로 해당 카테고리를 가진 글의 개수 표시-->
+                {% for category in site.categories %}
+                    {% if category[0] == "algorithm" %}
+                        <!-- 사이드바 출력 -->
+                        <li><a href="/categories/algorithm" class=""> 기타 ({{category[1].size}})</a></li>
                     {% endif %}
                 {% endfor %}
             </ul>

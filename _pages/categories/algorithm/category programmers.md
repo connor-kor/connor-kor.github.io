@@ -1,9 +1,9 @@
 ---
-title: "알고리즘: 자바"
+title: "프로그래머스"
 layout: archive
-permalink: /categories/java
+permalink: /categories/programmers
 author_profile: true
 ---
 
-{% assign posts = site.categories.java %}
+{% assign posts = site.categories.programmers %}
 {% for post in posts %} {% include archive-single.html type=page.entries_layout %} {% endfor %}

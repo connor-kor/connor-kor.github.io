@@ -41,7 +41,7 @@ categories: shortcut
 
 
 
-| 생성 (개인지정)                 | 단축키 |
+| 파일 (개인지정)                 | 단축키 |
 | ------------------------------- | ------ |
 | 새 패키지 생성                  | alt P  |
 | 새 클래스 생성                  | alt C  |
@@ -50,6 +50,7 @@ categories: shortcut
 | 생성자 (Constructor) 생성       | alt T  |
 | 게터, 세터 (getter,setter) 생성 | alt G  |
 | 투스트링 (toString) 생성        | alt S  |
+| 오버라이딩                      | alt O  |
 
 ## 알고리즘
 
