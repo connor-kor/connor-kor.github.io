@@ -1,7 +1,9 @@
 ---
-title: 이클립스 설정
+title: IDE & Text Editor 설정
 category: configure
 ---
+
+# Eclipse
 
 ## import static 자동추가
 
@@ -44,4 +46,10 @@ Matching brackets highlight 를 변경한다.
 window - preference 창 - general 탭 - workspace 에서
 
 Text file encoding 을 other 로 하고 UTF-8 로 설정한다.
+
+# Atom
+
+## welcome 창 없애기
+
+file - settings - packages 탭 - welcome 검색 - disable
 

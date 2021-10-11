@@ -93,7 +93,7 @@
                 {% for category in site.categories %}
                     {% if category[0] == "algorithm" %}
                         <!-- 사이드바 출력 -->
-                        <li><a href="/categories/algorithm" class=""> 알고리즘 ({{category[1].size}})</a></li>
+                        <li><a href="/categories/algorithm" class=""> 강의: 알고리즘 ({{category[1].size}})</a></li>
                     {% endif %}
                 {% endfor %}
             </ul>

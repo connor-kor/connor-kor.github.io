@@ -1,5 +1,5 @@
 ---
-title: 백준 알고리즘
+title: 단계별 문제
 category: baekjoon
 ---
 
