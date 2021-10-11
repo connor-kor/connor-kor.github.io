@@ -1,6 +1,6 @@
 ---
 title: 기타 알고리즘함수
-categories: algorithm
+categories: study
 ---
 
 # 출력

@@ -40,9 +40,9 @@
             <ul>
                 <!--category[1].size 로 해당 카테고리를 가진 글의 개수 표시-->
                 {% for category in site.categories %}
-                    {% if category[0] == "algorithm" %}
+                    {% if category[0] == "study" %}
                         <!-- 사이드바 출력 -->
-                        <li><a href="/categories/algorithm" class=""> 기타 ({{category[1].size}})</a></li>
+                        <li><a href="/categories/study" class=""> 스터디 ({{category[1].size}})</a></li>
                     {% endif %}
                 {% endfor %}
             </ul>
