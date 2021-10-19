@@ -848,3 +848,113 @@ public interface Condition {
 
 이렇게 나누는 게 맞았다.
 
+**Main**
+
+**File**
+
+**Game**
+
+```java
+package pattern;
+
+import java.util.Random;
+
+public class Game {
+	static String[] scores = { "0", "15", "30", "40", "40A"};
+	static int[] scoreIdxs = { 0, 0 }; // { 1번 플레이어의 점수 인덱스 값, 2번 플레이어의 점수 인덱스 값 }
+	
+	static void playGame() {
+		Random random = new Random(); 
+
+		while (true) {
+			int winPlayer = random.nextInt(2) + 1; // 1 or 2 이 이기는지지는지 여기서 결정
+			int losePlayer = winPlayer == 2 ? 1 : 2;
+//			checkBoard(); // 게임배열의 인덱스가 배열크기를 초과했는지 확인
+			
+			if (scoreIdxs[winPlayer - 1] == 3 && scoreIdxs[losePlayer - 1] == 4) {
+				scoreIdxs[losePlayer - 1]--;
+			} else {
+				pointWinner(winPlayer); // 이긴사람의 점수를 증가
+				
+			}
+
+			// 이긴 사람이 45 이상이고 듀스가 아니라면 승수를 더하고 다음게임
+			if (scoreIdxs[winPlayer - 1] == 4 && scoreIdxs[losePlayer - 1] <= 2) {
+				ScoreBoard.getInstance().gameScore[winPlayer - 1]++;
+				break;
+			}
+
+			// 점수판 출력 및 세트가 2점차로 끝났는지 확인
+			dispScoreBoard();
+		} // 안쪽 while
+
+	}
+
+	private static void dispScoreBoard() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private static void pointWinner(int winPlayer) {
+		scoreIdxs[winPlayer - 1]++;
+	}
+}
+```
+
+**Set**
+
+**Input**
+
+```java
+package pattern;
+
+import java.util.Scanner;
+
+public class Input {
+	static void setGame() {
+		ScoreBoard scoreBoard = ScoreBoard.getInstance();
+		System.out.print("> 경기의 세트 수(3 or 5), 두 선수의 이름을 각각 입력해주세요 ? "); 
+		Scanner sc = new Scanner(System.in);
+		scoreBoard.set = sc.nextInt();
+		
+		if (scoreBoard.set != 3 && scoreBoard.set != 5) {
+			System.out.println("> 세트 수는 3세트와 5세트만 있습니다.");
+			return;
+		}
+		
+		scoreBoard.players[0] = sc.next();
+		scoreBoard.players[1] = sc.next();
+	}
+}
+```
+
+
+
+**Output**
+
+**ScoreBoard**
+
+```java
+package pattern;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+public class ScoreBoard {
+	private static ScoreBoard scoreBoard;
+	HashMap<Integer, int[]> gameBoard = new HashMap<>();
+	ArrayList<String> setWinner = new ArrayList<>();
+	public int[] gameScore = new int[2]; // 세트 당 게임 승리 수
+	String[] players = new String[2];
+	int set;
+	
+	private ScoreBoard() {}
+	
+	public static ScoreBoard getInstance() {
+		if (scoreBoard == null) 
+			scoreBoard = new ScoreBoard();
+		return scoreBoard;
+	}
+}
+```
+
