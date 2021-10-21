@@ -169,6 +169,15 @@
                     {% endif %}
                 {% endfor %}
             </ul>
+            <ul>
+                {% for category in site.categories %}
+                    <!-- 카테고리 명 -->
+                    {% if category[0] == "styleguide" %}
+                        <!-- 사이드바 출력 -->
+                        <li><a href="/categories/styleguide" class=""> 스타일가이드 ({{category[1].size}})</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
 
       </li>
   </ul>
