@@ -3,7 +3,13 @@ title: 단축키 사전
 categories: shortcut
 ---
 
-## 풀스택
+
+
+
+
+
+
+## 이클립스
 
 이동 (Navigate)
 
@@ -52,18 +58,45 @@ categories: shortcut
 | 투스트링 (toString) 생성        | alt S  |
 | 오버라이딩                      | alt O  |
 
-## 알고리즘
+## 오라클
 
-| 단축키               | 서브라임                   | 프로그래머스 |
-| -------------------- | -------------------------- | ------------ |
-| 아랫 줄 생성         | ctrl enter                 |              |
-| 윗 줄 생성           | ctrl shift enter           |              |
-| 줄 복사              | ctrl shift D               |              |
-| 줄 삭제              | shift delete, ctrl shift K |              |
-| 줄 이동              | ctrl shift ↑↓              |              |
-| 괄호이동             | ctrl M                     |              |
-| 같은단어 선택        | alt F3                     |              |
-| 같은단어 하나씩 선택 | ctrl D                     |              |
-| 줄 선택              | ctrl L                     |              |
-| 커서이동             | ctrl G                     | X            |
-| 열 편집              | ctrl alt ↑↓                |              |
+| 단축키                          | Developer                           |
+| ------------------------------- | ----------------------------------- |
+| 스크립트 출력                   | F5                                  |
+| 질의결과                        | CTRL ENTER, F9                      |
+| 범위주석                        | ALT SHIFT C                         |
+| 줄 잘라내기, 붙여넣기           | CTRL X, V                           |
+| 데이터베이스 접속               | ALT F10                             |
+| 줄 복사                         | CTRL SHIFT D                        |
+| 줄 삭제                         | ALT SHIFT D                         |
+| 스크립트 지우기 (스크립트 커서) | CTRL SHIFT D                        |
+| 워크시트 지우기                 | CTRL D                              |
+| 행 이동                         | CTRL G                              |
+| 탭 이동                         | CTRL [SHIFT] F6<br />ALT ←→ 로 변경 |
+| 아랫줄 생성                     | SHIFT ENTER                         |
+| 전체 창 종료                    | CTRL SHIFT F4                       |
+| 현재 창 종료                    | CTRL W                              |
+|                                 |                                     |
+
+
+
+
+
+
+
+## 프로그래머스
+
+| 단축키               | 프로그래머스               | 서브라임 |
+| -------------------- | -------------------------- | -------- |
+| 아랫 줄 생성         | ctrl enter                 |          |
+| 윗 줄 생성           | ctrl shift enter           |          |
+| 줄 복사              | ctrl shift D               |          |
+| 줄 삭제              | shift delete, ctrl shift K |          |
+| 줄 이동              | ctrl shift ↑↓              |          |
+| 괄호이동             | ctrl M                     |          |
+| 같은단어 선택        | alt F3                     |          |
+| 같은단어 하나씩 선택 | ctrl D                     |          |
+| 줄 선택              | ctrl L                     |          |
+| 커서이동             | X                          | ctrl G   |
+| 열 편집              | ctrl alt ↑↓                |          |
+
