@@ -76,6 +76,7 @@ categories: shortcut
 | 아랫줄 생성                     | SHIFT ENTER                         |
 | 전체 창 종료                    | CTRL SHIFT F4                       |
 | 현재 창 종료                    | CTRL W                              |
+| 들여쓰기                        | [SHIFT] TAB                         |
 
 | 개인지정  | 단축키       |
 | --------- | ------------ |
