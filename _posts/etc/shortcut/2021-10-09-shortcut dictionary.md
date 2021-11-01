@@ -3,12 +3,6 @@ title: 단축키 사전
 categories: shortcut
 ---
 
-
-
-
-
-
-
 ## 이클립스
 
 이동 (Navigate)
@@ -60,13 +54,16 @@ categories: shortcut
 
 ## 오라클
 
+
+
 | 단축키                          | Developer                           |
 | ------------------------------- | ----------------------------------- |
 | 스크립트 출력                   | F5                                  |
+|                                 |                                     |
 | 질의결과                        | CTRL ENTER, F9                      |
 | 범위주석                        | ALT SHIFT C                         |
 | 줄 잘라내기, 붙여넣기           | CTRL X, V                           |
-| 데이터베이스 접속               | ALT F10                             |
+|                                 |                                     |
 | 줄 복사                         | CTRL SHIFT D                        |
 | 줄 삭제                         | ALT SHIFT D                         |
 | 스크립트 지우기 (스크립트 커서) | CTRL SHIFT D                        |
@@ -82,10 +79,6 @@ categories: shortcut
 | -------------------- | ------------ |
 | 모두 저장            | ctrl shift S |
 | 이전 내역으로 바꾸기 | 제거         |
-
-
-
-
 
 
 
