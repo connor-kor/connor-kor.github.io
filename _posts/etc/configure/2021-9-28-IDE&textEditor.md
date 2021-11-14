@@ -47,6 +47,54 @@ window - preference 창 - general 탭 - workspace 에서
 
 Text file encoding 을 other 로 하고 UTF-8 로 설정한다.
 
+# SQL Developer
+
+## 다크모드
+
+**IDE 테마 변경**
+
+SQL Developer 를 종료한다.
+
+src 폴더의 파일들을 받아서 fusionblue.jar 로 압축한다.
+
+```
+C:\Users\Connor\Documents\DIRECTORY\프로그램\sqldeveloper-21.2.1.204.1703-x64\sqldeveloper\ide\themes
+```
+
+에 있는 fusionblue.jar 를 백업한 후 다운로드 받은 압축파일을 넣고 다시 SQL Developer 를 실행한다.
+
+
+
+**편집기 테마 변경**
+
+```
+C:\Users\Connor\AppData\Roaming\SQL Developer\system21.2.1.204.1703\o.ide.12.2.1.5.42.210420.1713
+```
+
+>  AppData 는 숨겨진폴더이다.
+
+![image-20211114212027404](../../../assets/images/image-20211114212027404.png)
+
+44번째 줄 `<schemeMap>` 아래에 ozbsidian_scheme.xml 파일의 코드를 복사해서 붙여넣는다.
+
+도구 - 환경설정 - 코드 편집기 - PL/SQL 구문 색상에서 구성표를 눌러보면
+
+ ozBsidian 이라는 새 테마가 추가된 것을 확인할 수 있다.
+
+
+
+---
+
+**참조**
+
+IDE테마 사용법: https://medium.com/@rammelhofdotat/oracle-sql-developer-theme-7c870ce19fb5
+
+IDE테마 GitHub: https://github.com/rhinterndorfer/OracleSqlDeveloper_Theme
+
+편집기 테마 GitHub: https://github.com/ozmoroz/ozbsidian-sqldeveloper
+
+---
+
 # Atom
 
 ## welcome 창 없애기

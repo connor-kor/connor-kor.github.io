@@ -54,26 +54,41 @@ categories: shortcut
 
 ## 오라클
 
+| 기본                  | 단축키                              |
+| --------------------- | ----------------------------------- |
+| 아랫줄 생성           | SHIFT ENTER                         |
+| 줄 복사               | CTRL SHIFT D                        |
+| 줄 삭제               | ALT SHIFT D                         |
+| 줄 잘라내기, 붙여넣기 | CTRL {X \|V}                        |
+| 범위 주석             | ALT SHIFT C                         |
+| 스크립트 출력         | F5                                  |
+| 질의결과              | CTRL ENTER, F9                      |
+| 행 이동               | CTRL G                              |
+| 탭 이동               | CTRL [SHIFT] F6<br />ALT ←→ 로 변경 |
+| 현재 창 종료          | CTRL W                              |
+| 전체 창 종료          | CTRL SHIFT F4                       |
+| SQL 열기              | CTRL O                              |
+
+| 창                           | 단축키                     |
+| ---------------------------- | -------------------------- |
+| 보기 탭 (DBMS 출력)          | ALT V + [D]                |
+| 질의결과 탭으로 커서이동     | CTRL TAB                   |
+| 에디터 & 질의결과로 커서이동 | ALT {page up \| page down} |
+| 창 지정 및 사용              | ALT [SHIFT] + 숫자         |
+| 새로고침                     | CTRL R                     |
+| 탭에서 에디터로 커서이동     | TAB                        |
 
 
-| 단축키                          | Developer                           |
-| ------------------------------- | ----------------------------------- |
-| 스크립트 출력                   | F5                                  |
-|                                 |                                     |
-| 질의결과                        | CTRL ENTER, F9                      |
-| 범위주석                        | ALT SHIFT C                         |
-| 줄 잘라내기, 붙여넣기           | CTRL X, V                           |
-|                                 |                                     |
-| 줄 복사                         | CTRL SHIFT D                        |
-| 줄 삭제                         | ALT SHIFT D                         |
-| 스크립트 지우기 (스크립트 커서) | CTRL SHIFT D                        |
-| 워크시트 지우기                 | CTRL D                              |
-| 행 이동                         | CTRL G                              |
-| 탭 이동                         | CTRL [SHIFT] F6<br />ALT ←→ 로 변경 |
-| 아랫줄 생성                     | SHIFT ENTER                         |
-| 전체 창 종료                    | CTRL SHIFT F4                       |
-| 현재 창 종료                    | CTRL W                              |
-| 들여쓰기                        | [SHIFT] TAB                         |
+
+| 기타                            | 단축키       |
+| ------------------------------- | ------------ |
+| 스크립트 지우기 (스크립트 커서) | CTRL SHIFT D |
+| 워크시트 지우기                 | CTRL D       |
+
+
+
+
+
 
 | 개인지정             | 단축키       |
 | -------------------- | ------------ |
@@ -115,4 +130,11 @@ categories: shortcut
 | 줄 선택              | ctrl L                     |          |
 | 커서이동             | X                          | ctrl G   |
 | 열 편집              | ctrl alt ↑↓                |          |
+
+## 타이포라
+
+| 기능       | 단축키               |
+| ---------- | -------------------- |
+| 표 행 추가 | CTRL ENTER           |
+| 표 행 삭제 | CTRL SHIFT BACKSPACE |
 
