@@ -198,6 +198,112 @@ END;
 EXEC ins_signup_with_mobile('kor.allen@gmail.com', 'tiger7777', '010-1541-2830', 2, 'LGUPLUS');
 ```
 
+## 이메일 변경
+
+```
+본인확인 코드를 잘못 입력하셨습니다.
+
+aaaa@naver.com 계정의 이메일을 gildong@naver.com (으)로 변경했습니다.
+```
+
+```sql
+CREATE OR REPLACE PROCEDURE upd_email (
+    p_acc_id          nf_account.acc_id%TYPE
+    , confirm_code    NUMBER
+    , new_email       nf_account.email%TYPE
+)
+IS
+    v_email         nf_account.email%TYPE;
+BEGIN
+    SELECT email INTO v_email FROM nf_account WHERE acc_id = p_acc_id;
+    
+    IF confirm_code = 210818 THEN
+        UPDATE nf_account
+        SET email = new_email
+        WHERE acc_id = p_acc_id;
+        
+        dbms_output.put_line(v_email || ' 계정의 이메일을 ' || new_email || ' (으)로 변경했습니다.');
+        COMMIT;
+    ELSE    
+        dbms_output.put_line('본인확인 코드를 잘못 입력하셨습니다.');
+    END IF;
+END;
+```
+
+
+
+
+
+## 비밀번호 변경
+
+```
+비밀번호를 잘못 입력하셨습니다.
+
+cccc@naver.com 계정의 비밀번호를 변경했습니다.
+```
+
+```sql
+CREATE OR REPLACE PROCEDURE upd_password (
+    p_acc_id        nf_account.acc_id%TYPE
+    , p_password    nf_account.password%TYPE
+    , new_password  nf_account.password%TYPE
+)
+IS
+    v_password      nf_account.password%TYPE;
+    v_email         nf_account.email%TYPE;
+    
+BEGIN
+    SELECT password, email INTO v_password, v_email FROM nf_account WHERE acc_id = p_acc_id;
+    
+    
+    IF p_password = v_password THEN
+        UPDATE nf_account
+        SET password = new_password
+        WHERE acc_id = p_acc_id;
+        
+        dbms_output.put_line(v_email || ' 계정의 비밀번호를 변경했습니다.');
+        COMMIT;
+    ELSE    
+        dbms_output.put_line('비밀번호를 잘못 입력하셨습니다.');
+    END IF;
+END;
+```
+
+## 휴대폰번호 변경
+
+```
+aaaa@naver.com 계정의 휴대폰번호를 
+010-3456-7890 에서 010-9427-2835 (으)로 변경했습니다.
+```
+
+```sql
+CREATE OR REPLACE PROCEDURE upd_phone_num (
+    p_acc_id          nf_account.acc_id%TYPE
+    , confirm_code    NUMBER
+    , new_phone_num   nf_account.phone_num%TYPE
+)
+IS
+    v_email           nf_account.email%TYPE;
+    v_phone_num           nf_account.phone_num%TYPE;
+BEGIN
+    SELECT email, phone_num INTO v_email, v_phone_num FROM nf_account WHERE acc_id = p_acc_id;
+    
+    IF confirm_code = 210818 THEN
+        UPDATE nf_account
+        SET phone_num = new_phone_num
+        WHERE acc_id = p_acc_id;
+        
+        dbms_output.put_line(v_email || ' 계정의 휴대폰번호를 ' 
+            || chr(10) || v_phone_num || ' 에서 ' || new_phone_num || ' (으)로 변경했습니다.');
+        COMMIT;
+    ELSE    
+        dbms_output.put_line('본인확인 코드를 잘못 입력하셨습니다.');
+    END IF;
+END;
+```
+
+
+
 ## 계정삭제
 
 ```
@@ -345,6 +451,8 @@ SELECT CASE WHEN EXISTS (SELECT * FROM streaming_dev WHERE mac_id = p_mac_id)
 FROM dual;
 ```
 
+
+
 ## 프로필 생성
 
 ```
@@ -474,17 +582,56 @@ END;
 ## 프로필 변경
 
 ```
-최근에 사용한 아이콘에 cat 을(를) 저장했습니다.
-ddd 프로필을 변경했습니다.
-
-cat 아이콘을 다시 사용했습니다.
-몽룡이 프로필을 변경했습니다.
-
-최근에 사용한 아이콘에 squ 을(를) 저장했습니다.
-몽룡이 프로필을 변경했습니다.
-
 없는 프로필 입니다.
+
+----------------------------
+
+⠀⠀⠀⠀⠀⠀⠀⢀⣀⣀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⣠⣴⣾⣿⣟⣿⣿⣿⣿⣶⢤⡀⠀⠀⠀⠀
+⠀⠀⣠⡞⣷⣟⣻⣿⣿⠁⠸⣻⣿⣿⣿⡽⣆⠀⠀⠀
+⠀⢰⠏⣼⢿⣿⣿⣾⠁⠰⡄⠹⣶⣟⡿⣿⡜⣧⠀⠀
+⠀⡟⢰⣿⣿⣭⡿⡇⠐⠛⠃⠀⢻⣿⣿⣿⣷⠸⡆⠀
+⢰⡇⢸⣟⣿⣿⣿⣷⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⡇⠀
+⠀⡇⠸⣿⣿⣾⣻⢿⣿⣿⣾⣛⣿⣿⣿⣶⡟⠀⡇⠀
+⠀⢹⡄⢹⣿⣿⣿⣿⣭⣿⣿⣿⣷⣯⣿⣿⠃⡼⠀⠀
+⠀⠀⠻⣄⠻⣯⣟⣿⣿⣿⣿⣽⢿⣿⡿⢁⡼⠁⠀⠀
+⠀⠀⢀⠜⢷⠝⠛⠻⠿⢿⠿⠿⠻⢯⡴⠿⢄⡀⠀⠀
+⠀⡔⠁⢀⡀⠀⠀⠻⠦⣿⣤⠔⠂⠀⠀⡀⠀⠙⢆⠀
+
+tri 아이콘을 다시 사용했습니다.
+라이언님의 프로필을 변경했습니다.
+
+프로필이미지:     cir    -> tri
+이름:            라이언   -> 춘식이
+사이트언어:       Polski -> 한국어
+다음화 자동재생:   false  -> true
+미리보기 자동재생: false  -> true
+
+----------------------------
+
+⠀⠀⠀⠀⠀⠀⠀⢀⣀⣀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⣠⣴⣾⣿⣟⣿⣿⣿⣿⣶⢤⡀⠀⠀⠀⠀
+⠀⠀⣠⡞⣷⣟⣻⣿⣿⠁⠸⣻⣿⣿⣿⡽⣆⠀⠀⠀
+⠀⢰⠏⣼⢿⣿⣿⣾⠁⠰⡄⠹⣶⣟⡿⣿⡜⣧⠀⠀
+⠀⡟⢰⣿⣿⣭⡿⡇⠐⠛⠃⠀⢻⣿⣿⣿⣷⠸⡆⠀
+⢰⡇⢸⣟⣿⣿⣿⣷⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⡇⠀
+⠀⡇⠸⣿⣿⣾⣻⢿⣿⣿⣾⣛⣿⣿⣿⣶⡟⠀⡇⠀
+⠀⢹⡄⢹⣿⣿⣿⣿⣭⣿⣿⣿⣷⣯⣿⣿⠃⡼⠀⠀
+⠀⠀⠻⣄⠻⣯⣟⣿⣿⣿⣿⣽⢿⣿⡿⢁⡼⠁⠀⠀
+⠀⠀⢀⠜⢷⠝⠛⠻⠿⢿⠿⠿⠻⢯⡴⠿⢄⡀⠀⠀
+⠀⡔⠁⢀⡀⠀⠀⠻⠦⣿⣤⠔⠂⠀⠀⡀⠀⠙⢆⠀
+
+tri 아이콘을 다시 사용했습니다.
+춘식이님의 프로필을 변경했습니다.
 ```
+
+
+
+```sql
+EXEC set_profile('000003_1', 2, '춘식이', 1, 'TRUE', 'TRUE');
+```
+
+
 
 ```sql
 CREATE OR REPLACE PROCEDURE set_profile (
@@ -497,20 +644,46 @@ CREATE OR REPLACE PROCEDURE set_profile (
 ) 
 IS 
     v_pname                 VARCHAR2(50);
+    lang_before                 sitelang_info.lang%TYPE;
+    lang_after                 sitelang_info.lang%TYPE;
+    v_autoplay_episode                 nf_profile.autoplay_episode%TYPE;
+    v_autoplay_previews                 nf_profile.autoplay_previews%TYPE;
     v_id                    NUMBER(38);
     have_icon_b             VARCHAR2(5);  
-    v_ipath                 VARCHAR2(30);
+    ipath_before                 VARCHAR2(30);
+    ipath_after                 VARCHAR2(30);
+    v_icon_id               VARCHAR2(30);
 BEGIN
-    SELECT pname INTO v_pname FROM nf_profile WHERE profile_id = p_profile_id;
-    SELECT ipath INTO v_ipath FROM icon_info WHERE icon_id = p_icon_id;
+    -- 변경 전 프로필 정보 가져오기
+    SELECT pname, lang, autoplay_episode, autoplay_previews INTO v_pname, lang_before, v_autoplay_episode , v_autoplay_previews
+    FROM nf_profile JOIN sitelang_info USING(lang_id)
+    WHERE profile_id = p_profile_id;
+    SELECT ipath INTO ipath_after FROM icon_info WHERE icon_id = p_icon_id;
+    
+    -- 변경 후 언어정보 가져오기
+    SELECT lang INTO lang_after FROM sitelang_info WHERE lang_id = p_lang_id;
 
+    -- 변경 전 아이콘 가져오기
+    SELECT icon_id, ipath INTO v_icon_id, ipath_before 
+    FROM (
+        SELECT *
+        FROM icon_history JOIN icon_info USING(icon_id)
+        ORDER BY fix_date DESC)
+    WHERE profile_id = p_profile_id
+        AND rownum = 1;
+
+    -- 프로필 업데이트
     UPDATE nf_profile
     SET 
         pname = p_pname
         , lang_id = p_lang_id
-        , autoplay_episode = p_autoplay_episode
-        , autoplay_previews = p_autoplay_previews
+        , autoplay_episode = lower(p_autoplay_episode)
+        , autoplay_previews = lower(p_autoplay_previews)
     WHERE profile_id = p_profile_id;
+    
+    print_profile(p_icon_id);
+
+
     
     SELECT CASE WHEN EXISTS(SELECT * FROM icon_history WHERE profile_id = p_profile_id AND icon_id = p_icon_id) 
         THEN 'true'
@@ -530,18 +703,39 @@ BEGIN
             , p_profile_id
             , sysdate
         );    
-        dbms_output.put_line('최근에 사용한 아이콘에 ' || v_ipath || ' 을(를) 저장했습니다.');
+        dbms_output.put_line('최근에 사용한 아이콘에 ' || ipath_after || ' 을(를) 저장했습니다.');
     ELSE
         UPDATE icon_history
         SET fix_date = sysdate
         WHERE profile_id = p_profile_id
             AND icon_id = p_icon_id;
-        dbms_output.put_line(v_ipath || ' 아이콘을 다시 사용했습니다.');
+        dbms_output.put_line(ipath_after || ' 아이콘을 다시 사용했습니다.');
     END IF;
     
-    
     COMMIT;
-    dbms_output.put_line(v_pname || ' 프로필을 변경했습니다.');
+
+    -- 출력
+    dbms_output.put_line(v_pname || '님의 프로필을 변경했습니다.' || chr(10));
+    
+    IF ipath_before != ipath_after THEN
+        dbms_output.put_line('프로필이미지:     ' || ipath_before || '    -> ' || ipath_after);
+    END IF;
+    
+    IF v_pname != p_pname THEN
+        dbms_output.put_line('이름:            ' || v_pname || '   -> ' || p_pname);
+    END IF;
+    
+    IF lang_before != lang_after THEN
+        dbms_output.put_line('사이트언어:       ' || lang_before || ' -> ' || lang_after);
+    END IF;
+    
+    IF v_autoplay_episode != lower(p_autoplay_episode) THEN
+        dbms_output.put_line('다음화 자동재생:   ' || v_autoplay_episode || '  -> ' || lower(p_autoplay_episode));
+    END IF;
+    
+    IF v_autoplay_previews != lower(p_autoplay_previews) THEN
+        dbms_output.put_line('미리보기 자동재생: ' || v_autoplay_previews || '  -> ' || lower(p_autoplay_previews));
+    END IF;
 EXCEPTION
     WHEN no_data_found THEN
         dbms_output.put_line('없는 프로필 입니다.');
@@ -549,6 +743,163 @@ END;
 ```
 
 
+
+### 도트이미지
+
+```sql
+CREATE OR REPLACE PROCEDURE print_profile (p_icon_id NUMBER)
+IS
+    image   VARCHAR2(4000);
+BEGIN
+    image := CASE p_icon_id
+        WHEN 1 THEN
+'            
+⠀⠀⠀⠀⠀⠀⠀⠀⢀⡾⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⢀⡾⠁⠘⣧⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⢀⣾⠁⠀⠀⠘⣧⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⢀⣾⠃⠀⠀⠀⠀⠹⣧⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⣼⠃⠀⠀⠀⠀⠀⠀⠹⣇⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⢠⡏⠀⠀⠀⠀⠀⠀⠀⠀⢿⡀⠀⠀⠀⠀
+⠀⠀⢠⡞⠛⢻⡆⠀⠀⠀⠀⠀⠀⣴⠟⠙⢷⡄⠀⠀
+⠀⠀⠘⢷⣤⡼⠃⠀⠀⠀⠀⠀⠀⠹⢧⣤⡾⠃⠀⠀
+⠀⠀⠀⠀⣯⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣿⠀⠀⠀⠀
+⠀⠀⠀⠀⡏⠉⠉⢹⡏⠉⠉⢹⠉⠉⠉⣿⠀⠀⠀⠀
+⠀⠀⠀⠀⡇⠀⠀⢸⡇⠀⠀⢸⠀⠀⠀⣿⠀⠀⠀⠀
+⠀⠰⣆⣀⡇⠀⠀⢸⡇⠀⠀⢸⠀⠀⠀⣿⣀⣶⠀⠀
+⠀⠀⠙⠋⠁⠀⠀⣸⠇⠀⠀⢸⡄⠀⠀⠈⠛⠉⠀⠀
+⠀⠀⠀⠀⠀⠶⠞⠋⠀⠀⠀⠀⠙⠳⠦⠀⠀⠀⠀⠀
+'
+        WHEN 2 THEN
+'
+⠀⠀⠀⠀⠀⠀⠀⢀⣀⣀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⣠⣴⣾⣿⣟⣿⣿⣿⣿⣶⢤⡀⠀⠀⠀⠀
+⠀⠀⣠⡞⣷⣟⣻⣿⣿⠁⠸⣻⣿⣿⣿⡽⣆⠀⠀⠀
+⠀⢰⠏⣼⢿⣿⣿⣾⠁⠰⡄⠹⣶⣟⡿⣿⡜⣧⠀⠀
+⠀⡟⢰⣿⣿⣭⡿⡇⠐⠛⠃⠀⢻⣿⣿⣿⣷⠸⡆⠀
+⢰⡇⢸⣟⣿⣿⣿⣷⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⡇⠀
+⠀⡇⠸⣿⣿⣾⣻⢿⣿⣿⣾⣛⣿⣿⣿⣶⡟⠀⡇⠀
+⠀⢹⡄⢹⣿⣿⣿⣿⣭⣿⣿⣿⣷⣯⣿⣿⠃⡼⠀⠀
+⠀⠀⠻⣄⠻⣯⣟⣿⣿⣿⣿⣽⢿⣿⡿⢁⡼⠁⠀⠀
+⠀⠀⢀⠜⢷⠝⠛⠻⠿⢿⠿⠿⠻⢯⡴⠿⢄⡀⠀⠀
+⠀⡔⠁⢀⡀⠀⠀⠻⠦⣿⣤⠔⠂⠀⠀⡀⠀⠙⢆⠀
+'
+        WHEN 3 THEN
+'
+⠀⠀⠀⠀⠀⠀⢀⣀⣤⣤⣤⣤⣀⡀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⢀⣤⣾⣿⣿⣿⡿⠿⣿⣿⣿⣷⣦⡀⠀⠀⠀
+⠀⠀⣠⣿⣿⣿⣿⡿⢡⣶⣶⣦⠹⣿⣿⣿⣿⣆⠀⠀
+⠀⢰⣿⣿⣿⣿⣿⣇⢻⣿⣿⣿⢃⣿⣿⣿⣿⣿⣆⠀
+⠀⣾⣿⣿⣿⣿⣿⣿⣷⣬⣭⣴⣿⣿⣿⣿⣿⣿⣿⠀
+⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀
+⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⠀
+⠀⠀⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⠀⠀
+⠀⠀⠀⣙⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣏⡀⠀⠀
+⠀⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⡀
+'
+        WHEN 4 THEN
+'
+⠀⠀⠀⠀⠀⢀⣠⣴⣶⣶⣶⣶⣶⣤⣀⠀⠀⠀⠀⠀
+⠀⠀⠀⢀⣴⣿⣿⣿⠟⠛⠛⠛⢻⣿⣿⣷⣄⠀⠀⠀
+⠀⠀⢠⣿⣿⣿⣿⣿⠀⣿⣿⣿⢸⣿⣿⣿⣿⣧⠀⠀
+⠀⢀⣿⣿⣿⣿⣿⣿⡀⠛⠛⠛⢸⣿⣿⣿⣿⣿⣇⠀
+⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀
+⠀⠈⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⠀
+⠀⠀⢹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠃⠀
+⠀⠀⠀⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠁⠀⠀
+⠀⠀⢀⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⡀⠀
+'
+        WHEN 5 THEN
+'
+⠀⠀⢀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⡀⠀⠀⠀
+⠀⡐⠡⠒⡌⠆⠀⠀⠀⠀⠀⠀⠀⢠⠫⢂⡜⡆⠀⠀
+⠀⠣⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠆⠀⡏⠀⠈⡆⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡠⠂⠀⠀⢸⠓⠊⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⣠⠔⠉⠀⠀⢀⠀⢸⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠐⠁⢀⠀⠤⠄⢈⣧⠀⠆⠀⠀⠀
+⠀⠀⠀⠀⠰⡘⠀⠁⠀⠀⠀⠀⠀⠀⠈⠆⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠈⠁⠀⠄⠠⠄⢀⠀⠀⠀⠀⠀⠄⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⡀⠘⠒⢢⠀⢀⠶⡄⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠉⠉⠀⠈⠉⠁⠀⠀
+'
+        WHEN 6 THEN
+'
+⠀⠀⠀⣠⠞⠛⠛⠻⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⢰⡟⠛⠁⠀⠀⢀⡆⠈⢿⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠸⣧⣀⠀⠀⠀⢸⡇⠀⢸⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠙⠻⠿⣷⡄⠈⢿⣶⠟⢻⣦⡀⠀⠀⢀⠀⠀⠀⠀
+⠀⠀⠀⠀⠘⡇⠀⠀⠀⠀⠀⠈⠻⣷⣔⣿⣿⣦⠀⠀
+⠀⠀⠀⠀⠀⡇⠀⠀⠀⠀⠀⠀⠀⠈⢻⡜⣿⠹⡧⠀
+⠀⠀⠀⠀⠀⡇⠀⠀⠀⠀⠀⠀⠀⠀⠈⣿⡿⠀⣿⠀
+⠀⠀⠀⠀⢀⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠛⠁⢀⡏⠀
+⠀⠀⠀⠀⣾⣅⣀⣀⣀⣀⣀⣀⣀⣀⣀⣠⡴⠋⠀⠀
+⠀⠀⠀⠀⠉⠛⠛⠛⠛⠛⠛⠛⠛⠛⠋⠉⠀⠀⠀
+'
+        WHEN 7 THEN
+'
+⠀⢀⡾⣷⣤⣤⣤⠾⣷⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⠀
+⠀⣼⠀⠈⠉⠉⠁⠀⢻⡀⠀⠀⠀⠀⢀⡴⠞⣻⠃⠀
+⠀⡟⠀⠀⣠⣄⠀⠀⢸⠁⠀⠀⠀⠀⡞⠀⢀⡇⠀⠀
+⠀⡇⠀⠐⠛⠛⠂⠀⢻⣦⣀⠀⠀⢸⡇⠀⠸⣇⠀⠀
+⠀⣇⠀⠀⠀⠀⠀⠀⠀⠙⠻⣷⣤⠈⣷⠀⠀⢿⡄⠀
+⠀⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⣷⣿⡇⠀⠸⡇⠀
+⠀⢹⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣿⣿⠀⠀⡟⠀
+⠀⠀⢿⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢿⠇⠀⢰⠃⠀
+⠀⠀⢸⡋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢈⣀⡴⠃⠀⠀
+⠀⠀⠘⠻⠿⠛⠻⠿⠿⠛⠛⠛⠛⠛⠛⠉⠀⠀⠀⠀
+'
+        WHEN 8 THEN
+'
+⠀⠀⠀⢀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⢀⣤⣴⠛⠛⠻⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠈⠉⠻⣷⠀⠀⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⣿⠀⢠⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⡏⠀⠀⣷⣀⣀⣀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⣧⠀⠀⠈⠛⠛⠛⠛⠛⠿⢷⣦⣄⡀⠀⠀⠀
+⠀⠀⠀⢿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠛⠿⠿⠿⡟
+⠀⠀⠀⠘⣿⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡼⠁
+⠀⠀⠀⠀⠀⠙⠿⣷⣤⣄⣠⡀⠀⢀⣀⣠⠶⠋⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⢻⡿⠟⠛⠋⠁⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠰⠶⠾⠿⠃⠀⠀⠀⠀⠀⠀⠀
+'
+        WHEN 9 THEN
+'
+⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⣀⣀⡀⠀⠀⠀⠀⢀⠀⠀
+⠀⠀⠀⠀⢀⣤⠾⠛⠛⠛⠛⠛⠛⠿⣶⣤⡀⢰⣧⠀
+⠀⠀⠀⡴⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢿⣦⡟⠀
+⠀⣠⡼⠁⣴⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⡄⠀
+⠀⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡇⠀
+⠀⢻⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡜⠀⠀
+⠀⠀⠙⠿⣷⣤⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⠟⠀⠀⠀
+⠀⠀⠀⠀⠀⢻⣀⣀⢰⠷⠶⠾⣿⣀⣀⣸⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠘⠛⠛⠋⠀⠀⠀⠘⠛⠛⠋⠀⠀⠀⠀
+'
+        WHEN 10 THEN
+'
+⠀⠀⣠⡄⠀⠀⠀⢰⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⣠⡿⠻⠒⠒⠶⠞⣿⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠸⠷⢶⠀⠀⠀⠀⢠⡾⠿⠂⣀⣀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠘⣇⣠⠤⣤⡸⠛⠛⠛⠛⠛⠛⠛⠳⢦⡀⠀⠀
+⠀⠀⠀⣅⡀⠀⢀⡹⠀⠀⠀⠀⠀⠀⠀⠀⠀⢷⠀⠀
+⠀⠀⠀⣯⢉⢭⠉⠀⠀⠀⠀⠀⠀⢀⠀⠀⠀⢸⡇⠀
+⠀⠀⠀⢻⡜⠛⠃⠀⡇⠀⠀⠀⠀⢸⡄⠀⠀⢿⡇⠀
+⠀⠀⠀⠘⡇⢸⡀⠀⣷⣤⣤⣤⣶⡞⢻⣄⢸⡄⠀⠀
+⠀⠀⠀⠀⣧⠘⡇⢸⠀⠀⠀⠀⠋⠟⢻⢿⢸⠇⠀⠀
+⠀⠀⠀⠀⠛⠛⠛⠋⠀⠀⠀⠀⠀⠀⠀⠚⠛⠀⠀⠀
+'    
+    END;
+    dbms_output.put_line(image);
+END;
+```
+
+
+
+---
+
+참조
+
+https://m.blog.naver.com/pmw9440/221887457915
+
+---
 
 
 
@@ -599,8 +950,12 @@ END;
 ## 프로필 언어설정 변경
 
 ```
-사용자가 Polski 로 사이트 표시언어를 변경했습니다.
-사용자가 日本語, Deutsch, Polski, Filipino 언어를 컨텐츠 언어로 설정했습니다.
+사용자가 Deutsch 로 사이트 표시언어를 변경했습니다.
+
+사용자가 Dansk, français 언어를 컨텐츠 언어로 설정했습니다.
+
+사용자가 Deutsch 로 사이트 표시언어를 변경했습니다.
+사용자가 English, Dansk, Nederlands 언어를 컨텐츠 언어로 설정했습니다.
 ```
 
 ```sql
@@ -651,6 +1006,10 @@ BEGIN
         SELECT lang INTO lang_char FROM sitelang_info WHERE lang_id = p_lang_id;
     END IF;
     
+    -- 모든 언어 체크해제
+    DELETE FROM pro_cont_lang WHERE profile_id = p_profile_id;
+    
+    -- 선택한 언어 체크
     IF L1 IS NOT NULL THEN
         INSERT INTO pro_cont_lang
         VALUES (
@@ -676,9 +1035,11 @@ BEGIN
     IF L15 IS NOT NULL THEN INSERT INTO pro_cont_lang VALUES (p_profile_id || '_' || L15, p_profile_id, L15); SELECT cont_lang INTO L15_char FROM cont_lang WHERE cont_lang_id = L15; END IF;
     IF L16 IS NOT NULL THEN INSERT INTO pro_cont_lang VALUES (p_profile_id || '_' || L16, p_profile_id, L16); SELECT cont_lang INTO L16_char FROM cont_lang WHERE cont_lang_id = L16; END IF;
     
-    dbms_output.put_line('사용자가 ' || lang_char || ' 로 사이트 표시언어를 변경했습니다.');
-    dbms_output.put('사용자가 ');
-    IF L1 IS NOT NULL THEN dbms_output.put(L1_char); END IF;
+    IF p_lang_id IS NOT NULL THEN
+        dbms_output.put_line('사용자가 ' || lang_char || ' 로 사이트 표시언어를 변경했습니다.');
+    END IF;
+    
+    IF L1 IS NOT NULL THEN dbms_output.put('사용자가 ' || L1_char); END IF;
     IF L2 IS NOT NULL THEN dbms_output.put(', ' || L2_char); END IF;
     IF L3 IS NOT NULL THEN dbms_output.put(', ' || L3_char); END IF;
     IF L4 IS NOT NULL THEN dbms_output.put(', ' || L4_char); END IF;
@@ -694,12 +1055,37 @@ BEGIN
     IF L14 IS NOT NULL THEN dbms_output.put(', ' || L14_char); END IF;
     IF L15 IS NOT NULL THEN dbms_output.put(', ' || L15_char); END IF;
     IF L16 IS NOT NULL THEN dbms_output.put(', ' || L16_char); END IF;
-    dbms_output.put_line(' 언어를 컨텐츠 언어로 설정했습니다.');
+    
+    IF L1 IS NOT NULL THEN
+        dbms_output.put_line(' 언어를 컨텐츠 언어로 설정했습니다.');
+    END IF;
+    
     COMMIT;
+EXCEPTION
+    WHEN dup_val_on_index THEN
+        dbms_output.put_line('컨텐츠 언어를 중복할 수 없습니다.');
 END;
 ```
 
 > 파라미터를 비우기 위해서는 파라미터 := NULL 을 넣어줘야 한다.
+
+### 예외처리
+
+
+
+| 원인             | 예외                   |
+| ---------------- | ---------------------- |
+| dup_val_on_index | 중복값이 들어갔을 경우 |
+
+
+
+---
+
+참조
+
+https://rosebud90.tistory.com/entry/18-Oracle-Exception-%EC%98%88%EC%99%B8%EC%B2%98%EB%A6%AC
+
+---
 
 
 
@@ -807,4 +1193,6 @@ END;
 > 없는 영화를 선택했을 때 예외처리가 필요하다.
 
 토, 일 이틀동안 504줄의 코드를 작성했다.
+
+## 
 
