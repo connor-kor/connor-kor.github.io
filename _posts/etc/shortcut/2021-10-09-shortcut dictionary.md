@@ -9,7 +9,7 @@ categories: shortcut
 
 빠른 계층구조 (Quick Hierarchy) ctrl T: 부모에서 상속관계와 메서드의 오버라이딩 여부를 알 수 있다.
 
-빠른 개요(뼈대) (Quick Outline) ctrl Q (previous edit location): 자식에서 부모로부터 상속받은 필드와 메서드를 확인할 수 있다.
+빠른 개요(뼈대) (Quick Outline) ctrl O: 자식에서 부모로부터 상속받은 필드와 메서드를 확인할 수 있다.
 
 다음멤버로 이동 ctrl shift ↑↓
 
