@@ -57,6 +57,7 @@ categories: shortcut
 | 개인지정     | 단축키 |
 | ------------ | ------ |
 | 새 HTML 생성 | ALT H  |
+| 새 폴더      | ALT F  |
 
 
 

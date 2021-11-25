@@ -67,10 +67,6 @@ categories: shortcut
 
 | Hotkey                                   | Java: eclipse                                   | JavaScript: VScode | Android                            |
 | ---------------------------------------- | ----------------------------------------------- | ------------------ | ---------------------------------- |
-| 새 클래스 생성 v                         | alt + C                                         |                    | alt + C                            |
-| 새 인터페이스 생성 v                     | alt + I                                         |                    |                                    |
-| 새 패키지 생성 v                         | alt + P                                         |                    |                                    |
-| 새 enum 생성 v                           | alt + E                                         |                    |                                    |
 | 새 코틀린 생성                           |                                                 |                    | alt + K                            |
 | 새 레이아웃 생성 (layout XML file)       |                                                 |                    | alt + L                            |
 | 새 액티비티 생성                         |                                                 |                    | alt + A                            |
@@ -79,12 +75,8 @@ categories: shortcut
 | 새 프래그먼트 생성                       |                                                 |                    | alt + F                            |
 | 새 프로젝트 생성                         |                                                 |                    | alt + P                            |
 | 새 디렉토리 생성                         |                                                 |                    | alt + D                            |
-| 생성자 (Constructor) 생성 v              | alt + T                                         |                    |                                    |
-| getter setter 생성 v                     | alt + G                                         |                    |                                    |
-| 오버라이딩 생성 v                        | alt + O                                         |                    |                                    |
 | 파라미터 보기<br />(Context Information) | ctrl + P<br />print                             |                    |                                    |
 | Git Add (초록색 +)                       | ctrl + enter                                    |                    |                                    |
-| toString 생성 v                          | alt + S                                         |                    |                                    |
 | 연결된 괄호로 커서이동                   | shift + insert 또는<br />                       |                    |                                    |
 | 콘솔창으로 커서이동 (show in)            | F10                                             |                    |                                    |
 | 다른 창 모두 닫기                        | ctrl + alt + W                                  |                    |                                    |
