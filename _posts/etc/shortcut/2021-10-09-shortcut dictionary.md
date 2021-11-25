@@ -52,6 +52,16 @@ categories: shortcut
 | 투스트링 (toString) 생성        | alt S  |
 | 오버라이딩                      | alt O  |
 
+
+
+| 개인지정     | 단축키 |
+| ------------ | ------ |
+| 새 HTML 생성 | ALT H  |
+
+
+
+
+
 ## 오라클
 
 | 기본                  | 단축키                              |
