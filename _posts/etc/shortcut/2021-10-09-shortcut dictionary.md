@@ -54,11 +54,12 @@ categories: shortcut
 
 
 
-| 개인지정         | 단축키 |
-| ---------------- | ------ |
-| 새 HTML 생성     | ALT H  |
-| 새 폴더          | ALT F  |
-| 새 JSP 파일 생성 | ALT J  |
+| 개인지정         | 단축키     |
+| ---------------- | ---------- |
+| 새 HTML 생성     | Alt H      |
+| 새 폴더          | Alt F      |
+| 새 JSP 파일 생성 | Alt J      |
+| 새 CSS 파일 생성 | Ctrl Alt C |
 
 
 
