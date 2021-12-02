@@ -77,7 +77,7 @@ categories: shortcut
 | 새 디렉토리 생성                         |                                                 |                    | alt + D                            |
 | 파라미터 보기<br />(Context Information) | ctrl + P<br />print                             |                    |                                    |
 | Git Add (초록색 +)                       | ctrl + enter                                    |                    |                                    |
-| 연결된 괄호로 커서이동                   | shift + insert 또는<br />                       |                    |                                    |
+| 연결된 괄호로 커서이동                   | shift + insert 또는<br />Alt + End              |                    |                                    |
 | 콘솔창으로 커서이동 (show in)            | F10                                             |                    |                                    |
 | 다른 창 모두 닫기                        | ctrl + alt + W                                  |                    |                                    |
 | 에디터 탭 이동<br />(Previous, Next tab) | alt + ←→<br />forward history, backward history |                    |                                    |
