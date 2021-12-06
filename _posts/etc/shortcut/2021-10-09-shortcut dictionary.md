@@ -37,6 +37,10 @@ categories: shortcut
 
 
 
+| HTML     | 단축키       |
+| -------- | ------------ |
+| 라인주석 | Ctrl Shift C |
+
 
 
 
