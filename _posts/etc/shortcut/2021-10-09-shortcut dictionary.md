@@ -45,25 +45,27 @@ categories: shortcut
 
 
 
-| 파일 (개인지정)                 | 단축키 |
-| ------------------------------- | ------ |
-| 새 패키지 생성                  | alt P  |
-| 새 클래스 생성                  | alt C  |
-| 새 인터페이스 생성              | alt I  |
-| 새 이넘(enum) 생성              | alt E  |
-| 생성자 (Constructor) 생성       | alt T  |
-| 게터, 세터 (getter,setter) 생성 | alt G  |
-| 투스트링 (toString) 생성        | alt S  |
-| 오버라이딩                      | alt O  |
+| 파일 (개인지정)                 | 단축키      |
+| ------------------------------- | ----------- |
+| 새 패키지 생성                  | alt P       |
+| 새 클래스 생성                  | alt C       |
+| 새 인터페이스 생성              | alt I       |
+| 새 이넘(enum) 생성              | alt E       |
+| 생성자 (Constructor) 생성       | alt T       |
+| 게터, 세터 (getter,setter) 생성 | alt G       |
+| 투스트링 (toString) 생성        | alt shift S |
+| 오버라이딩                      | alt O       |
 
 
 
-| 개인지정         | 단축키     |
-| ---------------- | ---------- |
-| 새 HTML 생성     | Alt H      |
-| 새 폴더          | Alt F      |
-| 새 JSP 파일 생성 | Alt J      |
-| 새 CSS 파일 생성 | Ctrl Alt C |
+| 개인지정              | 단축키     |
+| --------------------- | ---------- |
+| 새 HTML 생성          | Alt H      |
+| 새 폴더               | Alt F      |
+| 새 JSP 파일 생성      | Alt J      |
+| 새 Servlet 생성       | Alt S      |
+| 새 CSS 파일 생성      | Ctrl Alt C |
+| Project Explorer 커서 | F9         |
 
 
 
@@ -116,17 +118,19 @@ categories: shortcut
 
 ## eXERD
 
-| 기능             | 단축키           |
-| ---------------- | ---------------- |
-| 칼럼 추가        | CTRL ENTER       |
-| PRIMARY KEY 추가 | CTRL SHIFT ENTER |
-| 논리/물리 토글   | F3               |
+| 기능                   | 단축키           |
+| ---------------------- | ---------------- |
+| 칼럼 추가              | Ctrl Enter       |
+| PRIMARY KEY 추가       | Ctrl Shift Enter |
+| 논리/물리 토글         | F3               |
+| 테이블 비식별 식별관계 | 3 4 5            |
+| 삭제                   | Delete           |
 
 
 
 | 개인지정         | 단축키 |
 | ---------------- | ------ |
-| PRIMARY KEY 지정 | ALT P  |
+| PRIMARY KEY 지정 | Alt P  |
 
 
 
