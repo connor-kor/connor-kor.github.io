@@ -1019,3 +1019,466 @@ DBConn 을 Connection Pool 로 바꿔야된다.
 
 글보기 & 글쓰기를 MVC 패턴으로 해보기
 
+# 12.29
+
+**복습**
+
+MVC 패턴이란 ? 
+
+모델 2 구조
+
+1. 모델: 자바클래스
+2. 뷰: JSP 페이지
+3. 컨트롤러: 서블릿클래스
+
+모델 (M) - 자바클래스 / 로직 처리 핸들러 (Handler)
+
+- ListHandler
+- WriteHandler
+- ContentHandler
+
+컨트롤러 (C) - 서블릿클래스
+
+1. 톰캣 (WAS) 이 시작할 때 자동으로 서블릿 객체 생성 등록
+
+
+
+---
+
+**[필터]**
+
+Filter 란 ? 
+
+1. 정의 ? http 요청, 응답할 때 올바른 요청 + 요청 권한 체크
+   - 응답할 때 응답데이터를 변경 (암호화) 등등을 할 수 있는 클래스
+2. 필터체인 (chain)
+3. 필터 구현 방법 (핵심 3가지)
+   - javax.servlet.Filter 인터페이스 구현
+     1. `init()` 필터 초기화 역할
+     2. `destroy()` 필터 웹컨테이너에서 소멸될 때 호출되는 메서드
+     3. +++++ doFilter()
+        - 필터링 할 작업 (코딩): 인증, 권한 등등
+        - 체크된 후에는 다음 필터 또는 자원에게 chain 을 이용해서 전달. chain.doFilter()
+   - 요청 - javax.servlet.ServletRequestWrapper 클래스
+     - 필터가 요청을 변경한 결과를 저장하는 래퍼 클래스
+     - currentPage=1 파라미터를 가공 (변경) 초기화
+   - 응답 - javax.servlet.ServletResponseWrapper 클래스
+     - 필터가 응답을 변경하기 위해 사용하는 래퍼 클래스
+     - 원본데이터 -> 암호화 데이터
+4. 필터 클래스를 사용하려면 톰캣\lib\servlet-api.jar 파일을 추가해야 하지만 이클립스로 개발할 경우에는 추가할 필요가 없다.
+5. init (FilterConfig 객체 config) 객체의 메서드
+   - String getFilterName(): 설정파일에서 `<filter-name>` 필터이름을 반환
+   - getInitParameter(name): `<init-param>` 
+   - getInitParameterNames(): 
+   - ServletContext getServletContext(): 서블릿 컨텍스트 객체
+6. 필터를 설정 (등록)
+   - web.xml
+   - @WebFilter 어노테이션 
+7. 필터 사용하는 곳
+   - 인증/권한
+   - 자원 (jsp, 서블릿, 이미지, 동영상 등) 로깅
+   - 응답 데이터 변환 (암호화, )
+8. 실습
+   - days08
+   - admin
+   - board
+     - ex01_list.jsp
+   - member
+     - ex01_logon.jsp
+     - ex01_logon_ok.jsp
+     - ex01_logout.jsp
+   - web.xml -> web_days07.xml 복사
+     - web.xml
+     - com.filter.LoginCheckFilter 클래스 
+
+클 -> 요청 -> [인증확인] -> [권한확인] -> JSP/서블릿		자원 (JSP/서블릿 등) `%@ include file=".jspf"` 
+
+​		응답 <- 필터2 [암호화]	<-	중요한 데이터 (암호화)
+
+**com.filter.LoginCheckFilter.class** 
+
+```java
+import javax.servlet.Filter;
+```
+
+
+
+Q. filter 의 역할 ? 
+
+A. 
+
+
+
+**[로그인 확인]**
+
+ex01.jsp
+
+```jsp
+<a href="/jspPro3/days08/member/ex01_logon.jsp">로그인</a>
+<a href="/jspPro3/days08/board/ex01_list.jsp">글목록</a>
+<a href="/jspPro3/days08/board/ex01_write.jsp">글쓰기</a>
+```
+
+LoginCheck.java
+
+```java
+public class LoginCheckFilter implements Filter {
+	@Override
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
+		System.out.println("> LoginCheckFilter.doFilter() 호출됨...");
+		// session - member (LogonID)
+		HttpServletRequest httpRequest = (HttpServletRequest) request;
+		HttpServletResponse httpResponse = (HttpServletResponse) response;
+		
+		String logonID = null;
+		boolean isLogon = false;
+		HttpSession session = httpRequest.getSession(false);
+		
+		if (session != null) {
+			logonID = (String) session.getAttribute("member");
+			
+			if (logonID != null) {
+				isLogon = true;
+			}
+		}
+		
+		if (isLogon) {
+			chain.doFilter(request, response);
+		} else {
+			// ex01_logon.jsp 페이지로 이동 - 포워딩 / [리다이렉트]
+			String location = "/jspPro3/days08/member/ex01_logon.jsp";
+			httpResponse.sendRedirect(location);
+		}
+	}
+}
+```
+
+**[로그인 구현]**
+
+**ex01.list.jsp**
+
+```jsp
+반드시 로그인을 해야지만 글목록 페이지를 사용할 수 있다.
+<br />
+<br />
+<br />
+<br />
+<!-- EL 4 Scope -->
+로그인 아이디: ${member } <br />
+<a href="/jspPro3/days08/member/ex01_logout.jsp">로그 아웃</a>
+```
+
+**ex01_logon.jsp**
+
+```jsp
+<form action="<%= request.getContextPath() %>/days08/member/ex01_logon_ok.jsp">
+    아이디 :  <input type="text" name="id" autofocus/><br>
+    비밀번호 : <input type="password" name="passwd"><br>
+    <input type="submit" value="로그인" />
+</form> 	
+```
+
+**ex01_logon_ok.jsp**
+
+```jsp
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+String id = request.getParameter("id");
+String passwd = request.getParameter("passwd");
+
+// id, passwd 로그인 성공, 실패
+session.setAttribute("member", id);
+
+String location = "/jspPro3/days08/ex01.jsp";
+response.sendRedirect(location);
+%>
+```
+
+**ex01_logout.jsp**
+
+```jsp
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+session.invalidate();
+
+String location ="/jspPro3/days08/ex01.jsp";
+response.sendRedirect(location);
+%>
+```
+
+**문제**
+
+글목록 클릭 - 
+
+복습: 로직 확인해보기
+
+
+
+원래 가려고한 경로
+
+```java
+String referer = httpRequest.getRequestURI();
+System.out.println("> referer: " + referer);
+```
+
+
+
+```xml
+<filter>
+    <filter-name>LoginCheckFilter</filter-name>
+    <filter-class>com.filter.LoginCheckFilter</filter-class>
+</filter>
+<filter-mapping>
+    <filter-name>LoginCheckFilter</filter-name>
+    <url-pattern>/days08/board/*</url-pattern>
+    <dispatcher></dispatcher>
+</filter-mapping>
+```
+
+**dispatcher 값** 
+
+- `REQUEST` 디폴트 
+- `INCLUDE` include 포함 필터 적용
+- `FORWARD` 제어 흐름 이동될 때 필터 적용
+
+**[응답필터]** @WebFilter 어노테이션 사용해서 만들어 보자.
+
+1. com.util.ResponseBufferWriter 클래스
+2. com.util.XSLTResponseWrapper 클래스 implements ServletResponseWrapper 클래스 추가
+3. com.filter.XSLTFilter implements Filter
+
+
+
+**[XML]**
+
+XML 데이터 - 응답필터 (XSLTFilter) -> html 형태로 변환해서 응답
+
+
+
+점심 후: ServletContextListener 구현
+
+
+
+ServletContextLister 구현
+
+1. 웹 컨테이너 (== 톰캣 == WAS) 가 시작//종료할 때 발생하는 이벤트를 처리할려고 한다면 ServletContextLister 를 구현한 클래스에서 처리를 하면된다.
+
+2. 방법
+
+   - ServletContextLister 인터페이스를 구현한 클래스 작성
+     1. contextInitialized() 웹 컨테이너 (==톰캣==WAS) 가 시작
+        - 웹 애플리케이션이 시작 (초기화)
+     2. contextDestroyed() 웹 컨테이너 (==톰캣==WAS) 가 종료
+        - 웹 애플리케이션이 종료
+     3. ServletContext sc = getServletContext()
+        - ServletContext == JSP 의 application 기본객채
+        - web.xml
+        - `<context-param>` 태그설정
+     4. 실습
+        - web.xml
+        - DBCPInitListener 등록
+     5. @WebListener 어노테이션.. 등록
+
+   
+
+   
+
+   - 위의 클래스를 web.xml 에 등록
+
+
+
+**톰캣 서버실행 시**
+
+```
+> DBCPInitListener.contextInitializeds() ...
+javax.sql.DataSource 
+oracle.jdbc.OracleDriver
+jdbc:oracle:thin:@127.0.0.1:1521:mysid
+scott
+```
+
+```java
+public class DBCPInitListener implements ServletContextListener {
+	@Override
+	public void contextInitialized(ServletContextEvent sce) {
+		System.out.println("> DBCPInitListener.contextInitializeds() ...");
+		
+		// web.xml DBCP 설정값을 읽어와서 출력..
+		// JSP application 기본 객체
+		String poolConfig = sce.getServletContext().getInitParameter("poolConfig");
+		StringReader sr = new StringReader(poolConfig);
+		Properties prop = new Properties();
+		
+		try {
+			prop.load(sr);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println(prop.getProperty("type"));
+		System.out.println(prop.getProperty("driverClassName"));
+		System.out.println(prop.getProperty("url"));
+		System.out.println(prop.getProperty("username"));
+		System.out.println(prop.getProperty("password"));
+	}
+}
+```
+
+
+
+Filter 파일과 Listener 파일을 생성할 수 있다.
+
+**리스너 메서드 종류**
+
+- sessionCreated
+- attributeRemoved
+- onError
+- sessionIdChanged
+- attributeAdded
+- onTimeout
+- attributeReplaced
+- sessionWillPassivate
+- contextInitialized
+- attributeAdded
+- onComplete
+- requestDestroyed
+- attributeRemoved
+- onStartAsync
+- valueBound
+- requestInitialized
+- 등등
+
+
+
+1. days08
+   - guestbook 폴더 추가
+   - WEB-INF/commandhandler.properties 복사 + 붙이기 -> 수정
+2. 컨트롤러 (서블릿) - MV[C]
+   - days08.guestbook.controller.DispatcherServlet
+3. 컨트롤러 web.xml 등록
+4. 모델 [M]VC - 서블릿 X, 로직처리
+   - days08.guestbook.command.ListHandler 핸들러 클래스 추가.
+5. 방명록 테이블 생성
+   - 시퀀스 생성
+6. DTO, VO -> domain 패키지명
+   - days08.guestbook.domain.Message.java
+7. DAO
+   - days08.guestbook.persistence.IMessage.java 인터페이스
+   - days08.guestbook.persistence.MessageImpl.java 구현된 클래스
+8. Service -> service 패키지명 
+   - days08.guestbook.service.GetMessageListService.java 클래스
+   - days08.guestbook.service.WriteMessageService.java 클래스
+   - days08.guestbook.service.ServiceException.java 클래스 - 서비스 발생 예외...
+   - days08.guestbook.service.MessageListView.java
+9. GetMessageListHandler 모델 (핸들러) 객체 구현...
+10. 방명록 글쓰기...
+    - MessageImpl.java (DAO) 확인
+      - insert(conn, Message)
+    - WriteMessageService 확인 X
+    - WriteMessageHandler 구현 / 확인 X
+
+
+
+
+
+
+
+```sql
+create table guestbook_message
+   (
+      message_id number not null primary key
+      , guest_name varchar2(50) not null
+      , password varchar2(10) not null
+      , message clob not  null
+   ) ;      
+   create sequence seq_guestbook_message; 
+```
+
+
+
+
+
+SELECT 는 excuteQuery
+
+나머지는 excuteUpdate
+
+
+
+selectList 메서드의 List 반환을 MessageListView 에 담는다.
+
+페이지블럭과 비슷한 역할을 한다.
+
+
+
+`process()` 함수의 반환은 이동할 경로이다.
+
+
+
+**오류**
+
+Dispatcher 에서 에러가 난다.
+
+
+
+**[방명록 로직]**
+
+1. ex03.jsp 에서 a 태그 호출
+   - `<a href="/jspPro3/days08/guestbook/list.do">방명록 목록</a>` 
+2. DispatcherServlet.doGet() 호출
+
+
+
+commandHandlerMap 이란?
+
+`<String, CommandHandler>` 를 담는 HashMap
+
+
+
+**[에러해결]**
+
+**GetMessageListHandler.java**
+
+```java
+//         conn = ConnectionProvider.getConnection();         
+conn = DBConn.getConnection();     
+```
+
+**MessageImpl.java - selectCount 메서드**
+
+```java
+try {
+    pstmt = con.prepareStatement(sql);
+    rs = pstmt.executeQuery();
+    rs.next();
+    return rs.getInt(1);
+```
+
+`rs.next()` 빼먹음
+
+**MessageImpl.java**
+
+```java
+try {
+    pstmt = con.prepareStatement(sql);
+    rs = pstmt.executeQuery();
+    rs.next();
+    int rowCount = rs.getInt(1);
+    return rowCount;
+```
+
+`int rowCount` 추가해서 반환
+
+
+
+
+
+```java
+//	      String location = "list.do";
+//	      response.sendRedirect(location);
+
+return "/days08/guestbook/list.jsp";
+```
+
