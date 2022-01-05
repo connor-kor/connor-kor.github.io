@@ -1482,3 +1482,91 @@ try {
 return "/days08/guestbook/list.jsp";
 ```
 
+
+
+## 복습
+
+
+
+12.28 11시 17분
+
+https://tomcat.apache.org/
+
+1. Documentation 의 Tomcat 8.5
+2. [**JDBC DataSource**](https://tomcat.apache.org/tomcat-8.5-doc/jndi-datasource-examples-howto.html)
+3. [Oracle 8i, 9i & 10g](https://tomcat.apache.org/tomcat-8.5-doc/jndi-datasource-examples-howto.html#Oracle_8i,_9i_&_10g)
+
+
+
+META-INF 의 context.xml
+
+```xml
+<Resource name="jdbc/myoracle" auth="Container"
+              type="javax.sql.DataSource" driverClassName="oracle.jdbc.OracleDriver"
+              url="jdbc:oracle:thin:@127.0.0.1:1521:mysid"
+              username="scott" password="tiger" maxTotal="20" maxIdle="10"
+              maxWaitMillis="-1"/>
+```
+
+WEB-INF 의 web.xml
+
+```xml
+<resource-ref>
+ <description>Oracle Datasource example</description>
+ <res-ref-name>jdbc/myoracle</res-ref-name>
+ <res-type>javax.sql.DataSource</res-type>
+ <res-auth>Container</res-auth>
+</resource-ref>
+```
+
+java
+
+```java
+Context initContext = new InitialContext();
+Context envContext  = (Context)initContext.lookup("java:/comp/env");
+DataSource ds = (DataSource)envContext.lookup("jdbc/myoracle");
+Connection conn = ds.getConnection();
+//etc.
+```
+
+
+
+
+
+**예시코드**
+
+```jsp
+<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+<sql:query var="rs" dataSource="jdbc/TestDB">
+select id, foo, bar from testdata
+</sql:query>
+
+<html>
+  <head>
+    <title>DB Test</title>
+  </head>
+  <body>
+
+  <h2>Results</h2>
+
+<c:forEach var="row" items="${rs.rows}">
+    Foo ${row.foo}<br/>
+    Bar ${row.bar}<br/>
+</c:forEach>
+
+  </body>
+</html>
+```
+
+
+
+
+
+12.27 14시 8분 ex04
+
+1. WEB-INF 의 lib 에 dbcp.jar 검색해서 tomcat-dbcp.jar 파일을 추가한다. (jar)
+2. META-INF 에 context.xml 추가해서 Context 태그 내에 붙이고 mysid 를 xe 로 바꾼다. (context.xml)
+3. web.xml
+4. java

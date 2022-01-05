@@ -159,3 +159,13 @@ categories: shortcut
 | 표 행 추가 | CTRL ENTER           |
 | 표 행 삭제 | CTRL SHIFT BACKSPACE |
 
+
+
+## 엑셀
+
+| 기능              | 단축키             |
+| ----------------- | ------------------ |
+| 워크시트 이동     | Ctrl PageUp / Down |
+| 새 워크시트 추가  | Shift F11          |
+| 선택하여 붙여넣기 | Ctrl Alt V         |
+
