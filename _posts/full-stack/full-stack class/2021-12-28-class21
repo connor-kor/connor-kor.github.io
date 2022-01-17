@@ -615,7 +615,7 @@ m[4] : 2 - false/true
 
 **코드 예제**
 
-```
+```jsp
 		실제배포경로 = C:\class\JSPClass\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\jspPro3\days07\ex01.jsp 
 
 		<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
