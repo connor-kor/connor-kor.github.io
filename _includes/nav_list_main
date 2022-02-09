@@ -11,9 +11,8 @@
             📂 <span style="font-family:'Cafe24Oneprettynight';">전체 글 수</style> <span style="font-family:'Coming Soon';">{{sum}}</style> <span style="font-family:'Cafe24Oneprettynight';">개</style>
       </li>
       <li>
-        <!--span 태그로 카테고리들을 크게 분류 ex) C/C++/C#-->
 
-                <!-- 1. 알고리즘 -->
+        <!-- 1. 알고리즘 -->
         <span class="nav__sub-title"> Algorithm </span>
 
             <!--ul 태그로 같은 카테고리들 모아둔 페이지들 나열-->
@@ -60,6 +59,15 @@
                     {% endif %}
                 {% endfor %}
             </ul>
+            <ul>
+                <!--category[1].size 로 해당 카테고리를 가진 글의 개수 표시-->
+                {% for category in site.categories %}
+                    {% if category[0] == "project_fullstack" %}
+                        <!-- 사이드바 출력 -->
+                        <li><a href="/categories/project_fullstack" class=""> 프로젝트 ({{category[1].size}})</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>            
 
             <!-- 2. 안드로이드 -->
         <span class="nav__sub-title"> Android </span>
