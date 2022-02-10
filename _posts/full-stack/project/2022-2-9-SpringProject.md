@@ -151,8 +151,14 @@ create table tbl_board (
 alter table tbl_board add constraint pk_board 
 primary key (bno);
 
-INSERT INTO tbl_board (bno, title, content, writer)
-  VALUES (seq_board.nextval, '테스트 제목', '테스트 내용', 'user00');COMMIT;  
+BEGIN
+    FOR i IN 1..30
+    LOOP
+        INSERT INTO tbl_board (bno, title, content, writer)
+        VALUES (seq_board.nextval, '공지사항' || i, '공지사항 내용' || i, '관리자' || i);
+    END LOOP;
+    COMMIT;        
+END;
 ```
 
 # 시작
@@ -564,3 +570,305 @@ webapp/resources/css 폴더 내에 작성한다.
 }
 ```
 
+## 로그인
+
+**정리**
+
+- pom.xml
+- security-context.xml
+- web.xml 에 security 필터 추가
+- controller 와 JSP 구현
+
+**pom.xml**
+
+```xml
+<dependency>
+    <groupId>org.springframework.security</groupId>
+    <artifactId>spring-security-web</artifactId>
+    <version>${org.springframework-version}</version>
+</dependency>
+<dependency>
+    <groupId>org.springframework.security</groupId>
+    <artifactId>spring-security-config</artifactId>
+    <version>${org.springframework-version}</version>
+</dependency>
+<dependency>
+    <groupId>org.springframework.security</groupId>
+    <artifactId>spring-security-core</artifactId>
+    <version>${org.springframework-version}</version>
+</dependency>
+<dependency>
+    <groupId>org.springframework.security</groupId>
+    <artifactId>spring-security-taglibs</artifactId>
+    <version>${org.springframework-version}</version>
+</dependency>
+```
+
+spring 폴더에 Spring Bean Configuration File 생성
+
+**security-context.xml**
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+		
+	<security:http>
+		<security:intercept-url pattern="/sample/all"
+			access="permitAll" />
+		<security:intercept-url
+			pattern="/sample/member" access="hasRole('ROLE_MEMBER')" />
+		<security:form-login/>
+	</security:http>
+
+	<security:authentication-manager>
+	</security:authentication-manager>
+</beans>
+```
+
+**intercept-url**
+
+- `pattern` URI 패턴
+- `access` 
+  - 표현식: 기본값. 권장된다.
+  - 문자열: `use-expressions="false"` 
+
+**web.xml**
+
+```xml
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			/WEB-INF/spring/root-context.xml
+            
+             <!-- 추가 -->
+			/WEB-INF/spring/security-context.xml
+		</param-value>
+	</context-param>
+
+<!-- 로그인 -->
+<filter>
+    <filter-name>springSecurityFilterChain</filter-name>
+    <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+</filter>
+<filter-mapping>
+    <filter-name>springSecurityFilterChain</filter-name>
+    <url-pattern>/*</url-pattern>
+</filter-mapping>
+```
+
+**SampleController.java**
+
+```java
+@Log4j
+@RequestMapping("/sample/*") 
+@Controller
+public class SampleController {
+
+  
+  @GetMapping("/all")
+  public void doAll() {
+    
+    log.info("do all can access everybody");
+  }
+  
+  @GetMapping("/member")
+  public void doMember() {
+    
+    log.info("logined member");
+  }
+  
+  @GetMapping("/admin")
+  public void doAdmin() {
+    
+    log.info("admin only");
+  }  
+  
+  
+  @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_MEMBER')")
+  @GetMapping("/annoMember")
+  public void doMember2() {
+    
+    log.info("logined annotation member");
+  }
+  
+  
+  @Secured({"ROLE_ADMIN"})
+  @GetMapping("/annoAdmin")
+  public void doAdmin2() {
+
+    log.info("admin annotaion only");
+  }
+}
+```
+
+views/sample 에 JSP 파일 추가
+
+- admin
+- all
+- member
+
+
+
+- `username` 사용자 ID
+- `User` 인증정보와 권한을 가진 객체
+
+**security-context.xml**
+
+```xml
+<security:authentication-manager> 
+    <security:authentication-provider> 
+        <security:user-service> 
+            <security:user name="member" password="{noop}member" authorities="ROLE_MEMBER"/> 
+            <!-- 				<security:user name="admin" password="{noop}admin" authorities="ROLE_MEMBER, ROLE_ADMIN"/>  -->
+        </security:user-service> 
+    </security:authentication-provider> 
+</security:authentication-manager>
+```
+
+`{noop}` PasswordEncoder 를 사용하지 않으려면 붙인다.
+
+로그아웃 방법: 개발자도구 - Application - Cookies - `http://localhost` 우클릭 - clear
+
+**admin.jsp**
+
+```jsp
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
+
+<!-- 바디 -->
+<h1>/sample/admin page</h1>
+<a href="/customLogout">Logout</a>
+```
+
+
+
+**[접근제한]**
+
+```xml
+<security:http>
+    <!-- 접근제한 -->
+	<security:access-denied-handler ref="customAccessDenied" />
+</security:http>
+```
+
+**CommonController.java**
+
+```java
+@Controller
+@Log4j
+public class CommonController {
+
+	@GetMapping("/accessError")
+	public void accessDenied(Authentication auth, Model model) {
+
+		log.info("access Denied : " + auth);
+
+		model.addAttribute("msg", "Access Denied");
+	}
+
+	@GetMapping("/customLogin")
+	public void loginInput(String error, String logout, Model model) {
+
+		log.info("error: " + error);
+		log.info("logout: " + logout);
+
+		if (error != null) {
+			model.addAttribute("error", "Login Error Check Your Account");
+		}
+
+		if (logout != null) {
+			model.addAttribute("logout", "Logout!!");
+		}
+	}
+
+	@GetMapping("/customLogout")
+	public void logoutGET() {
+
+		log.info("custom logout");
+	}
+
+	@PostMapping("/customLogout")
+	public void logoutPost() {
+
+		log.info("post custom logout");
+	}
+}
+```
+
+**accessError.jsp**
+
+```jsp
+<h1>Access Denied Page</h1>
+<h2><c:out value="${SPRING_SECURITY_403_EXCEPTION.getMessage()}"/></h2>
+<h2><c:out value="${msg}"/></h2>
+```
+
+p.628 인터페이스 직접구현
+
+**[커스텀 로그인]**
+
+**security-context.xml**
+
+```xml
+<security:http>
+	<security:form-login login-page="/customLogin"/>
+</security:http>
+```
+
+**controller**
+
+```java
+@GetMapping("/customLogin")
+public void loginInput(String error, String logout, Model model) {
+    log.info("error: " + error);
+    log.info("logout: " + logout);
+
+    if (error != null) {
+        model.addAttribute("error", "Login Error Check Your Account");
+    }
+
+    if (logout != null) {
+        model.addAttribute("logout", "Logout!!");
+    }
+}
+```
+
+**CustomLogin.jsp**
+
+```jsp
+  <h1>Custom Login Page</h1>
+  <h2><c:out value="${error}"/></h2>
+  <h2><c:out value="${logout}"/></h2>
+  
+  <form method='post' action="/login">
+  
+  <div>
+    <input type='text' name='username' value='admin'>
+  </div>
+  <div>
+    <input type='password' name='password' value='admin'>
+  </div>
+  <div>
+  <div>
+    <input type='checkbox' name='remember-me'> Remember Me
+  </div>
+
+  <div>
+    <input type='submit'>
+  </div>
+    <input type="hidden" name="${_csrf.parameterName}"
+    value="${_csrf.token}" />
+  
+  </form>
+```
+
+**[CSRF]**
+
+p.633: Cross-site request forgery
+
+**[커스텀 로그인성공]**
+
+p. 637
