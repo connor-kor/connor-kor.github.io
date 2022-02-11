@@ -839,36 +839,347 @@ public void loginInput(String error, String logout, Model model) {
 **CustomLogin.jsp**
 
 ```jsp
-  <h1>Custom Login Page</h1>
-  <h2><c:out value="${error}"/></h2>
-  <h2><c:out value="${logout}"/></h2>
-  
-  <form method='post' action="/login">
-  
-  <div>
-    <input type='text' name='username' value='admin'>
-  </div>
-  <div>
-    <input type='password' name='password' value='admin'>
-  </div>
-  <div>
-  <div>
-    <input type='checkbox' name='remember-me'> Remember Me
-  </div>
+<h1>Custom Login Page</h1>
+<h2><c:out value="${error}" /></h2>
+<h2><c:out value="${logout}" /></h2>
 
-  <div>
-    <input type='submit'>
-  </div>
-    <input type="hidden" name="${_csrf.parameterName}"
-    value="${_csrf.token}" />
-  
-  </form>
+<form method='post' action="/login">
+    <div>
+        <input type='text' name='username' autofocus>
+    </div>
+    <div>
+        <input type='password' name='password'>
+    </div>
+    <div>
+        <input type='checkbox' name='remember-me'> Remember Me
+    </div>
+
+    <div>
+        <input type='submit'>
+    </div>
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+</form>
 ```
 
 **[CSRF]**
 
 p.633: Cross-site request forgery
 
-**[커스텀 로그인성공]**
+**[커스텀로그인]**
 
 p. 637
+
+**커스텀로그인 핸들러**
+
+```java
+@Log4j
+@Component("customLoginSuccess")
+public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
+
+	@Override
+	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication auth)
+			throws IOException, ServletException {
+		log.warn("Login Success");
+		List<String> roleNames = new ArrayList<>();
+
+		auth.getAuthorities().forEach(authority -> {
+			roleNames.add(authority.getAuthority());
+		});
+
+		log.warn("ROLE NAMES: " + roleNames);
+
+		if (roleNames.contains("ROLE_ADMIN")) {
+			response.sendRedirect("/sample/admin");
+			return;
+		}
+
+		if (roleNames.contains("ROLE_MEMBER")) {
+			response.sendRedirect("/sample/member");
+			return;
+		}
+		response.sendRedirect("/");
+	}
+}
+```
+
+**security-context.xml**
+
+```xml
+<!-- 빈 생성 -->
+<context:component-scan base-package="io.github.dev_connor" />
+
+<security:http>
+    <!-- 추가 -->
+    <security:form-login login-page="/customLogin" authentication-success-handler-ref="customLoginSuccess"/>
+</security:http>
+```
+
+
+
+**[커스텀 로그아웃]**
+
+**security-context.xml**
+
+```xml
+<security:logout logout-url="/customLogout" invalidate-session="true" />
+```
+
+- `delete-cookies="remember-me,JSESSION_ID"` 
+
+**[DB로 로그인]**
+
+```
+USERNAME	PASSWORD ENABLED
+--------------------------
+user00		pw00	1
+member00	pw00	1
+admin00		pw00	1
+```
+
+```
+USERNAME	AUTHORITY                                         
+--------------------------
+admin00		ROLE_ADMIN                                        
+admin00		ROLE_MANAGER                                      
+member00	ROLE_MANAGER                                      
+user00		ROLE_USER       
+```
+
+
+
+```sql
+create table users(
+      username varchar2(50) not null primary key,
+      password varchar2(50) not null,
+      enabled char(1) default '1');
+
+      
+ create table authorities (
+      username varchar2(50) not null,
+      authority varchar2(50) not null,
+      constraint fk_authorities_users foreign key(username) references users(username));
+      
+ create unique index ix_auth_username on authorities (username,authority);
+
+
+insert into users (username, password) values ('user00','pw00');
+insert into users (username, password) values ('member00','pw00');
+insert into users (username, password) values ('admin00','pw00');
+
+insert into authorities (username, authority) values ('user00','ROLE_USER');
+insert into authorities (username, authority) values ('member00','ROLE_MANAGER'); 
+insert into authorities (username, authority) values ('admin00','ROLE_MANAGER'); 
+insert into authorities (username, authority) values ('admin00','ROLE_ADMIN');
+commit;
+```
+
+**커스텀 테이블**
+
+```sql
+create table tbl_member(
+      userid varchar2(50) not null primary key,
+      userpw varchar2(100) not null,
+      username varchar2(100) not null,
+      regdate date default sysdate, 
+      updatedate date default sysdate,
+      enabled char(1) default '1');
+
+
+create table tbl_member_auth (
+     userid varchar2(50) not null,
+     auth varchar2(50) not null,
+     constraint fk_member_auth foreign key(userid) references tbl_member(userid)
+);
+```
+
+
+
+**[DB연결]**
+
+스프링 시큐리티가 기본적으로 이용하는 테이블 구조이다.
+
+**security-context.xml**
+
+```xml
+<!-- DB 연결 -->
+<security:authentication-manager> 
+    <security:authentication-provider>
+        <security:jdbc-user-service data-source-ref="dataSource"/>
+        <security:password-encoder ref="customPasswordEncoder"/>
+    </security:authentication-provider>
+</security:authentication-manager>
+```
+
+- `dataSource` root-context.xml 의 DB 빈이다.
+
+
+
+**패스워드 인코더**
+
+```java
+@Log4j
+@Component("customPasswordEncoder")
+public class CustomNoOpPasswordEncoder implements PasswordEncoder {
+	public String encode(CharSequence rawPassword) {
+		log.warn("before encode :" + rawPassword);
+		return rawPassword.toString();
+	}
+
+	public boolean matches(CharSequence rawPassword, String encodedPassword) {
+		log.warn("matches: " + rawPassword + ":" + encodedPassword);
+		return rawPassword.toString().equals(encodedPassword);
+	}
+}
+```
+
+**[사용자 지정 테이블]**
+
+쿼리문에서 ALIAS 를 피하기 위해 칼럼명을
+
+- username
+- password
+- enabled
+- authority 
+
+로 생성하자.
+
+**jdbc-user-service 속성**
+
+- `users-by-username-query` 
+- `authorities-by-user-name-query` 
+
+**예시**
+
+```xml
+<jdbc-user-service data-source-ref="dataSource" users-by-username-query=
+                   "SELECT name AS userName,password, enabled 
+                    FROM user_list 
+                    WHERE name=?"
+                   authorities-by-username-query=
+                   "SELECT name AS userName, authority 
+                    FROM user_list 
+                    WHERE name=?" />
+```
+
+구글링해서 예시를 가져왔다.
+
+**[비밀번호 암호화]**
+
+p.651
+
+**[UserDetailsService]**
+
+**유저 객체**
+
+```java
+@Data
+public class MemberVO {
+	private String userid;
+	private String userpw;
+	private String userName;
+	private boolean enabled;
+	private Date regDate;
+	private Date updateDate;
+	private List<AuthVO> authList;
+}
+```
+
+**권한 객체**
+
+```java
+@Data
+public class AuthVO {
+  private String userid;
+  private String auth;
+}
+```
+
+**유저 Mapper**
+
+```java
+public interface MemberMapper {
+	public MemberVO read(String userid);
+}
+```
+
+**MemberMapper.xml**
+
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.github.dev_connor.mapper.MemberMapper">
+
+
+  <resultMap type="io.github.dev_connor.domain.MemberVO" id="memberMap">
+    <id property="userid" column="userid"/>
+    <result property="userid" column="userid"/>
+    <result property="userpw" column="userpw"/>
+    <result property="userName" column="username"/>
+    <result property="regDate" column="regdate"/>
+    <result property="updateDate" column="updatedate"/>
+    <collection property="authList" resultMap="authMap">
+    </collection> 
+  </resultMap>
+  
+  <resultMap type="io.github.dev_connor.domain.AuthVO" id="authMap">
+    <result property="userid" column="userid"/>
+    <result property="auth" column="auth"/>
+  </resultMap>
+  
+  <select id="read" resultMap="memberMap">
+SELECT 
+  mem.userid,  userpw, username, enabled, regdate, updatedate, auth
+FROM 
+  tbl_member mem LEFT OUTER JOIN tbl_member_auth auth on mem.userid = auth.userid 
+WHERE mem.userid = #{userid} 
+  </select>
+
+</mapper>
+
+```
+
+
+
+**Mapper 테스트**
+
+```
+|--------|-----------|---------|---------|----------------------|----------------------|-----------|
+|userid  |userpw     |username |enabled  |regdate               |updatedate            |auth       |
+|--------|-----------|---------|---------|----------------------|----------------------|-----------|
+|admin90 |$2a$10$WMZ |관리자90    |[unread] |2022-02-12 00:54:31.0 |2022-02-12 00:54:31.0 |ROLE_ADMIN |
+|--------|-----------|---------|---------|----------------------|----------------------|-----------|
+```
+
+
+
+```java
+@RunWith(SpringRunner.class)
+@ContextConfiguration({"file:src/main/webapp/WEB-INF/spring/root-context.xml"})
+@Log4j
+public class MemberMapperTests {
+
+  @Setter(onMethod_ = @Autowired)
+  private MemberMapper mapper;
+  
+  @Test
+  public void testRead() {
+    MemberVO vo = mapper.read("admin90");
+    log.info(vo);
+    vo.getAuthList().forEach(authVO -> log.info(authVO));
+  }
+}
+```
+
+
+
+**더미 데이터**
+
+```sql
+INSERT INTO tbl_member (userid, userpw, username)
+VALUES ('admin90', '$2a$10$WMZ', '관리자90');
+INSERT INTO tbl_member_auth 
+VALUES ('admin90', 'ROLE_ADMIN');COMMIT;
+```
+
