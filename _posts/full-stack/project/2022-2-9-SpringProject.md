@@ -35,6 +35,7 @@ category: project_fullstack
 </filter>
 <filter-mapping>
     <filter-name>encodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
     <servlet-name>appServlet</servlet-name>
 </filter-mapping>
 ```
@@ -161,6 +162,26 @@ BEGIN
 END;
 ```
 
+# 에러
+
+## 브랜치 이동
+
+브랜치 이동 후 오류가 난다면 프로젝트 우클릭 - refresh - 서버실행
+
+## Request method 'POST' not supported
+
+get 방식은 잘 되는데 post 방식에서 에러가 난다면
+
+security 설정 후 에러가 발생한다면 
+
+CSRF 를 생각해보자.
+
+```java
+<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+```
+
+form 태그에 이 코드를 작성하면 된다.
+
 # 시작
 
 ## DB연결
@@ -214,7 +235,6 @@ log4jdbc.spylogdelegator.name=net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator
 
 ```java
 @Data
-@Alias("BoardVO")
 public class BoardVO {
 	private long bno;
 	private String title; 
@@ -1067,6 +1087,129 @@ public class CustomNoOpPasswordEncoder implements PasswordEncoder {
 
 p.651
 
+**security-context.xml**
+
+```xml
+<bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"></bean>
+
+	<security:authentication-manager> 
+		<security:authentication-provider>
+			<security:jdbc-user-service 
+				data-source-ref="dataSource"
+				users-by-username-query="
+					SELECT userid username, userpw password, enabled
+					FROM tbl_member
+					WHERE userid = ?"
+				authorities-by-username-query="
+					SELECT userid username, auth authority
+					FROM tbl_member_auth
+					WHERE userid = ?"
+			/>
+			<security:password-encoder ref="bcryptPasswordEncoder"/>
+		</security:authentication-provider>
+	</security:authentication-manager>
+```
+
+
+
+**멤버생성 테스트**
+
+```java
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration({
+  "file:src/main/webapp/WEB-INF/spring/root-context.xml",
+  "file:src/main/webapp/WEB-INF/spring/security-context.xml"
+  })
+@Log4j
+public class MemberTests {
+
+  @Setter(onMethod_ = @Autowired)
+  private PasswordEncoder pwencoder;
+  
+  @Setter(onMethod_ = @Autowired)
+  private DataSource ds;
+  
+  @Test
+  public void testInsertMember() {
+    String sql = "insert into tbl_member(userid, userpw, username) values (?,?,?)";
+
+    for(int i = 0; i < 100; i++) {
+      Connection con = null;
+      PreparedStatement pstmt = null;
+      
+      try {
+        con = ds.getConnection();
+        pstmt = con.prepareStatement(sql);
+        pstmt.setString(2, pwencoder.encode("pw" + i));
+        
+        if(i <80) {
+          pstmt.setString(1, "user"+i);
+          pstmt.setString(3,"일반사용자"+i);
+        }else if (i <90) {
+          pstmt.setString(1, "manager"+i);
+          pstmt.setString(3,"운영자"+i);
+        }else {
+          pstmt.setString(1, "admin"+i);
+          pstmt.setString(3,"관리자"+i);
+        }
+        pstmt.executeUpdate();
+      }catch(Exception e) {
+        e.printStackTrace();
+      }finally {
+        if(pstmt != null) { try { pstmt.close();  } catch(Exception e) {} }
+        if(con != null) { try { con.close();  } catch(Exception e) {} }
+      }
+    }//end for
+  }
+  
+  @Test
+  public void testInsertAuth() {
+    String sql = "insert into tbl_member_auth (userid, auth) values (?,?)";
+    
+    for(int i = 0; i < 100; i++) {
+      Connection con = null;
+      PreparedStatement pstmt = null;
+
+      try {
+        con = ds.getConnection();
+        pstmt = con.prepareStatement(sql);
+
+        if(i <80) {
+          pstmt.setString(1, "user"+i);
+          pstmt.setString(2,"ROLE_USER");
+        }else if (i <90) {
+          pstmt.setString(1, "manager"+i);
+          pstmt.setString(2,"ROLE_MEMBER");
+        }else {
+          pstmt.setString(1, "admin"+i);
+          pstmt.setString(2,"ROLE_ADMIN");
+        }
+        pstmt.executeUpdate();
+      }catch(Exception e) {
+        e.printStackTrace();
+      }finally {
+        if(pstmt != null) { try { pstmt.close();  } catch(Exception e) {} }
+        if(con != null) { try { con.close();  } catch(Exception e) {} }
+      }
+    }//end for
+  }
+}
+```
+
+> 테스트할 때는 dataSource 를 활용하는 듯 하다.
+>
+> 패스워드 인코더가 다른파일이 존재한다면 에러가 난다.
+
+```xml
+<security:authentication-manager> 
+    <security:authentication-provider user-service-ref="customUserDetailsService">
+        <security:password-encoder ref="bcryptPasswordEncoder"/>
+    </security:authentication-provider>
+</security:authentication-manager>
+```
+
+
+
 **[UserDetailsService]**
 
 **유저 객체**
@@ -1106,38 +1249,51 @@ public interface MemberMapper {
 
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="io.github.dev_connor.mapper.MemberMapper">
 
+	<resultMap type="MemberVO" id="memberMap">
+		<id property="userid" column="userid" />
+		<result property="userid" column="userid" />
+		<result property="userpw" column="userpw" />
+		<result property="userName" column="username" />
+		<result property="regDate" column="regdate" />
+		<result property="updateDate" column="updatedate" />
+		<collection property="authList" resultMap="authMap">
+		</collection>
+	</resultMap>
 
-  <resultMap type="io.github.dev_connor.domain.MemberVO" id="memberMap">
-    <id property="userid" column="userid"/>
-    <result property="userid" column="userid"/>
-    <result property="userpw" column="userpw"/>
-    <result property="userName" column="username"/>
-    <result property="regDate" column="regdate"/>
-    <result property="updateDate" column="updatedate"/>
-    <collection property="authList" resultMap="authMap">
-    </collection> 
-  </resultMap>
-  
-  <resultMap type="io.github.dev_connor.domain.AuthVO" id="authMap">
-    <result property="userid" column="userid"/>
-    <result property="auth" column="auth"/>
-  </resultMap>
-  
-  <select id="read" resultMap="memberMap">
-SELECT 
-  mem.userid,  userpw, username, enabled, regdate, updatedate, auth
-FROM 
-  tbl_member mem LEFT OUTER JOIN tbl_member_auth auth on mem.userid = auth.userid 
-WHERE mem.userid = #{userid} 
-  </select>
+	<resultMap type="AuthVO" id="authMap">
+		<result property="userid" column="userid" />
+		<result property="auth" column="auth" />
+	</resultMap>
 
+	<select id="read" resultMap="memberMap">
+		SELECT
+		mem.userid, userpw, username, enabled, regdate, updatedate, auth
+		FROM
+		tbl_member mem LEFT OUTER JOIN tbl_member_auth auth on mem.userid = auth.userid
+		WHERE mem.userid = #{userid}
+	</select>
 </mapper>
+```
 
+**root-context.xml**
+
+```xml
+<value>io.github.dev_connor.domain.MemberVO</value>
+<value>io.github.dev_connor.domain.AuthVO</value>
+```
+
+ALIAS 를 등록한다.
+
+**더미 데이터**
+
+```sql
+INSERT INTO tbl_member (userid, userpw, username)
+VALUES ('admin90', '$2a$10$WMZ', '관리자90');
+INSERT INTO tbl_member_auth 
+VALUES ('admin90', 'ROLE_ADMIN');COMMIT;
 ```
 
 
@@ -1172,14 +1328,308 @@ public class MemberMapperTests {
 }
 ```
 
+**로그인 유저 객체**
 
+```java
+@Getter
+public class CustomUser extends User {
+	private static final long serialVersionUID = 1L;
+	private MemberVO member;
 
-**더미 데이터**
+	public CustomUser(String username, String password, 
+			Collection<? extends GrantedAuthority> authorities) {
+		super(username, password, authorities);
+	}
 
-```sql
-INSERT INTO tbl_member (userid, userpw, username)
-VALUES ('admin90', '$2a$10$WMZ', '관리자90');
-INSERT INTO tbl_member_auth 
-VALUES ('admin90', 'ROLE_ADMIN');COMMIT;
+	public CustomUser(MemberVO vo) {
+		super(vo.getUserid(), vo.getUserpw(), vo.getAuthList().stream()
+				.map(auth -> new SimpleGrantedAuthority(auth.getAuth())).collect(Collectors.toList()));
+		this.member = vo;
+	}
+}
 ```
+
+
+
+**유저 서비스**
+
+```
+WARN : io.github.dev_connor.security.CustomUserDetailsService - Load User By UserName : admin90
+WARN : io.github.dev_connor.security.CustomUserDetailsService - queried by member mapper: MemberVO(userid=admin90, userpw=$2a$10$WMZ, userName=관리자90, enabled=false, regDate=Sat Feb 12 00:54:31 KST 2022, updateDate=Sat Feb 12 00:54:31 KST 2022, authList=[AuthVO(userid=admin90, auth=ROLE_ADMIN)])
+WARN : io.github.dev_connor.security.CustomNoOpPasswordEncoder - matches: $2a$10$WMZ:$2a$10$WMZ
+WARN : io.github.dev_connor.security.CustomLoginSuccessHandler - Login Success
+WARN : io.github.dev_connor.security.CustomLoginSuccessHandler - ROLE NAMES: [ROLE_ADMIN]
+```
+
+
+
+**security-context.xml**
+
+```xml
+<!-- DB 연결 -->
+<security:authentication-manager> 
+    <security:authentication-provider user-service-ref="customUserDetailsService">
+        <security:password-encoder ref="customPasswordEncoder"/>
+    </security:authentication-provider>
+</security:authentication-manager>
+```
+
+
+
+```java
+@Log4j
+@Service
+public class CustomUserDetailsService implements UserDetailsService {
+
+	@Setter(onMethod_ = { @Autowired })
+	private MemberMapper memberMapper;
+
+	@Override
+	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+		log.warn("Load User By UserName : " + userName);
+		MemberVO vo = memberMapper.read(userName);
+		log.warn("queried by member mapper: " + vo);
+		return vo == null ? null : new CustomUser(vo);
+	} 
+}
+```
+
+**[JSP]**
+
+```jsp
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
+
+	<!-- 바디 -->
+	<p>principal : <sec:authentication property="principal"/></p>
+	<p>MemberVO : <sec:authentication property="principal.member"/></p>
+	<p>사용자이름 : <sec:authentication property="principal.member.userName"/></p>
+	<p>사용자아이디 : <sec:authentication property="principal.username"/></p>
+	<p>사용자 권한 리스트  : <sec:authentication property="principal.member.authList"/></p>
+```
+
+
+
+
+
+**sec:authorize**
+
+- `isAnonymous()` 
+- `isAuthenticated()` 
+
+
+
+**로그인 성공 후 페이지**
+
+```java
+@Log4j
+@Component("customLoginSuccess")
+public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
+
+	@Override
+	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication auth)
+			throws IOException, ServletException {
+		log.warn("Login Success");
+		List<String> roleNames = new ArrayList<>();
+
+		auth.getAuthorities().forEach(authority -> {
+			roleNames.add(authority.getAuthority());
+		});
+		log.warn("ROLE NAMES: " + roleNames);
+		response.sendRedirect("/board/list");
+	}
+}
+```
+
+
+
+**더미**
+
+```java
+if (roleNames.contains("ROLE_ADMIN")) {
+    response.sendRedirect("/sample/admin");
+    return;
+}
+
+if (roleNames.contains("ROLE_MEMBER")) {
+    response.sendRedirect("/sample/member");
+    return;
+}
+```
+
+**[자동 로그인]**
+
+p.676
+
+**[권한으로 페이지이동]**
+
+
+
+p. 701
+
+- `@Secured(문자열 or 문자열배열)`
+- `@PreAuthorize(표현식)` 3버전부터 지원.
+- `@PostAuthorize(표현식)` 3버전부터 지원.
+
+
+
+**표현식 **
+
+- `hasRole()` `hasAuthority()`
+- `hasAnyRole('ROLE_ADMIN','ROLE_MEMBER')` `hasAnyAuthority()` 
+- `principal` 
+- `permitAll`
+- `denyAll`
+- `isAnonymous()`
+- `isAuthenticated()`
+- `isFullyAuthenticated()`
+
+
+
+**sevlet-context.xml**
+
+```
+http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-5.0.xsd
+```
+
+위를 아래와 같이 `-5.0` 을 지운다.
+
+```
+xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+```
+
+그 후 아래코드를 추가한다.
+
+```xml
+<security:global-method-security pre-post-annotations="enabled" secured-annotations="enabled"/>
+```
+
+
+
+**글 작성: BoardController.java**
+
+```java
+@GetMapping("/register")
+@PreAuthorize("isAuthenticated()")
+public void register() {}
+
+@PostMapping("/register")
+@PreAuthorize("isAuthenticated()")
+public String register(BoardVO board, RedirectAttributes rttr) {
+```
+
+
+
+**[로그인 후 글작성 페이지]**
+
+```xml
+<security:form-login login-page="/customLogin"/> 
+```
+
+`authentication-success-handler-ref` 속성을 없앤다.
+
+**security-context.xml**
+
+```xml
+<security:form-login login-page="/customLogin" default-target-url="/board/list"/>
+```
+
+`default-target-url` 이 속성에 url 를 준다.
+
+**[게시글 수정삭제 권한]**
+
+**get.jsp**
+
+```jsp
+<sec:authentication property="principal" var="p"/>
+<sec:authorize access="isAuthenticated()">
+    <c:if test="${p.username eq board.writer }">
+        <button data-oper='modify' class="btn btn-default">
+            <a href="/board/modify?bno=<c:out value='${board.bno}'/>">수정</a>
+        </button>			
+        <form role="form" action="/board/remove?bno=${board.bno }" method="post">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+            <button type="submit" data-oper='remove' class="btn btn-danger">삭제</button>
+        </form>
+    </c:if>
+</sec:authorize>
+```
+
+작성자만 수정/삭제할 수 있다.
+
+## 회원가입
+
+**컨트롤러**
+
+```java
+@Controller
+@Log4j
+@AllArgsConstructor
+public class MemberController {
+	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
+	private MemberService service;
+
+	@GetMapping("/join")
+	public void joinGET() {
+		log.info("get join");
+	}
+	
+	@PostMapping("/join")
+	public String joinPost(MemberVO member) {
+		log.info("post join: " + member);
+		service.join(member);
+		return "redirect:/board/list";
+	}
+}
+```
+
+**서비스**
+
+```java
+@Log4j
+@Service
+@AllArgsConstructor
+public class MemberServiceImpl implements MemberService {
+
+	@Setter(onMethod_ = @Autowired)
+	private MemberMapper mapper;
+	
+	@Setter(onMethod_ = @Autowired)
+	private PasswordEncoder pwencoder;
+
+	@Override
+	public void join(MemberVO member) {
+		String encodedPW = pwencoder.encode(member.getUserpw());
+		member.setUserpw(encodedPW);
+		mapper.join(member);
+	}
+}
+```
+
+**MyBatis**
+
+```xml
+<insert id="join">
+    BEGIN
+        INSERT INTO tbl_member (userid, userpw, username)
+        VALUES (#{userid}, #{userpw}, #{userName});
+
+        INSERT INTO tbl_member_auth
+        VALUES (#{userid}, 'ROLE_USER');
+    END;
+</insert>
+```
+
+오라클에서 다중쿼리를 사용하려면 PL/SQL 을 사용하면 된다.
+
+
+
+
+
+
+
+
+
+
+
+
 
